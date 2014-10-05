@@ -1,0 +1,5 @@
+
+%ul
+  - scans.each do |scan|
+    %li
+      %a{:href => "#{scan.id}"}= scan.id.to_s + ': ' + scan.created_at.to_s 

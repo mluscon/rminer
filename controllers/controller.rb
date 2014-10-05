@@ -20,19 +20,26 @@ class WebController
   end
 
   
-  def count
+  def waiting
     Message.all(:analyzed => false).count 
   end
+  
+  def messages
+    Message.all(:analyzed => false)
+  end
+ 
   
   def pattern(id)
     pattern = Pattern.get(id.to_i)
   end
   
-  def analyze(sensitivity,pattern_id=nil)
+  def analyze(sensitivity,msg_ids=nil)
     
-    unless pattern_id.nil?
-      pattern = Pattern.get pattern_id.to_i
-      msgs = pattern.scan.messages.all
+    unless msg_ids.nil?
+      msgs = []
+      msg_ids.each do |id|
+        msgs << Message.get(id)
+      end
     else
       msgs = Message.all
     end
@@ -44,9 +51,18 @@ class WebController
       msg.save
     end
     
-    @redis.rpush( "scans", new_scan.id )   
+    @redis.rpush('waiting', new_scan.id )   
       
   end
+  
+  def scans(active=false)
+    Scan.all(:active => active)
+  end
+  
+  def scan_count(active=false)
+    Scan.all(:active => active).count  
+  end
+    
   
   def scan(id)
     scan = Scan.get id.to_i

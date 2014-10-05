@@ -1,9 +1,7 @@
-%html{ 'ng-app' => 'CEP' }
+%h1 RMINER
 
-  %head
-    %script{ :src => "js/angular.min.js" }
-    %script{ :src => "js/controllers.js" }  
-
-  %body
-    
-  
+%h3
+  %a{:href => "/messages/"} Unprocessed messages: #{unprocessed}
+%h3 Scans in progress: #{active}
+%h3
+  %a{:href => "/scans/"} Scans done: #{scans}

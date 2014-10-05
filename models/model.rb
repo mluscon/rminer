@@ -18,6 +18,7 @@ class Scan
   property :id,           Serial
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
+  property :sensitivity,  Integer, :default => 1
   
   has n,  :messages, :through => Resource
   has n,  :patterns

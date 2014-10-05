@@ -1,0 +1,14 @@
+ 
+
+
+
+%form{:name => "New scan", :action => "/scan/new", :method => "post"}
+  %label Sensitivity
+  %input{:name => "sensitivity"}
+  %input{:type => "hidden", :name => "msgs", :value => messages.map{|msg| msg.id}}
+  %input{:type => "submit", :value => "Send", :class => "button"}
+
+  
+%ul
+  - messages.each do |msg|
+    %li= msg.body 

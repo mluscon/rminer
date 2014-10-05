@@ -10,30 +10,33 @@ require './analysis.rb'
 controller = WebController.new
 
 get '/' do
-  haml :index
-end
-    
-get '/messages/count' do
-    
-  haml :queued, :locals => {
-    :waiting => controller.count
+  haml :index, :locals => {
+    :unprocessed => controller.waiting,
+    :active => controller.scan_count(true),
+    :scans => controller.scan_count
   }
-    
 end
 
-get '/scan/:id' do
-      
-    scan = controller.scan params[:id]
-    halt 404 if scan.nil?
-      
-    haml :scan, :locals => {
-      :details => scan.created_at,
-      :patterns => scan.patterns
-    }
+get '/scans/' do
+  haml :scans, :locals => {
+    :scans => controller.scans
+  }
 end
 
 
-get '/pattern/:id' do
+get '/scans/:id' do
+      
+  scan = controller.scan params[:id]
+  halt 404 if scan.nil?
+      
+  haml :scan, :locals => {
+    :details => scan.created_at,
+    :patterns => scan.patterns
+  }
+end
+
+
+get '/patterns/:id' do
 
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
@@ -44,12 +47,27 @@ get '/pattern/:id' do
     
 end  
 
-get '/scan/new/all' do
+get '/messages/' do
+  haml :messages, :locals => {
+    :messages => controller.messages
+  }
+end
+  
+
+post '/scan/new/all' do
   controller.analyze(1)
 end
   
 
-get '/scan/new' do
-
+post '/scan/new' do
+  msgs = params[:msgs]
+  msgs[0] = ''
+  msgs[-1] = ''
+  msgs = msgs.split(', ')
+  sens = params[:sensitivity]
+  
+  controller.analyze(sens, msgs)
+  
+  redirect "/scans/"
 end
 
