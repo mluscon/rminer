@@ -41,7 +41,7 @@ get '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
   
-  haml :pattern, :locals => {
+  haml :patterns, :locals => {
     :pattern => pattern
   }
     

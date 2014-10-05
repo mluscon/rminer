@@ -51,7 +51,7 @@ class WebController
       msg.save
     end
     
-    @redis.rpush('waiting', new_scan.id )   
+    @redis.rpush('scans', new_scan.id )   
       
   end
   
