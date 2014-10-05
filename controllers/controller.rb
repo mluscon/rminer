@@ -33,18 +33,16 @@ class WebController
     pattern = Pattern.get(id.to_i)
   end
   
-  def analyze(sensitivity,msg_ids=nil)
+  def analyze(sens ,msg_ids)
     
-    unless msg_ids.nil?
-      msgs = []
-      msg_ids.each do |id|
-        msgs << Message.get(id)
-      end
-    else
-      msgs = Message.all
+    msgs = []
+    msg_ids.each do |id|
+      msgs << Message.get(id)
     end
- 
-    new_scan = Scan.create
+  
+    new_scan = Scan.new
+    new_scan.sensitivity = sens
+    new_scan.save
     
     msgs.each do |msg|
       msg.scans << new_scan

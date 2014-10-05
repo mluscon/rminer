@@ -61,10 +61,14 @@ end
 
 post '/scan/new' do
   msgs = params[:msgs]
+  sens = params[:sensitivity].to_i
+  
+  halt 404 if msgs.nil? 
+  
   msgs[0] = ''
   msgs[-1] = ''
   msgs = msgs.split(', ')
-  sens = params[:sensitivity]
+  
   
   controller.analyze(sens, msgs)
   
