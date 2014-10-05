@@ -2,4 +2,4 @@
 
 %ul
   - pattern.messages.each do |msg|
-    %li= msg.body
+    %li= msg.body + '(id: ' + msg.id.to_s + ')'

@@ -51,16 +51,19 @@ def analyze(sensitivity, msgs)
   end
 
   results.uniq!
-  result_msgs = Array.new
+  output = {}
+  
   results.each do |msg|
+    output[msg] = []
     msg.split(' ').each_with_index do |word, possition|
       if word != '$var'
-        result_msgs.push(f_table[word].msgs[possition])
+        output[msg] += f_table[word].msgs[possition]
       end
+      output[msg].uniq!
     end
   end
   
-  [results, result_msgs]  
+  output
 end
 
   

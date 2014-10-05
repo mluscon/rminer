@@ -36,13 +36,14 @@ class RedisWorker
     
     scan = Scan.get(scan_id)
     msgs = scan.messages
-    patterns = analyze(1, msgs) 
-    patterns[0].each_with_index do | pattern, i |
-      db_pattern = Pattern.new( :body => pattern)
-      scan.patterns << db_pattern
+    patterns = analyze(1, msgs)
+       
+    patterns.keys.each do | pattern |
+      db_pattern = Pattern.new( :body => pattern )
       db_pattern.save
-      scan.save
-      patterns[1][i].each do |msg|
+      scan.patterns << db_pattern
+      
+      patterns[pattern].each do |msg|
         db_msg = Message.get(msg)
         db_msg.patterns << db_pattern
         db_msg.save
