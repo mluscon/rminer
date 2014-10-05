@@ -48,6 +48,7 @@ class WebController
     
     msgs.each do |msg|
       msg.scans << new_scan
+      msg.analyzed = true
       msg.save
     end
     

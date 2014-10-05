@@ -45,7 +45,6 @@ class RedisWorker
       patterns[1][i].each do |msg|
         db_msg = Message.get(msg)
         db_msg.patterns << db_pattern
-        db_msg.analyzed = true
         db_msg.save
       end
     end
