@@ -1,16 +1,20 @@
  
+%div{ 'ng-controller'=>'MessagesCtrl'} 
 
 
 
-
-%form{:name => "New scan", :action => "/scan/new", :method => "post"}
+  %form{:name => "New scan", :action => "/scan/new", :method => "post"}
   %label Sensitivity
-  %input{:name => "sensitivity"}
+  %input{"ng-model"=>"sensitivity"}
   %input{:type => "hidden", :name => "msgs", :value => messages.map{|msg| msg.id}}
-  %input{:type => "submit", :value => "Send", :class => "button"}
+  %input{:type => "submit", :value => "Analyze", :class => "button"}
 
   
-%div{ 'ng-controller'=>'MessagesCtrl'} 
-  %ul
-    %li{ 'ng-repeat'=>"msg in messages"}
-      {{msg.body}}
+  %form
+  %label Regexp filter:
+  %input{"ng-model"=>"regExpString"}
+ 
+  %div
+    %ul
+      %li{ 'ng-repeat'=>"msg in messages | filter:myFilter "}
+        {{msg.body}}
