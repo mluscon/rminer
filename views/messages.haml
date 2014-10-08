@@ -6,8 +6,7 @@
   %form{:name => "New scan", :action => "/scan/new", :method => "post"}
   %label Sensitivity
   %input{"ng-model"=>"sensitivity"}
-  %input{:type => "hidden", :name => "msgs", :value => messages.map{|msg| msg.id}}
-  %input{:type => "submit", :value => "Analyze", :class => "button"}
+  %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
 
   
   %form

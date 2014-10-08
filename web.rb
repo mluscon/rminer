@@ -74,18 +74,10 @@ end
   
 
 post '/scan/new' do
-  msgs = params[:msgs]
-  sens = params[:sensitivity].to_i
   
-  halt 404 if msgs.nil? 
-  
-  msgs[0] = ''
-  msgs[-1] = ''
-  msgs = msgs.split(', ')
-  
-  
-  controller.analyze(sens, msgs)
-  
-  redirect "/scans/"
+  params = JSON.parse(request.env["rack.input"].read)
+ 
+  controller.analyze(params["sensitivity"], params["msgs"])
+
 end
 
