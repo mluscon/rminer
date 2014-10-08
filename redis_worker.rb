@@ -26,7 +26,7 @@ class RedisWorker
       if scan = @redis.rpop('scans')
        puts "Processing scan id #{scan}"
         do_analyze scan
-      else     
+      else
         sleep 3
       end
     end

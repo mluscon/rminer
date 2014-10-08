@@ -2,6 +2,7 @@
 
 
 
+
 %form{:name => "New scan", :action => "/scan/new", :method => "post"}
   %label Sensitivity
   %input{:name => "sensitivity"}
@@ -9,6 +10,7 @@
   %input{:type => "submit", :value => "Send", :class => "button"}
 
   
-%ul
-  - messages.each do |msg|
-    %li= msg.body 
+%div{ 'ng-controller'=>'MessagesCtrl'} 
+  %ul
+    %li{ 'ng-repeat'=>"msg in messages"}
+      {{msg.body}}

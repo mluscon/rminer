@@ -1,12 +1,11 @@
-var phonecatApp = angular.module('CEP', []);
+var RminerApp = angular.module('RminerApp', []);
 
-CEP.controller('PhoneListCtrl', function ($scope) {
-  $scope.phones = [
-    {'name': 'Nexus S',
-     'snippet': 'Fast just got faster with Nexus S.'},
-    {'name': 'Motorola XOOM™ with Wi-Fi',
-     'snippet': 'The Next, Next Generation tablet.'},
-    {'name': 'MOTOROLA XOOM™',
-     'snippet': 'The Next, Next Generation tablet.'}
-  ];
+
+RminerApp.controller('MessagesCtrl', function ($scope, $http) {
+  
+  $http.get("/messages/?json")
+  .success(function(response) {$scope.messages = angular.fromJson(response);});
+  
+  
+  
 }); 

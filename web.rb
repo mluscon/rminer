@@ -48,9 +48,23 @@ get '/patterns/:id' do
 end  
 
 get '/messages/' do
-  haml :messages, :locals => {
-    :messages => controller.messages
-  }
+  
+  msgs = controller.messages
+  if params.include? "json"
+    res = []
+    msgs.each do |msg|
+      res << { :id => msg.id,
+               :body => msg.body
+             }
+    end
+    JSON.generate( res )
+                   
+                   
+  else
+    haml :messages, :locals => {
+      :messages => msgs
+    }
+  end
 end
   
 
