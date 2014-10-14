@@ -74,9 +74,7 @@ end
   
 
 post '/scan/new' do
-  
   params = JSON.parse(request.env["rack.input"].read)
- 
   controller.analyze(params["sensitivity"], params["msgs"])
 
 end
