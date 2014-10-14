@@ -35,7 +35,6 @@ class RedisWorker
   def do_analyze(scan_id)
     
     scan = Scan.get(scan_id)
-    puts scan.messages
     patterns = analyze(scan.sensitivity, scan.messages)
     
     patterns.keys.each do | pattern |

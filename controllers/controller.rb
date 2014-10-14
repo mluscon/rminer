@@ -42,7 +42,6 @@ class WebController
     
     msgs = []
     msg_ids.each do |id|
-      puts "id" + id.to_s
       msg = Message.get(id)
       if (msg)
         msgs << msg

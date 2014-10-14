@@ -37,13 +37,25 @@ end
 
 
 get '/patterns/:id' do
-
+  
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
   
-  haml :patterns, :locals => {
-    :pattern => pattern
-  }
+  puts "id"
+  puts params[:id]
+  if params.include? "json"
+    res = []
+    pattern.messages.each do |msg|
+      res << { :id => msg.id,
+              :body => msg.body
+             }
+    end
+    JSON.generate( res )
+  else
+    haml :patterns, :locals => {
+         :pattern => pattern
+    }
+  end
     
 end  
 
@@ -67,12 +79,6 @@ get '/messages/' do
   end
 end
   
-
-post '/scan/new/all' do
-  controller.analyze(1)
-end
-  
-
 post '/scan/new' do
   params = JSON.parse(request.env["rack.input"].read)
   controller.analyze(params["sensitivity"], params["msgs"])
