@@ -2,4 +2,4 @@
 %ul
   - scans.each do |scan|
     %li
-      %a{:href => "#{scan.id}"}= scan.id.to_s + ': ' + scan.created_at.to_s + ' msgs = ' + scan.messages.count.to_s
+      %a{:href => "#{scan.id}"}= scan.id.to_s + ': ' + scan.tag + ' ' + scan.created_at.to_s + ' msgs = ' + scan.messages.count.to_s

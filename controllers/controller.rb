@@ -33,7 +33,7 @@ class WebController
     pattern = Pattern.get(id.to_i)
   end
   
-  def analyze(sens ,msg_ids)
+  def analyze(sens ,msg_ids, tag = "")
     
     if msg_ids.length == 0
       puts "empty msg_ids"
@@ -51,6 +51,7 @@ class WebController
     end
   
     new_scan = Scan.new
+    new_scan.tag = tag
     new_scan.sensitivity = sens
     new_scan.save
     

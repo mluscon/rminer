@@ -16,6 +16,7 @@ class Scan
   include DataMapper::Resource
   
   property :id,           Serial
+  property :tag,          String
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
   property :sensitivity,  Integer, :default => 1

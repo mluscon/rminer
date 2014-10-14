@@ -8,6 +8,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   
   $scope.regExpString = ""
   $scope.sensitivity = 1
+  $scope.scanTag = ""
   
   $scope.myFilter = function(msg) {
     var regExp = new RegExp($scope.regExpString)
@@ -24,7 +25,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
     $http.post("/scan/new", postObject)    
   }
   
@@ -40,6 +41,7 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
   
   $scope.regExpString = ""
   $scope.sensitivity = 1
+  $scope.scanTag = ""
   
   $scope.myFilter = function(msg) {
     var regExp = new RegExp($scope.regExpString)
@@ -56,7 +58,7 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
     $http.post("/scan/new", postObject)    
   }
   

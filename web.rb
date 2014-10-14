@@ -30,6 +30,7 @@ get '/scans/:id' do
   halt 404 if scan.nil?
       
   haml :scan, :locals => {
+    :tag => scan.tag,
     :details => scan.created_at,
     :patterns => scan.patterns
   }
@@ -81,7 +82,7 @@ end
   
 post '/scan/new' do
   params = JSON.parse(request.env["rack.input"].read)
-  controller.analyze(params["sensitivity"], params["msgs"])
+  controller.analyze(params["sensitivity"], params["msgs"], params["tag"])
 
 end
 
