@@ -19,14 +19,19 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   
   $scope.analyze = function() {
     var filtered = []
+    var remaining = []
     var regExp = new RegExp($scope.regExpString)
     for(var i = 0; i<$scope.messages.length; i++ ){
       if (regExp.test($scope.messages[i].body)) {
         filtered.push($scope.messages[i].id);
+      } else {
+        remaining.push($scope.messages[i]);
       }
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
     $http.post("/scan/new", postObject)
+    $scope.messages = remaining;
+    $scope.regExpString = ""
     $scope.scan.Tag = ""
   }
   
