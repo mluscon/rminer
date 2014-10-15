@@ -87,24 +87,6 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     $scope.scan.Tag = ""
   }
   
-  $scope.remove = function() {
-    var filtered = []
-    var remaining = []
-    var regExp = new RegExp($scope.regExpString)
-    for(var i = 0; i<$scope.messages.length; i++ ){
-      if (regExp.test($scope.messages[i].body)) {
-        filtered.push($scope.messages[i].id);
-      } else {
-        remaining.push($scope.messages[i]);
-      }
-    }
-    $scope.messages = remaining;
-    var postObject = { "msgs" : filtered }
-    $http.post("/remove/", postObject)
-    $scope.regExpString = ""
-  }
-  
-      
   $scope.final = function() {
     var number = window.location.pathname.split( '/' ).reverse()[0]
     var postObject = { "id" : number }

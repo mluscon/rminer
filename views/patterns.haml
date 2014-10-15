@@ -16,8 +16,7 @@
   %form
     %label Regexp filter:
     %input{"ng-model"=>"regExpString"}
-    %input{:type => "submit", :value => "Remove", "ng-click"=>"remove()"}
- 
+     
   %div
     %ul
       %li{ 'ng-repeat'=>"msg in messages | filter:myFilter "}
