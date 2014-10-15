@@ -26,7 +26,8 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
       }
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
-    $http.post("/scan/new", postObject)    
+    $http.post("/scan/new", postObject)
+    $scope.scan.Tag = ""
   }
   
   $scope.remove = function() {
@@ -77,7 +78,8 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
       }
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
-    $http.post("/scan/new", postObject)    
+    $http.post("/scan/new", postObject)
+    $scope.scan.Tag = ""
   }
   
   $scope.remove = function() {
