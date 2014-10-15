@@ -42,10 +42,16 @@ class WebController
       end
     end
   end
-    
   
   def pattern(id)
     pattern = Pattern.get(id.to_i)
+  end
+  
+  def final(id)
+    puts "Id :" + id.to_s
+    pattern = Pattern.get(id.to_i)
+    pattern.final = true;
+    pattern.save
   end
   
   def analyze(sens ,msg_ids, tag = "")

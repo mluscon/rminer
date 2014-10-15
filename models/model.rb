@@ -30,6 +30,7 @@ class Pattern
   
   property :id,           Serial
   property :body,         Text
+  property :final,        Boolean, :default => false
   
   belongs_to :scan
   has n,  :messages, :through => Resource

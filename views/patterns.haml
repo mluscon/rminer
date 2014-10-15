@@ -4,12 +4,13 @@
   %h1= pattern.body
 
 
-  %form{:name => "New scan", :action => "/scan/new", :method => "post"}
+  %form
     %label Tag
     %input{"ng-model"=>"scanTag"}
     %label Sensitivity
     %input{"ng-model"=>"sensitivity"}
     %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
+    %input{:type => "submit", :value => "Mark as final", "ng-click"=>"final()"}
 
   
   %form

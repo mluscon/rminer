@@ -96,6 +96,12 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     $http.post("/remove/", postObject)
     $scope.regExpString = ""
   }
-
   
+      
+  $scope.final = function() {
+    var number = window.location.pathname.split( '/' ).reverse()[0]
+    var postObject = { "id" : number }
+    $http.post("/final/", postObject)
+  }
+     
 });

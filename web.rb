@@ -28,11 +28,13 @@ get '/scans/:id' do
       
   scan = controller.scan params[:id]
   halt 404 if scan.nil?
-      
+  
+  patterns = scan.patterns(:final => false)
+  
   haml :scan, :locals => {
     :tag => scan.tag,
     :details => scan.created_at,
-    :patterns => scan.patterns
+    :patterns => patterns
   }
 end
 
@@ -89,3 +91,9 @@ post '/remove/' do
   params = JSON.parse(request.env["rack.input"].read)
   controller.remove(params["msgs"])
 end
+
+post '/final/' do
+  params = JSON.parse(request.env["rack.input"].read)
+  controller.final(params["id"])
+end
+
