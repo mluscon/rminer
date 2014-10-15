@@ -83,6 +83,9 @@ end
 post '/scan/new' do
   params = JSON.parse(request.env["rack.input"].read)
   controller.analyze(params["sensitivity"], params["msgs"], params["tag"])
-
 end
 
+post '/remove/' do
+  params = JSON.parse(request.env["rack.input"].read)
+  controller.remove(params["msgs"])
+end

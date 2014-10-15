@@ -27,7 +27,22 @@ class WebController
   def messages
     Message.all(:analyzed => false)
   end
- 
+  
+  def remove(msg_ids)
+    if msg_ids.length == 0
+      puts "empty msg_ids"
+      return
+    end
+    
+    msgs = []
+    msg_ids.each do |id|
+      msg = Message.get(id)
+      if (msg)
+        msg.destroy
+      end
+    end
+  end
+    
   
   def pattern(id)
     pattern = Pattern.get(id.to_i)

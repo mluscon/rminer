@@ -5,16 +5,17 @@
 
 
   %form{:name => "New scan", :action => "/scan/new", :method => "post"}
-  %label Tag
-  %input{"ng-model"=>"scanTag"}
-  %label Sensitivity
-  %input{"ng-model"=>"sensitivity"}
-  %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
+    %label Tag
+    %input{"ng-model"=>"scanTag"}
+    %label Sensitivity
+    %input{"ng-model"=>"sensitivity"}
+    %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
 
   
   %form
-  %label Regexp filter:
-  %input{"ng-model"=>"regExpString"}
+    %label Regexp filter:
+    %input{"ng-model"=>"regExpString"}
+    %input{:type => "submit", :value => "Remove", "ng-click"=>"remove()"}
  
   %div
     %ul

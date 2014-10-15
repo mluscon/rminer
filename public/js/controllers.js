@@ -29,6 +29,24 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     $http.post("/scan/new", postObject)    
   }
   
+  $scope.remove = function() {
+    var filtered = []
+    var remaining = []
+    var regExp = new RegExp($scope.regExpString)
+    for(var i = 0; i<$scope.messages.length; i++ ){
+      if (regExp.test($scope.messages[i].body)) {
+        filtered.push($scope.messages[i].id);
+      } else {
+        remaining.push($scope.messages[i]);
+      }
+    }
+    $scope.messages = remaining;
+    var postObject = { "msgs" : filtered }
+    $http.post("/remove/", postObject)
+    $scope.regExpString = ""
+  }
+  
+  
 });
 
  
@@ -61,5 +79,23 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
     $http.post("/scan/new", postObject)    
   }
+  
+  $scope.remove = function() {
+    var filtered = []
+    var remaining = []
+    var regExp = new RegExp($scope.regExpString)
+    for(var i = 0; i<$scope.messages.length; i++ ){
+      if (regExp.test($scope.messages[i].body)) {
+        filtered.push($scope.messages[i].id);
+      } else {
+        remaining.push($scope.messages[i]);
+      }
+    }
+    $scope.messages = remaining;
+    var postObject = { "msgs" : filtered }
+    $http.post("/remove/", postObject)
+    $scope.regExpString = ""
+  }
+
   
 });
