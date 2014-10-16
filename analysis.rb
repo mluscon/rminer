@@ -9,11 +9,11 @@ def mode( values )
 end 
 
 
-def analyze(sensitivity, msgs)
+def analyze(sensitivity, msgs, separator)
   f_table = {}
     
   msgs.each do | msg |
-    msg.body.split(' ').each_with_index do | word, possition |
+    msg.body.split(separator).each_with_index do | word, possition |
 
       if f_table.has_key?(word)
         f_entry = f_table[word]
@@ -40,7 +40,7 @@ def analyze(sensitivity, msgs)
   results = Array.new
   
   msgs.each do | msg |
-    msg = msg.body.split(' ')
+    msg = msg.body.split(separator)
     freqs = Array.new
     msg.each_with_index do | word, possition |
       freqs.push(f_table[word].freqs[possition])
@@ -55,7 +55,7 @@ def analyze(sensitivity, msgs)
   
   results.each do |msg|
     output[msg] = []
-    msg.split(' ').each_with_index do |word, possition|
+    msg.split(separator).each_with_index do |word, possition|
       if word != '$var'
         output[msg] += f_table[word].msgs[possition]
       end

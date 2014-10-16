@@ -83,16 +83,25 @@ get '/messages/' do
 end
   
 post '/scan/new' do
+  halt 404 if params.nil? 
+  
+  sensitivity = params["sensitivity"]
+  msg_ids = params["msgs"]
+  tag = params["tag"]
+  
   params = JSON.parse(request.env["rack.input"].read)
-  controller.analyze(params["sensitivity"], params["msgs"], params["tag"])
+  
+  controller.analyze(params["sensitivity"], params["msgs"], params["separator"], params["tag"])
 end
 
 post '/remove/' do
+  halt 404 if params.nil? 
   params = JSON.parse(request.env["rack.input"].read)
   controller.remove(params["msgs"])
 end
 
 post '/final/' do
+  halt 404 if params.nil? 
   params = JSON.parse(request.env["rack.input"].read)
   controller.final(params["id"])
 end

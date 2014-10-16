@@ -20,6 +20,7 @@ class Scan
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
   property :sensitivity,  Integer, :default => 1
+  property :separator,    String
   
   has n,  :messages, :through => Resource
   has n,  :patterns

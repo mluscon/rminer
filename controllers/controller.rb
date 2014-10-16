@@ -54,11 +54,16 @@ class WebController
     pattern.save
   end
   
-  def analyze(sens ,msg_ids, tag = "")
+  def analyze(sens ,msg_ids, separator, tag = "")
     
     if msg_ids.length == 0
       puts "empty msg_ids"
       return
+    end
+    
+    if separator.nil? or separator.empty?
+      puts "empty"
+      separator = '\s'
     end
     
     msgs = []
@@ -72,6 +77,7 @@ class WebController
     end
   
     new_scan = Scan.new
+    new_scan.separator = separator
     new_scan.tag = tag
     new_scan.sensitivity = sens
     new_scan.save

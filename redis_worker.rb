@@ -35,7 +35,8 @@ class RedisWorker
   def do_analyze(scan_id)
     
     scan = Scan.get(scan_id)
-    patterns = analyze(scan.sensitivity, scan.messages)
+    separator = Regexp.new scan.separator
+    patterns = analyze(scan.sensitivity, scan.messages, separator )
     
     patterns.keys.each do | pattern |
       db_pattern = Pattern.new( :body => pattern )
