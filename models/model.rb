@@ -21,6 +21,7 @@ class Scan
   property :created_at,   DateTime
   property :sensitivity,  Integer, :default => 1
   property :separator,    String
+  property :hidden,       Boolean, :default => true
   
   has n,  :messages, :through => Resource
   has n,  :patterns

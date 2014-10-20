@@ -30,7 +30,7 @@ class WebController
   
   def remove(msg_ids)
     if msg_ids.length == 0
-      puts "empty msg_ids"
+      STDERR.puts "Error: empty remove call."
       return
     end
     
@@ -57,12 +57,11 @@ class WebController
   def analyze(sens ,msg_ids, separator, tag = "")
     
     if msg_ids.length == 0
-      puts "empty msg_ids"
+      STDERR.puts "Error: empty analyze call."
       return
     end
     
     if separator.nil? or separator.empty?
-      puts "empty"
       separator = '\s'
     end
     
@@ -90,6 +89,15 @@ class WebController
     
     @redis.rpush('scans', new_scan.id )   
       
+  end
+  
+  def scans_serial(active=false)
+    scans = []
+    Scan.all(:active => active).each do |scan|
+      #dirty dirty hack
+      scans.push JSON.parse( scan.to_json(:methods=>[:patterns]) )
+    end
+     scans
   end
   
   def scans(active=false)

@@ -6,6 +6,7 @@ require 'digest'
 
 require './controllers/controller.rb'
 require './analysis.rb'
+require './helpers/helper.rb'
 
 controller = WebController.new
 
@@ -18,9 +19,14 @@ get '/' do
 end
 
 get '/scans/' do
-  haml :scans, :locals => {
-    :scans => controller.scans
-  }
+  if params.include? "json"
+    json = controller.scans_serial
+    JSON.generate(json.reverse)
+  else
+    haml :scans, :locals => {
+      :scans => controller.scans
+    }
+  end
 end
 
 
@@ -44,7 +50,6 @@ get '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
   
-  puts "id"
   puts params[:id]
   if params.include? "json"
     res = []
@@ -72,9 +77,7 @@ get '/messages/' do
                :body => msg.body
              }
     end
-    JSON.generate( res )
-                   
-                   
+    JSON.generate( res )    
   else
     haml :messages, :locals => {
       :messages => msgs
@@ -83,20 +86,24 @@ get '/messages/' do
 end
   
 post '/scan/new' do
-  halt 404 if params.nil? 
+  halt 404 if params.nil?
   
-  sensitivity = params["sensitivity"]
+  params = JSON.parse(request.env["rack.input"].read)
+  sensitivity = params["sensitivity"].to_i
   msg_ids = params["msgs"]
   tag = params["tag"]
   
-  params = JSON.parse(request.env["rack.input"].read)
+  halt 404 if sensitivity == 0 || sensitivity > 1 
+  halt 404 if msg_ids.nil? || tag.nil?
   
   controller.analyze(params["sensitivity"], params["msgs"], params["separator"], params["tag"])
 end
 
 post '/remove/' do
-  halt 404 if params.nil? 
+  halt 404 if params.nil? or 
   params = JSON.parse(request.env["rack.input"].read)
+  
+  
   controller.remove(params["msgs"])
 end
 
