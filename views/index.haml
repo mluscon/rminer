@@ -54,11 +54,12 @@
             Filter:
           %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}     
         %div{:class=>"panel-heading"}
-          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-s right"}
+          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small"}
             Start
-        
 
-        
+      %div{:class=>"panel panel-primary"}
+        %div{:class=>"panel-heading"}          
+          Messages
         %ul{:class=>"list-group"}
           %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
             {{ message.body }} 
