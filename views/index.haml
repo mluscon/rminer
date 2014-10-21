@@ -18,16 +18,22 @@
 
   %div{"ng-controller"=>"ScansCtrl"}
     %div{:class=>"col-sm-5"}
-      %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-default"}
-        %div{"ng-click"=>"scan.hidden?scan.hidden=false:scan.hidden=true", :class=>"panel-heading"} 
+      
+      %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-primary"}
+        
+        %div{:class=>"panel-heading"}
           {{ scan.created_at }}
+          %a{:href=>"", :class=>"pull-right"}
+            %span{"ng-click"=>"scan.hidden?scan.hidden=false:scan.hidden=true",
+                  "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+        
         %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
           %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item"}
             {{ pattern.body }}
     
   
     %div{:class=>"col-sm-4"}
-      %div{:class=>"panel panel-default"}
+      %div{:class=>"panel panel-primary"}
         %div{:class=>"panel-heading"}
           Messages
         %ul{:class=>"list-group"}
