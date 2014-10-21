@@ -11,11 +11,7 @@ require './helpers/helper.rb'
 controller = WebController.new
 
 get '/' do
-  haml :index, :locals => {
-    :unprocessed => controller.waiting,
-    :active => controller.scan_count(true),
-    :scans => controller.scan_count
-  }
+  haml :index
 end
 
 get '/scans/' do
@@ -97,6 +93,13 @@ post '/scan/new' do
   halt 404 if msg_ids.nil? || tag.nil?
   
   controller.analyze(params["sensitivity"], params["msgs"], params["separator"], params["tag"])
+end
+
+post '/scan/hide/' do
+  
+  params = JSON.parse(request.env["rack.input"].read)
+  puts "id: " + params["id"].to_s
+  controller.scan_hide(params["id"])
 end
 
 post '/remove/' do

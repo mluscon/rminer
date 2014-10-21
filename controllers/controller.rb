@@ -104,14 +104,10 @@ class WebController
     Scan.all(:active => active)
   end
   
-  def scan_count(active=false)
-    Scan.all(:active => active).count  
+  def scan_hide(id)
+    scan = Scan.get(id)
+    scan.hidden ? scan.hidden = false : scan.hidden = true 
+    scan.save
   end
-    
-  
-  def scan(id)
-    scan = Scan.get id.to_i
-  end
-
   
 end

@@ -24,7 +24,7 @@
         %div{:class=>"panel-heading"}
           {{ scan.created_at }}
           %a{:href=>"", :class=>"pull-right"}
-            %span{"ng-click"=>"scan.hidden?scan.hidden=false:scan.hidden=true",
+            %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
                   "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
         
         %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}

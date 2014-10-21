@@ -16,7 +16,11 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
     .success(function(response) {$scope.messages = angular.fromJson(response);});
   }
   
-
+  $scope.hideScan = function(id) {
+    var postObject = {"id" : id}
+    $http.post("/scan/hide/", postObject)
+  }
+  
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
     var regExp = new RegExp($scope.regExpString)
