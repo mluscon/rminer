@@ -35,9 +35,32 @@
     %div{:class=>"col-sm-4"}
       %div{:class=>"panel panel-primary"}
         %div{:class=>"panel-heading"}
-          Messages
+          New scan
+         
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Tag:
+          %input{"ng-model"=>"scanTag", :type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Sensitivity:
+          %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Split by:
+          %input{:type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Filter:
+          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}     
+        %div{:class=>"panel-heading"}
+          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-s right"}
+            Start
+        
+
+        
         %ul{:class=>"list-group"}
-          %a{"ng-repeat"=>"message in messages", :href=>"", :class=>"list-group-item"}
+          %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
             {{ message.body }} 
     
     
