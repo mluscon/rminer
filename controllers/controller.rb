@@ -48,7 +48,6 @@ class WebController
   end
   
   def final(id)
-    puts "Id :" + id.to_s
     pattern = Pattern.get(id.to_i)
     pattern.final = true;
     pattern.save

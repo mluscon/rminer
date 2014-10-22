@@ -46,7 +46,6 @@ get '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
   
-  puts params[:id]
   if params.include? "json"
     res = []
     pattern.messages.each do |msg|

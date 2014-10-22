@@ -1,10 +1,11 @@
 
+
 .row
-  %div{:class=>"navbar navbar-inverse", :role=>"navigation"}
+  %div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
     %a{:class=>"navbar-brand", :href=>"/"} RMINER
 
 .row
-  %div{:class=>"col-sm-2"}
+  %div{:class=>"col-sm-2 affix"}
     %ul{:class=>"nav nav-pills nav-stacked"}
       %li
         %a{:href=>"", :class=>"list-group-item active"}Scans
@@ -14,10 +15,11 @@
         %a{:href=>"/messages/", :class=>"list-group-item"} New messages
       %li  
         %a{:href=>"/settings/", :class=>"list-group-item"}Settings
-          
+  %div{:class=>"col-sm-2"}
+  
 
   %div{"ng-controller"=>"ScansCtrl"}
-    %div{:class=>"col-sm-5"}
+    %div{:class=>"col-sm-7"}
       
       %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-primary"}
         
@@ -31,12 +33,13 @@
           %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item"}
             {{ pattern.body }}
     
+    
   
-    %div{:class=>"col-sm-4"}
-      %div{:class=>"panel panel-primary"}
+    %div{:class=>"col-sm-3 right-affix"}
+      %div{:class=>"panel panel-primary" }
         %div{:class=>"panel-heading"}
           New scan
-         
+            
         %div{:class=>"input-group"}
           %span{:class=>"input-group-addon"}
             Tag:
@@ -57,11 +60,12 @@
           %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small"}
             Start
 
-      %div{:class=>"panel panel-primary"}
+      %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
         %div{:class=>"panel-heading"}          
           Messages
-        %ul{:class=>"list-group"}
-          %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
-            {{ message.body }} 
-    
-    
+        %div{}
+          %ul{:class=>"list-group"}
+            %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
+              {{ message.body }} 
+            
+        

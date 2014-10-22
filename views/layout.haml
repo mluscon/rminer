@@ -8,13 +8,15 @@
     %meta{:name=>"viewport", :content=>"width=device-width, initial-scale=1"}/
     %title RMINER web app
 
-    %link{:href=>"/css/bootstrap.min.css", :rel=>"stylesheet"}
+    %link{:href=>"/css/custom.css", :rel=>"stylesheet"}
+    %link{:href=>"/css/bootstrap.css", :rel=>"stylesheet"}
     %link{:href=>"/css/bootstrap-theme.min.css", :rel=>"stylesheet"}
     
-    %link{:href=>"/css/custom.css", :rel=>"stylesheet"}
+
     
     %script{ :src => "/js/angular.min.js" }
     %script{ :src => "/js/controllers.js" }  
-
+    %script{ :src => "/js/bootstrap.min.js" }
+    
   %body{:role=>"document"}
     = yield

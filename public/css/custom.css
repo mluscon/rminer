@@ -2,7 +2,36 @@
   color: #fff;
 } 
 
+body {
+  overflow-x: hidden;
+}
+
 .row {
   margin-left: 0px;
   margin-right: 0px;
+  margin-bottom: 70px}
+}
+
+.right-affix {
+  right: 0px;
+  position: fixed;
+  -webkit-transform: translate3d(0, 0, 0);
+       -o-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+
+.fill-height {
+  height: 55vh
+}
+
+.middle {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 70px}
+}
+
+.mybutton{
+  margin: 0px;
+  padding: 0px;
 }
