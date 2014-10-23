@@ -13,33 +13,47 @@
         %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
       %li
         %a{:href=>"/messages/", :class=>"list-group-item"} New messages
-      %li  
+      %li
         %a{:href=>"/settings/", :class=>"list-group-item"}Settings
   %div{:class=>"col-sm-2"}
-  
+
 
   %div{"ng-controller"=>"ScansCtrl"}
     %div{:class=>"col-sm-7"}
-      
+
       %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-primary"}
-        
+
         %div{:class=>"panel-heading"}
           {{ scan.created_at }}
           %a{:href=>"", :class=>"pull-right"}
             %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
                   "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
-        
+
         %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
-          %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item"}
+          %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item clearfix"}
             {{ pattern.body }}
-    
-    
-  
+            %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+
+
+
     %div{:class=>"col-sm-3 right-affix"}
-      %div{:class=>"panel panel-primary" }
+
+
+      %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
+        %div{:class=>"panel-heading"}
+          Messages
+        %div{}
+          %ul{:class=>"list-group"}
+            %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
+              {{ message.body }}
+
+
+
+
+      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
         %div{:class=>"panel-heading"}
           New scan
-            
+
         %div{:class=>"input-group"}
           %span{:class=>"input-group-addon"}
             Tag:
@@ -55,17 +69,8 @@
         %div{:class=>"input-group"}
           %span{:class=>"input-group-addon"}
             Filter:
-          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}     
-        %div{:class=>"panel-heading"}
-          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small"}
+          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+        %div{:class=>"panel-heading no-margin"}
+          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small no-margin"}
             Start
 
-      %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
-        %div{:class=>"panel-heading"}          
-          Messages
-        %div{}
-          %ul{:class=>"list-group"}
-            %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
-              {{ message.body }} 
-            
-        

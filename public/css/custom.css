@@ -1,6 +1,6 @@
 .white, .white a {
   color: #fff;
-} 
+}
 
 body {
   overflow-x: hidden;
@@ -14,24 +14,22 @@ body {
 
 .right-affix {
   right: 0px;
+  padding-bottom: 10px;
   position: fixed;
-  -webkit-transform: translate3d(0, 0, 0);
-       -o-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
+
 }
 
-
-.fill-height {
-  height: 55vh
-}
-
-.middle {
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-bottom: 70px}
-}
-
-.mybutton{
+.no-margin {
   margin: 0px;
   padding: 0px;
+}
+
+.fill-height-sm {
+  max-height: 30vh;
+}
+
+.fill-height {
+  height: 100%;
+  min-height: 55vh;
+  max-height: 55vh;
 }
