@@ -2,12 +2,14 @@
 
 .row
   %div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
-    %a{:class=>"navbar-brand", :href=>"/"} RMINER
+    %div{:class=>"navbar-header"}
 
-.row
-  %div{:class=>"col-sm-2 affix"}
-    %ul{:class=>"nav nav-pills nav-stacked"}
-      %li
+
+      %a{:class=>"navbar-brand ", :href=>"/"} RMINER
+
+  -#
+    %ul{:class=>"nav navbar-nav"}
+      %li{:class=>"active"}
         %a{:href=>"", :class=>"list-group-item active"}Scans
       %li
         %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
@@ -15,11 +17,13 @@
         %a{:href=>"/messages/", :class=>"list-group-item"} New messages
       %li
         %a{:href=>"/settings/", :class=>"list-group-item"}Settings
-  %div{:class=>"col-sm-2"}
+
+
+.row
 
 
   %div{"ng-controller"=>"ScansCtrl"}
-    %div{:class=>"col-sm-7"}
+    %div{:class=>"col-sm-9"}
 
       %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-primary"}
 

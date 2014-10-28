@@ -4,6 +4,7 @@
 
 body {
   overflow-x: hidden;
+  padding-left: 15px;
 }
 
 .row {
@@ -30,6 +31,6 @@ body {
 
 .fill-height {
   height: 100%;
-  min-height: 55vh;
-  max-height: 55vh;
+  min-height: 50vh;
+  max-height: 50vh;
 }

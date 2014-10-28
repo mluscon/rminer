@@ -1,22 +1,21 @@
- 
-%div{ 'ng-controller'=>'MessagesCtrl'} 
+%div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
+  .container
+    %div{:class=>"navbar-header"}
+      %button{:type=>"button", :class=>"navbar-toggle collapsed", "data-toggle"=>"collapse", "data-target"=>".navbar-collapse"}
+        %span{:class=>"sr-only"}Toggle navigation
+        %span{:class=>"icon-bar"}
+        %span{:class=>"icon-bar"}
+        %span{:class=>"icon-bar"}
 
+      %a{:class=>"navbar-brand ", :href=>"/"} RMINER
 
-
-  %form
-  %label Tag
-  %input{"ng-model"=>"scanTag"}
-  %label Sensitivity
-  %input{"ng-model"=>"sensitivity"}
-  %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
-
-  
-  %form
-  %label Regexp filter:
-  %input{"ng-model"=>"regExpString"}
-  %input{:type => "submit", :value => "Remove", "ng-click"=>"remove()"}
-  
-  %div
-    %ul
-      %li{ 'ng-repeat'=>"msg in messages | filter:myFilter "}
-        {{msg.body}}
+  %div{:class=>"collapse navbar-collapse"}
+    %ul{:class=>"nav navbar-nav"}
+      %li{:class=>"active"}
+        %a{:href=>"", :class=>"list-group-item active"}Scans
+      %li
+        %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
+      %li
+        %a{:href=>"/messages/", :class=>"list-group-item"}New messages
+      %li
+        %a{:href=>"/settings/", :class=>"list-group-item"}Settings
