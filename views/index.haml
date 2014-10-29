@@ -19,62 +19,80 @@
         %a{:href=>"/settings/", :class=>"list-group-item"}Settings
 
 
-.row
+.content
+  .row
+    %div{"ng-controller"=>"ScansCtrl"}
+      %div{:class=>"col-sm-9 fix-width"}
+
+        %div{"ng-repeat"=>"scan in scans", "ng-if"=>"scan.parent_id == null"}
+          .row
+            %div{"ng-class"=>"activeScan == scan.id ? 'panel panel-primary' : 'panel panel-info'",
+                 "ng-click"=>"changeActive(scan.id)" }
+
+              %div{:class=>"panel-heading"}
+                {{ scan.tag || "scan: ".concat(scan.id) }}
+                %a{:href=>"", :class=>"pull-right"}
+                  %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
+                        "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+
+              %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
+                %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item clearfix"}
+                  {{ pattern.body }}
+                  %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+
+            %div{"ng-repeat"=>"child1 in scans", "ng-if"=>"(scan.hidden==false) && child1.parent_id == scan.id"}
+              %div{:class=>"child pull-right"}
+                %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-info'",
+                "ng-click"=>"changeActive(child1.id)" }
+
+                  %div{:class=>"panel-heading"}
+                    {{ child1.tag || "scan: ".concat(child1.id) }}
+
+                    %a{:href=>"", :class=>"pull-right"}
+                      %span{"ng-click"=>"hideScan(child1.id); child1.hidden?child1.hidden=false:child1.hidden=true",
+                            "ng-class"=>"child1.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+
+                  %ul{"ng-show"=>"!child1.hidden", :class=>"list-group"}
+                    %a{"ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns", :class=>"list-group-item clearfix"}
+                      {{ pattern1.body }}
+                      %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
 
-  %div{"ng-controller"=>"ScansCtrl"}
-    %div{:class=>"col-sm-9"}
+      %div{:class=>"col-sm-3 right-affix"}
 
-      %div{"ng-repeat"=>"scan in scans", :class=>"panel panel-primary"}
 
-        %div{:class=>"panel-heading"}
-          {{ scan.created_at }}
-          %a{:href=>"", :class=>"pull-right"}
-            %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
-                  "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
-
-        %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
-          %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item clearfix"}
-            {{ pattern.body }}
-            %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+        %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
+          %div{:class=>"panel-heading"}
+            Messages
+          %div{}
+            %ul{:class=>"list-group"}
+              %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
+                {{ message.body }}
 
 
 
-    %div{:class=>"col-sm-3 right-affix"}
+        .row
+        %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
+          %div{:class=>"panel-heading"}
+            New scan
 
-
-      %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
-        %div{:class=>"panel-heading"}
-          Messages
-        %div{}
-          %ul{:class=>"list-group"}
-            %a{"ng-repeat"=>"message in messages | filter:myFilter", :href=>"", :class=>"list-group-item"}
-              {{ message.body }}
-
-
-
-
-      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
-        %div{:class=>"panel-heading"}
-          New scan
-
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Tag:
-          %input{"ng-model"=>"scanTag", :type=>"text", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Sensitivity:
-          %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Split by:
-          %input{:type=>"text", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Filter:
-          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
-        %div{:class=>"panel-heading no-margin"}
-          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small no-margin"}
-            Start
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Tag:
+            %input{"ng-model"=>"scanTag", :type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Sensitivity:
+            %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Split by:
+            %input{:type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Filter:
+            %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+          %div{:class=>"panel-heading no-padding"}
+            %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small no-margin"}
+              Start
 

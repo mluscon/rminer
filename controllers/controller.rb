@@ -4,7 +4,7 @@ require 'redis'
 require './models/model.rb'
 
 class WebController
-  
+
   def initialize
     @database = DataMapper.setup :default, {
       :adapter  => 'postgres',
@@ -19,21 +19,21 @@ class WebController
     DataMapper.auto_upgrade!
   end
 
-  
+
   def waiting
-    Message.all(:analyzed => false).count 
+    Message.all(:analyzed => false).count
   end
-  
+
   def messages
     Message.all(:analyzed => false)
   end
-  
+
   def remove(msg_ids)
     if msg_ids.length == 0
       STDERR.puts "Error: empty remove call."
       return
     end
-    
+
     msgs = []
     msg_ids.each do |id|
       msg = Message.get(id)
@@ -42,54 +42,55 @@ class WebController
       end
     end
   end
-  
+
   def pattern(id)
     pattern = Pattern.get(id.to_i)
   end
-  
+
   def final(id)
     pattern = Pattern.get(id.to_i)
     pattern.final = true;
     pattern.save
   end
-  
-  def analyze(sens ,msg_ids, separator, tag = "")
-    
+
+  def analyze(sens ,msg_ids, separator, tag = "", parent_id)
+
     if msg_ids.length == 0
       STDERR.puts "Error: empty analyze call."
       return
     end
-    
+
     if separator.nil? or separator.empty?
       separator = '\s'
     end
-    
+
     msgs = []
     msg_ids.each do |id|
       msg = Message.get(id)
       if (msg)
         msgs << msg
       else
-        puts "nil"      
+        puts "nil"
       end
     end
-  
+
     new_scan = Scan.new
     new_scan.separator = separator
     new_scan.tag = tag
     new_scan.sensitivity = sens
+    new_scan.parent = Scan.get(parent_id)
     new_scan.save
-    
+
     msgs.each do |msg|
       msg.scans << new_scan
       msg.analyzed = true
       msg.save
     end
-    
-    @redis.rpush('scans', new_scan.id )   
-      
+
+    @redis.rpush('scans', new_scan.id )
+
   end
-  
+
   def scans_serial(active=false)
     scans = []
     Scan.all(:active => active).each do |scan|
@@ -98,15 +99,15 @@ class WebController
     end
      scans
   end
-  
+
   def scans(active=false)
     Scan.all(:active => active)
   end
-  
+
   def scan_hide(id)
     scan = Scan.get(id)
-    scan.hidden ? scan.hidden = false : scan.hidden = true 
+    scan.hidden ? scan.hidden = false : scan.hidden = true
     scan.save
   end
-  
+
 end
