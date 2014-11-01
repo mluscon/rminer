@@ -26,7 +26,7 @@
 
         %div{"ng-repeat"=>"scan in scans", "ng-if"=>"scan.parent_id == null"}
           .row
-            %div{"ng-class"=>"activeScan == scan.id ? 'panel panel-primary' : 'panel panel-info'",
+            %div{"ng-class"=>"activeScan == scan.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
                  "ng-click"=>"changeActive(scan.id)" }
 
               %div{:class=>"panel-heading"}
@@ -42,7 +42,7 @@
 
             %div{"ng-repeat"=>"child1 in scans", "ng-if"=>"(scan.hidden==false) && child1.parent_id == scan.id"}
               %div{:class=>"child pull-right"}
-                %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-info'",
+                %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
                 "ng-click"=>"changeActive(child1.id)" }
 
                   %div{:class=>"panel-heading"}
@@ -92,7 +92,7 @@
             %span{:class=>"input-group-addon"}
               Filter:
             %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
-          %div{:class=>"panel-heading no-padding"}
+          %div{:class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small no-margin"}
               Start
 

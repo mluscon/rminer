@@ -53,3 +53,7 @@
 .child {
   width: 95%;
 }
+
+.inactive {
+  opacity: 0.7;
+}
