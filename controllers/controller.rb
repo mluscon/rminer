@@ -20,10 +20,6 @@ class WebController
   end
 
 
-  def waiting
-    Message.all(:analyzed => false).count
-  end
-
   def messages
     Message.all(:analyzed => false)
   end
@@ -89,6 +85,11 @@ class WebController
 
     @redis.rpush('scans', new_scan.id )
 
+  end
+
+  def scan(id)
+    scan = Scan.get(id)
+    scan
   end
 
   def scans_serial(active=false)

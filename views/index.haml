@@ -28,15 +28,15 @@
           .row
             %div{"ng-class"=>"activeScan == scan.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
                  "ng-click"=>"changeActive(scan.id)" }
-
-              %div{:class=>"panel-heading"}
+              %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
                 {{ scan.tag || "scan: ".concat(scan.id) }}
-                %a{:href=>"", :class=>"pull-right"}
+                %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
                   %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
                         "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
               %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
-                %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns", :class=>"list-group-item clearfix"}
+                %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns",
+                   "ng-class"=>"pattern.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
                   {{ pattern.body }}
                   %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
@@ -45,15 +45,16 @@
                 %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
                 "ng-click"=>"changeActive(child1.id)" }
 
-                  %div{:class=>"panel-heading"}
+                  %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
                     {{ child1.tag || "scan: ".concat(child1.id) }}
 
-                    %a{:href=>"", :class=>"pull-right"}
+                    %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
                       %span{"ng-click"=>"hideScan(child1.id); child1.hidden?child1.hidden=false:child1.hidden=true",
                             "ng-class"=>"child1.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
                   %ul{"ng-show"=>"!child1.hidden", :class=>"list-group"}
-                    %a{"ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns", :class=>"list-group-item clearfix"}
+                    %a{"ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns",
+                       "ng-class"=>"pattern1.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
                       {{ pattern1.body }}
                       %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 

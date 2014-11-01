@@ -11,12 +11,23 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
   $scope.scanTag = ""
   $scope.messages = ""
   $scope.activeScan = -1
+  $scope.activePattern = -1
 
   $scope.getMsgs = function(pattern_id) {
+    $scope.activePattern = pattern_id
     $http.get("/patterns/".concat(pattern_id,"?json"))
     .success(function(response) {$scope.messages = angular.fromJson(response);});
   }
-  
+
+  $scope.getScanMsgs = function(scan_id) {
+    if ($scope.activePattern != -1 || $scope.activeScan != scan_id) {
+      $scope.activePattern = -1
+      $http.get("/scans/".concat(scan_id,"?json"))
+      .success(function(response) {$scope.messages = angular.fromJson(response);});
+    }
+  }
+
+
   $scope.changeActive = function(id) {
     $scope.activeScan = id
   }

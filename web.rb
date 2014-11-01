@@ -30,15 +30,15 @@ end
 get '/scans/:id' do
 
   scan = controller.scan params[:id]
-  halt 404 if scan.nil?
+  halt 404 if scan.nil? or not params.include? "json"
 
-  patterns = scan.patterns(:final => false)
-
-  haml :scan, :locals => {
-    :tag => scan.tag,
-    :details => scan.created_at,
-    :patterns => patterns
-  }
+  res = []
+  scan.messages.each do |msg|
+    res << { :id => msg.id,
+             :body => msg.body
+           }
+  end
+  JSON.generate res
 end
 
 
@@ -54,7 +54,7 @@ get '/patterns/:id' do
               :body => msg.body
              }
     end
-    JSON.generate( res )
+    JSON.generate res
   else
     haml :patterns, :locals => {
          :pattern => pattern
