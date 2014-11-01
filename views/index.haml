@@ -45,7 +45,7 @@
                 %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
                 "ng-click"=>"changeActive(child1.id)" }
 
-                  %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
+                  %div{"ng-click"=>"getScanMsgs(child1.id)", :class=>"panel-heading pointer"}
                     {{ child1.tag || "scan: ".concat(child1.id) }}
 
                     %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
@@ -58,6 +58,23 @@
                       {{ pattern1.body }}
                       %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
+              %div{"ng-repeat"=>"child2 in scans", "ng-if"=>"(child1.hidden==false) && child2.parent_id == child1.id"}
+                %div{:class=>"child2 pull-right"}
+                  %div{"ng-class"=>"activeScan == child2.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
+                  "ng-click"=>"changeActive(child2.id)" }
+
+                    %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
+                      {{ child2.tag || "scan: ".concat(child2.id) }}
+
+                      %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
+                        %span{"ng-click"=>"hideScan(child2.id); child2.hidden?child2.hidden=false:child2.hidden=true",
+                              "ng-class"=>"child2.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+
+                    %ul{"ng-show"=>"!child2.hidden", :class=>"list-group"}
+                      %a{"ng-click"=>"getMsgs(pattern2.id)", :href=>"", "ng-repeat"=>"pattern2 in child2.patterns",
+                        "ng-class"=>"pattern2.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
+                        {{ pattern2.body }}
+                        %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
       %div{:class=>"col-sm-3 right-affix"}
 
