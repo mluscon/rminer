@@ -25,6 +25,7 @@ def find_best_pattern(pattern, msgs, separator)
     msgs.each do |msg|
       vars.push( find_best_var( msg.split(separator)[index] ))
     end
+    pattern[index] = vars.max_by{|x| x.priority}.name
   end
   pattern.join(" ")
 end
@@ -45,11 +46,9 @@ variables.push Variable.new(100, "<<VAR>>", Regexp.new("^[^\s]+$"))
 
   match=[]
   variables.each do |var|
-    puts var.name + " : " + string if var.regexp.match(string)
     match << var if var.regexp.match(string)
   end
-  best = match.min_by{|x| x.priority}
-  best
+  match.min_by{|x| x.priority}
 end
 
 def canonize(patterns, msgs, separator)
