@@ -37,6 +37,11 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
     $http.post("/scan/hide/", postObject)
   }
 
+  $scope.finalizePattern = function(pattern) {
+    pattern.final = true
+    $http.post("/patterns/finalize/", {"id" : pattern.id})
+  }
+
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
     var regExp = new RegExp($scope.regExpString)

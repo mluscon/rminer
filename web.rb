@@ -17,7 +17,6 @@ end
 get '/scans/' do
   if params.include? "json"
     json = controller.scans_serial
-    puts JSON.generate(json.reverse)
     JSON.generate(json.reverse)
   else
     haml :scans, :locals => {
@@ -63,6 +62,16 @@ get '/patterns/:id' do
 
 end
 
+post '/patterns/finalize/' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
+
+  pattern = Pattern.get(params["id"])
+  pattern.final = true
+  pattern.save
+end
+
+
 get '/messages/' do
 
   msgs = controller.messages
@@ -85,7 +94,7 @@ post '/scan/new' do
   halt 404 if params.nil?
 
   params = JSON.parse(request.env["rack.input"].read)
-  sensitivity = params["sensitivity"].to_i
+  sensitivity = params["sensitivity"].to_f
   msg_ids = params["msgs"]
   tag = params["tag"]
   parent = params["parent"]
@@ -97,14 +106,12 @@ post '/scan/new' do
 end
 
 post '/scan/hide/' do
-
   params = JSON.parse(request.env["rack.input"].read)
-  puts "id: " + params["id"].to_s
   controller.scan_hide(params["id"])
 end
 
 post '/remove/' do
-  halt 404 if params.nil? or
+  halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
 
 

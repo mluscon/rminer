@@ -22,6 +22,7 @@ class Scan
   property :sensitivity,  Integer, :default => 1
   property :separator,    String
   property :hidden,       Boolean, :default => true
+  property :selected,     Boolean, :default => false
 
   has n,  :messages, :through => Resource
   has n,  :patterns
@@ -34,6 +35,8 @@ class Pattern
 
   property :id,           Serial
   property :body,         Text
+  property :final,        Boolean, :default => false
+  property :selected,     Boolean, :default => false
   property :final,        Boolean, :default => false
 
   belongs_to :scan

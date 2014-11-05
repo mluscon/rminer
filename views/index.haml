@@ -35,10 +35,10 @@
                         "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
               %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
-                %a{"ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns",
+                %a{"ng-show"=>"!pattern.final", "ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns",
                    "ng-class"=>"pattern.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
                   {{ pattern.body }}
-                  %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+                  %button{"ng-click"=>"finalizePattern(pattern)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
             %div{"ng-repeat"=>"child1 in scans", "ng-if"=>"(scan.hidden==false) && child1.parent_id == scan.id"}
               %div{:class=>"child pull-right"}
@@ -53,10 +53,10 @@
                             "ng-class"=>"child1.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
                   %ul{"ng-show"=>"!child1.hidden", :class=>"list-group"}
-                    %a{"ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns",
+                    %a{"ng-show"=>"!pattern1.final", "ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns",
                        "ng-class"=>"pattern1.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
                       {{ pattern1.body }}
-                      %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+                      %button{"ng-click"=>"finalizePattern(pattern1)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
               %div{"ng-repeat"=>"child2 in scans", "ng-if"=>"(child1.hidden==false) && child2.parent_id == child1.id"}
                 %div{:class=>"child2 pull-right"}
@@ -71,10 +71,10 @@
                               "ng-class"=>"child2.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
                     %ul{"ng-show"=>"!child2.hidden", :class=>"list-group"}
-                      %a{"ng-click"=>"getMsgs(pattern2.id)", :href=>"", "ng-repeat"=>"pattern2 in child2.patterns",
+                      %a{"ng-show"=>"!pattern2.final", "ng-click"=>"getMsgs(pattern2.id)", :href=>"", "ng-repeat"=>"pattern2 in child2.patterns",
                         "ng-class"=>"pattern2.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
                         {{ pattern2.body }}
-                        %button{"ng-click"=>"", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+                        %button{"ng-click"=>"finalizePattern(pattern2)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
       %div{:class=>"col-sm-3 right-affix"}
 
