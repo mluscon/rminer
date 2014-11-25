@@ -1,3 +1,4 @@
+
 .white, .white a {
   color: #fff;
 }
@@ -35,19 +36,14 @@
 }
 
 .fill-height-sm {
-  max-height: 30vh;
+  max-height: 32vh;
   padding-botton: 10px;
 }
 
 .fill-height {
   height: 100%;
-  min-height: 59vh;
-  max-height: 58vh;
-}
-
-.panel {
-  margin-bottom: 0px;
-  padding: 0px;
+  min-height: 55vh;
+  max-height: 55vh;
 }
 
 .child {
@@ -55,11 +51,16 @@
 }
 
 .child2 {
-  width: 90%;
+  width: 901%;
+}
+
+.child2 {
+  width: 85%;
 }
 
 .inactive {
   opacity: 0.7;
+  cursor: default;
 }
 
 .active {
@@ -67,6 +68,24 @@
   background-color: #fff;
 }
 
+.active:hover {
+  color: #428bca;
+  background-color: #fff;
+}
+
 .pointer {
   cursor: pointer;
 }
+
+.blue {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #428bca;
+  padding: 1px;
+  margin: 1px;
+}
+
+.btn {
+  padding: 5px, 5px;
+}
+

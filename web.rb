@@ -102,12 +102,12 @@ post '/scan/new' do
   halt 404 if sensitivity == 0 || sensitivity > 1
   halt 404 if msg_ids.nil? || tag.nil?
 
-  controller.analyze(params["sensitivity"], params["msgs"], params["separator"], params["tag"], params["parent"])
+  controller.analyze(sensitivity, msg_ids, params["separator"], tag, parent)
 end
 
-post '/scan/hide/' do
+post '/scan/packed/' do
   params = JSON.parse(request.env["rack.input"].read)
-  controller.scan_hide(params["id"])
+  controller.scan_pack(params["id"], params["value"])
 end
 
 post '/remove/' do

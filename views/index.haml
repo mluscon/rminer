@@ -24,61 +24,77 @@
     %div{"ng-controller"=>"ScansCtrl"}
       %div{:class=>"col-sm-9 fix-width"}
 
-        %div{"ng-repeat"=>"scan in scans", "ng-if"=>"scan.parent_id == null"}
-          .row
-            %div{"ng-class"=>"activeScan == scan.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
-                 "ng-click"=>"changeActive(scan.id)" }
-              %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
-                {{ scan.tag || "scan: ".concat(scan.id) }}
-                %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
-                  %span{"ng-click"=>"hideScan(scan.id); scan.hidden?scan.hidden=false:scan.hidden=true",
-                        "ng-class"=>"scan.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+        .row
 
-              %ul{"ng-show"=>"!scan.hidden", :class=>"list-group"}
-                %a{"ng-show"=>"!pattern.final", "ng-click"=>"getMsgs(pattern.id)", :href=>"", "ng-repeat"=>"pattern in scan.patterns",
-                   "ng-class"=>"pattern.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
-                  {{ pattern.body }}
-                  %button{"ng-click"=>"finalizePattern(pattern)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+          %div{:class=>"tree-root",
+               "ng-repeat"=>"scan1 in scans",
+               "ng-if"=>"scan1.parent_id == null"}
 
-            %div{"ng-repeat"=>"child1 in scans", "ng-if"=>"(scan.hidden==false) && child1.parent_id == scan.id"}
-              %div{:class=>"child pull-right"}
-                %div{"ng-class"=>"activeScan == child1.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
-                "ng-click"=>"changeActive(child1.id)" }
+            %ol{:class=>"angular-ui-tree-nodes"}
 
-                  %div{"ng-click"=>"getScanMsgs(child1.id)", :class=>"panel-heading pointer"}
-                    {{ child1.tag || "scan: ".concat(child1.id) }}
 
-                    %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
-                      %span{"ng-click"=>"hideScan(child1.id); child1.hidden?child1.hidden=false:child1.hidden=true",
-                            "ng-class"=>"child1.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
+              %li{:class=>"angular-ui-tree-node"}
 
-                  %ul{"ng-show"=>"!child1.hidden", :class=>"list-group"}
-                    %a{"ng-show"=>"!pattern1.final", "ng-click"=>"getMsgs(pattern1.id)", :href=>"", "ng-repeat"=>"pattern1 in child1.patterns",
-                       "ng-class"=>"pattern1.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
+
+                %div{:class=>"tree-node angular-ui-tree-handle"}
+
+                  %div{:class=>"tree-node-content-scan"}
+
+                    %a{:class=>"btn btn-success btn-xs",
+                       "ng-click"=>"scan1.packed ? scan1.packed=false : scan1.packed=true; packScan(scan1.id, scan1.packed)"}
+                      %span{"ng-class"=>"scan1.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+
+                    scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
+
+              %ol{:class=>"angular-ui-tree-nodes",
+                  "ng-if"=>"!scan1.packed",
+                  "ng-repeat"=>"pattern1 in scan1.patterns"}
+                %li{:class=>"angular-ui-tree-node"}
+
+                  %div{"ng-class"=>"pattern1.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
+                      "ng-click"=>"getMsgs(pattern1.id)"}
+
+                    %div{:class=>"tree-node-content"}
+
+                      %a{:class=>"btn btn-success btn-xs",
+                        "ng-if"=>"hasChildren(pattern1.id)",
+                        "ng-click"=>"pattern1.packed ? pattern1.packed = false : pattern1.packed = true"}
+                        %span{"ng-class"=>"pattern1.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+                      %a{:class=>"btn btn-default btn-xs",
+                        "ng-if"=>"!hasChildren(pattern1.id)"}
+                        %span{:class=>"glyphicon glyphicon-chevron-right"}
+
+
                       {{ pattern1.body }}
-                      %button{"ng-click"=>"finalizePattern(pattern1)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
 
-              %div{"ng-repeat"=>"child2 in scans", "ng-if"=>"(child1.hidden==false) && child2.parent_id == child1.id"}
-                %div{:class=>"child2 pull-right"}
-                  %div{"ng-class"=>"activeScan == child2.id ? 'panel panel-primary' : 'panel panel-primary inactive'",
-                  "ng-click"=>"changeActive(child2.id)" }
+                      %a{:class=>"pull-right btn btn-primary btn-xs"}
 
-                    %div{"ng-click"=>"getScanMsgs(scan.id)", :class=>"panel-heading pointer"}
-                      {{ child2.tag || "scan: ".concat(child2.id) }}
+                        %span{:class=>"glyphicon glyphicon-plus"}
 
-                      %a{"ng-click"=>"", :href=>"", :class=>"pull-right"}
-                        %span{"ng-click"=>"hideScan(child2.id); child2.hidden?child2.hidden=false:child2.hidden=true",
-                              "ng-class"=>"child2.hidden? 'glyphicon glyphicon-chevron-down white' : 'glyphicon glyphicon-chevron-up white'"}
 
-                    %ul{"ng-show"=>"!child2.hidden", :class=>"list-group"}
-                      %a{"ng-show"=>"!pattern2.final", "ng-click"=>"getMsgs(pattern2.id)", :href=>"", "ng-repeat"=>"pattern2 in child2.patterns",
-                        "ng-class"=>"pattern2.id == activePattern ? 'list-group-item clearfix active' : 'list-group-item clearfix'"}
-                        {{ pattern2.body }}
-                        %button{"ng-click"=>"finalizePattern(pattern2)", :type=>"button", :class=>"btn btn-success btn-small pull-right"} Finalize
+                %ol{:class=>"angular-ui-tree-nodes",
+                    "ng-repeat"=>"scan2 in scans",
+                    "ng-if"=>"scan2.parent_id == pattern1.id && !pattern1.packed" }
+
+                  %li{:class=>"angular-ui-tree-node"}
+
+
+                    %div{:class=>"tree-node angular-ui-tree-handle"}
+
+                      %div{:class=>"tree-node-content-scan"}
+
+                        %a{:class=>"btn btn-success btn-xs",
+                           "ng-click"=>"scan2.packed ? scan2.packed=false : scan2.packed=true; packScan(scan2.id, scan2.packed)"}
+                          %span{"ng-class"=>"scan2.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+
+                        scan id: {{ scan2.id }}, sensitivity: {{ scan2.sensitivity }}
+
+
 
       %div{:class=>"col-sm-3 right-affix"}
-
-
         %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
           %div{:class=>"panel-heading"}
             Messages

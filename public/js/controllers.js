@@ -27,14 +27,22 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
     }
   }
 
+  $scope.hasChildren = function(pattern_id) {
+    for (var i = 0; i<$scope.scans.length; i++ ) {
+      if ($scope.scans[i].parent_id == pattern_id) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   $scope.changeActive = function(id) {
     $scope.activeScan = id
   }
 
-  $scope.hideScan = function(id) {
-    var postObject = {"id" : id}
-    $http.post("/scan/hide/", postObject)
+  $scope.packScan = function(scan_id, value) {
+    var postObject = {"id" : scan_id, "value": value}
+    $http.post("/scan/packed/", postObject)
   }
 
   $scope.finalizePattern = function(pattern) {
@@ -58,7 +66,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activeScan}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
     $scope.scan.Tag = ""
   }
@@ -79,6 +87,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
     $http.post("/remove/", postObject)
     $scope.regExpString = ""
   }
+
 });
 
 
@@ -91,8 +100,9 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.scanTag = ""
-
-
+  $scope.messages = ""
+  $scope.activeScan = -1
+  $scope.activePattern = -1
 
 
 
@@ -106,19 +116,14 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
 
   $scope.analyze = function() {
     var filtered = []
-    var remaining = []
     var regExp = new RegExp($scope.regExpString)
     for(var i = 0; i<$scope.messages.length; i++ ){
       if (regExp.test($scope.messages[i].body)) {
         filtered.push($scope.messages[i].id);
-      } else {
-        remaining.push($scope.messages[i]);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
-    $scope.messages = remaining;
-    $scope.regExpString = ""
     $scope.scan.Tag = ""
   }
 

@@ -21,13 +21,13 @@ class Scan
   property :created_at,   DateTime
   property :sensitivity,  Integer, :default => 1
   property :separator,    String
-  property :hidden,       Boolean, :default => true
+  property :packed,       Boolean, :default => true
   property :selected,     Boolean, :default => false
 
   has n,  :messages, :through => Resource
   has n,  :patterns
-  has n,  :children, self, :child_key => [ :parent_id ]
-  belongs_to  :parent, self, :required => false
+
+  belongs_to  :parent, :model => 'Pattern', :required => false
 end
 
 class Pattern
@@ -38,7 +38,9 @@ class Pattern
   property :final,        Boolean, :default => false
   property :selected,     Boolean, :default => false
   property :final,        Boolean, :default => false
+  property :packed,       Boolean, :default => true
 
   belongs_to :scan
-  has n,  :messages, :through => Resource
+  has n,     :messages, :through => Resource
+  has n,     :childs, :model => 'Scan', :required => false, :through => Resource
 end

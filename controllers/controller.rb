@@ -66,7 +66,7 @@ class WebController
       if (msg)
         msgs << msg
       else
-        puts "nil"
+        STDERR.puts "No message with id: " + id.to_s
       end
     end
 
@@ -74,7 +74,7 @@ class WebController
     new_scan.separator = separator
     new_scan.tag = tag
     new_scan.sensitivity = sens
-    new_scan.parent = Scan.get(parent_id)
+    new_scan.parent = Pattern.get(parent_id)
     new_scan.save
 
     msgs.each do |msg|
@@ -105,9 +105,9 @@ class WebController
     Scan.all(:active => active)
   end
 
-  def scan_hide(id)
+  def scan_pack(id, value)
     scan = Scan.get(id)
-    scan.hidden ? scan.hidden = false : scan.hidden = true
+    scan.packed = value
     scan.save
   end
 
