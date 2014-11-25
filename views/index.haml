@@ -95,25 +95,11 @@
 
 
       %div{:class=>"col-sm-3 right-affix"}
-        %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
-          %div{:class=>"panel-heading"}
-            Messages
-          %div{}
-            %ul{:class=>"list-group"}
-              %a{"ng-repeat"=>"message in messages | filter:myFilter", :class=>"list-group-item"}
-                {{ message.body }}
 
-
-
-        .row
         %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
           %div{:class=>"panel-heading"}
             New scan
 
-          %div{:class=>"input-group"}
-            %span{:class=>"input-group-addon"}
-              Tag:
-            %input{"ng-model"=>"scanTag", :type=>"text", :class=>"form-control"}
           %div{:class=>"input-group"}
             %span{:class=>"input-group-addon"}
               Sensitivity:
@@ -127,6 +113,12 @@
               Filter:
             %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
           %div{:class=>"panel-heading"}
-            %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-small no-margin"}
+            %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
               Start
+
+        %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
+          %div{}
+            %ul{:class=>"list-group"}
+              %a{"ng-repeat"=>"message in messages | filter:myFilter", :class=>"list-group-item"}
+                {{ message.body }}
 

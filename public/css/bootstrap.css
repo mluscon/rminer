@@ -3500,7 +3500,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   vertical-align: middle;
 }
 .input-group-addon {
-  padding: 6px 12px;
+  padding: 5px 5px;
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
@@ -3508,12 +3508,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   text-align: center;
   background-color: #eee;
   border: 1px solid #ccc;
-  border-radius: 4px;
 }
 .input-group-addon.input-sm {
   padding: 5px 10px;
   font-size: 12px;
-  border-radius: 3px;
 }
 .input-group-addon.input-lg {
   padding: 10px 16px;
@@ -4996,7 +4994,6 @@ a.list-group-item-danger.active:focus {
   margin-bottom: 0px;
   background-color: #fff;
   border: 1px solid transparent;
-  border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
@@ -5004,11 +5001,10 @@ a.list-group-item-danger.active:focus {
   padding: 15px;
 }
 .panel-heading {
-  padding: 10px 15px;
+  padding: 5px 5px;
   border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
+  font-weight: bold;
+  }
 .panel-heading > .dropdown .dropdown-toggle {
   color: inherit;
 }
