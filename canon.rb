@@ -1,3 +1,4 @@
+require 'yaml'
 
 class Variable
   attr_accessor :name, :priority, :regexp
@@ -23,26 +24,28 @@ def find_best_pattern(pattern, msgs, separator)
   var_is.each do |index|
     vars = []
     msgs.each do |msg|
-      vars.push( find_best_var( msg.split(separator)[index] ))
+      vars.push(find_best_var(msg.split(separator)[index]))
     end
-    pattern[index] = vars.max_by{|x| x.priority}.name
+    best_var = vars.max_by{|x| x.priority}
+    pattern[index] = best_var.name + "<<<" + best_var.source + ">>>"
   end
   pattern.join(" ")
 end
 
 
 def find_best_var( string )
+
+  parsed = begin
+    YAML.load(File.open("./variables.yml"))
+  rescue ArgumentError => e
+    STDERR.puts "Could not parse variables.yml: #{e.message}"
+  end
+
   variables = []
-variables.push Variable.new(10, "<<INT>>", Regexp.new("^[0-9]+$"))
-variables.push Variable.new(20, "<<FLOAT>>", Regexp.new("^[-+]?[0-9]*\\.?[0-9]+$"))
-variables.push Variable.new(30, "<<BOOLEAN>>", Regexp.new("^\\btrue\\b|\\bfalse\\b$"))
-variables.push Variable.new(40, "<<WORD>>", Regexp.new("^[a-zA-Z]+$"))
-variables.push Variable.new(50, "<<STRING>>", Regexp.new("^[-._:/a-zA-Z0-9\\\\]+$"))
-variables.push Variable.new(60, "<<EMPTY>>", Regexp.new("^$"))
-variables.push Variable.new(70, "<<ALPHANUM>>", Regexp.new("^[_a-zA-Z0-9]+$"))
-variables.push Variable.new(80, "<<ALPHANUMTEXT>>", Regexp.new("^[-._a-zA-Z0-9]+$"))
-variables.push Variable.new(90, "<<ARBITRARY>>", Regexp.new("^[^\n\r]+$"))
-variables.push Variable.new(100, "<<VAR>>", Regexp.new("^[^\s]+$"))
+  parsed.each do |var|
+    new_var = Variable.new(var["priority"], var["short"], Regexp.new(var["regexp"]))
+    variables.push new_var
+  end
 
   match=[]
   variables.each do |var|
