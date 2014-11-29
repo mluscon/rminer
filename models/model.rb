@@ -19,7 +19,7 @@ class Scan
   property :tag,          String
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
-  property :sensitivity,  Integer, :default => 1
+  property :sensitivity,  Float, :default => 1
   property :separator,    String
   property :packed,       Boolean, :default => true
   property :selected,     Boolean, :default => false
