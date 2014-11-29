@@ -92,6 +92,120 @@
 
                         scan id: {{ scan2.id }}, sensitivity: {{ scan2.sensitivity }}
 
+                  %ol{:class=>"angular-ui-tree-nodes",
+                      "ng-if"=>"!scan2.packed",
+                      "ng-repeat"=>"pattern2 in scan2.patterns"}
+                    %li{:class=>"angular-ui-tree-node"}
+
+                      %div{"ng-class"=>"pattern2.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
+                          "ng-click"=>"getMsgs(pattern2.id)"}
+
+                        %div{:class=>"tree-node-content"}
+
+                          %a{:class=>"btn btn-success btn-xs",
+                            "ng-if"=>"hasChildren(pattern2.id)",
+                            "ng-click"=>"pattern2.packed ? pattern2.packed = false : pattern2.packed = true"}
+                            %span{"ng-class"=>"pattern2.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+                          %a{:class=>"btn btn-default btn-xs",
+                            "ng-if"=>"!hasChildren(pattern2.id)"}
+                            %span{:class=>"glyphicon glyphicon-chevron-right"}
+
+
+                          {{ pattern2.body }}
+
+                          %a{:class=>"pull-right btn btn-primary btn-xs"}
+
+                            %span{:class=>"glyphicon glyphicon-plus"}
+
+                    %ol{:class=>"angular-ui-tree-nodes",
+                        "ng-repeat"=>"scan3 in scans",
+                        "ng-if"=>"scan3.parent_id == pattern2.id && !pattern2.packed" }
+
+                      %li{:class=>"angular-ui-tree-node"}
+
+
+                        %div{:class=>"tree-node angular-ui-tree-handle"}
+
+                          %div{:class=>"tree-node-content-scan"}
+
+                            %a{:class=>"btn btn-success btn-xs",
+                              "ng-click"=>"scan3.packed ? scan3.packed=false : scan3.packed=true; packScan(scan3.id, scan3.packed)"}
+                              %span{"ng-class"=>"scan3.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+
+                            scan id: {{ scan3.id }}, sensitivity: {{ scan3.sensitivity }}
+
+                      %ol{:class=>"angular-ui-tree-nodes",
+                          "ng-if"=>"!scan3.packed",
+                          "ng-repeat"=>"pattern3 in scan3.patterns"}
+                        %li{:class=>"angular-ui-tree-node"}
+
+                          %div{"ng-class"=>"pattern3.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
+                              "ng-click"=>"getMsgs(pattern3.id)"}
+
+                            %div{:class=>"tree-node-content"}
+
+                              %a{:class=>"btn btn-success btn-xs",
+                                "ng-if"=>"hasChildren(pattern3.id)",
+                                "ng-click"=>"pattern3.packed ? pattern3.packed = false : pattern3.packed = true"}
+                                %span{"ng-class"=>"pattern3.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+                              %a{:class=>"btn btn-default btn-xs",
+                                "ng-if"=>"!hasChildren(pattern3.id)"}
+                                %span{:class=>"glyphicon glyphicon-chevron-right"}
+
+
+                              {{ pattern3.body }}
+
+                              %a{:class=>"pull-right btn btn-primary btn-xs"}
+
+                                %span{:class=>"glyphicon glyphicon-plus"}
+
+
+                        %ol{:class=>"angular-ui-tree-nodes",
+                            "ng-repeat"=>"scan4 in scans",
+                            "ng-if"=>"scan4.parent_id == pattern3.id && !pattern3.packed" }
+
+                          %li{:class=>"angular-ui-tree-node"}
+
+
+                            %div{:class=>"tree-node angular-ui-tree-handle"}
+
+                              %div{:class=>"tree-node-content-scan"}
+
+                                %a{:class=>"btn btn-success btn-xs",
+                                  "ng-click"=>"scan4.packed ? scan4.packed=false : scan4.packed=true; packScan(scan4.id, scan4.packed)"}
+                                  %span{"ng-class"=>"scan4.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+
+                                scan id: {{ scan4.id }}, sensitivity: {{ scan4.sensitivity }}
+
+                          %ol{:class=>"angular-ui-tree-nodes",
+                              "ng-if"=>"!scan4.packed",
+                              "ng-repeat"=>"pattern4 in scan4.patterns"}
+                            %li{:class=>"angular-ui-tree-node"}
+
+                              %div{"ng-class"=>"pattern4.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
+                                  "ng-click"=>"getMsgs(pattern4.id)"}
+
+                                %div{:class=>"tree-node-content"}
+
+                                  %a{:class=>"btn btn-success btn-xs",
+                                    "ng-if"=>"hasChildren(pattern4.id)",
+                                    "ng-click"=>"pattern4.packed ? pattern4.packed = false : pattern4.packed = true"}
+                                    %span{"ng-class"=>"pattern4.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+                                  %a{:class=>"btn btn-default btn-xs",
+                                    "ng-if"=>"!hasChildren(pattern4.id)"}
+                                    %span{:class=>"glyphicon glyphicon-chevron-right"}
+
+
+                                  {{ pattern4.body }}
+
+                                  %a{:class=>"pull-right btn btn-primary btn-xs"}
+
+                                    %span{:class=>"glyphicon glyphicon-plus"}
 
 
       %div{:class=>"col-sm-3 right-affix"}
