@@ -51,8 +51,8 @@ def analyze(sensitivity, msgs, separator)
     constant = freqs.map.with_index { | x, i | x >= treshold ? msg[i] : 'VAR' }
     results.push(constant.join(' '))
   end
-
   results.uniq!
+
   output = {}
 
   results.each do |msg|
@@ -64,9 +64,6 @@ def analyze(sensitivity, msgs, separator)
       output[msg].uniq!
     end
   end
-
-  output
-
   canon = canonize(output, msgs, separator)
 
   canon

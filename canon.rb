@@ -27,7 +27,7 @@ def find_best_pattern(pattern, msgs, separator)
       vars.push(find_best_var(msg.split(separator)[index]))
     end
     best_var = vars.max_by{|x| x.priority}
-    pattern[index] = best_var.name + "<<<" + best_var.source + ">>>"
+    pattern[index] = "<<<" + best_var.name + best_var.regexp.source + ">>>"
   end
   pattern.join(" ")
 end

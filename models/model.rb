@@ -1,4 +1,5 @@
 require 'digest'
+require 'bcrypt'
 
 class Message
   include DataMapper::Resource
@@ -16,7 +17,6 @@ class Scan
   include DataMapper::Resource
 
   property :id,           Serial
-  property :tag,          String
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
   property :sensitivity,  Float, :default => 1
@@ -44,3 +44,13 @@ class Pattern
   has n,     :messages, :through => Resource
   has n,     :childs, :model => 'Scan', :required => false, :through => Resource
 end
+
+class User
+  include DataMapper::Resource
+  include BCrypt
+
+  property :id, Serial, :key => true
+  property :username, String, :length => 3..50
+  property :password, BCryptHash
+end
+

@@ -1,4 +1,4 @@
-var RminerApp = angular.module('RminerApp', []);
+var RminerApp = angular.module('RminerApp', ['patternFilters']);
 
 
 RminerApp.controller('ScansCtrl', function ($scope, $http) {
@@ -104,8 +104,6 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.activeScan = -1
   $scope.activePattern = -1
 
-
-
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
     var regExp = new RegExp($scope.regExpString)
@@ -144,11 +142,6 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     $scope.regExpString = ""
   }
 });
-
-
-
-
-
 
 
 

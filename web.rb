@@ -14,7 +14,7 @@ get '/' do
   haml :index
 end
 
-get '/scans/' do
+get '/scans/?' do
   if params.include? "json"
     json = controller.scans_serial
     JSON.generate(json.reverse)
@@ -27,14 +27,14 @@ end
 
 
 get '/scans/:id' do
-
   scan = controller.scan params[:id]
   halt 404 if scan.nil? or not params.include? "json"
 
   res = []
   scan.messages.each do |msg|
-    res << { :id => msg.id,
-             :body => msg.body
+    res << {
+            :id => msg.id,
+            :body => msg.body
            }
   end
   JSON.generate res
@@ -42,7 +42,6 @@ end
 
 
 get '/patterns/:id' do
-
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
 
@@ -62,7 +61,7 @@ get '/patterns/:id' do
 
 end
 
-post '/patterns/finalize/' do
+post '/patterns/finalize/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
 
@@ -72,8 +71,7 @@ post '/patterns/finalize/' do
 end
 
 
-get '/messages/' do
-
+get '/messages/?' do
   msgs = controller.messages
   if params.include? "json"
     res = []
@@ -90,7 +88,7 @@ get '/messages/' do
   end
 end
 
-post '/scan/new' do
+post '/scan/new/?' do
   halt 404 if params.nil?
 
   params = JSON.parse(request.env["rack.input"].read)
@@ -105,20 +103,18 @@ post '/scan/new' do
   controller.analyze(sensitivity, msg_ids, params["separator"], tag, parent)
 end
 
-post '/scan/packed/' do
+post '/scan/packed/?' do
   params = JSON.parse(request.env["rack.input"].read)
   controller.scan_pack(params["id"], params["value"])
 end
 
-post '/remove/' do
+post '/remove/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
-
-
   controller.remove(params["msgs"])
 end
 
-post '/final/' do
+post '/final/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
   controller.final(params["id"])

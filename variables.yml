@@ -2,7 +2,7 @@
 - type: Integer
   short: <<INT>>
   priority: 10
-  regexp: '^[0-9]+$'
+  regexp: "^[0-9]+$"
 
 - type: Float
   short: <<FLOAT>>

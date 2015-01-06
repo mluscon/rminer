@@ -47,6 +47,13 @@
 
                     scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
 
+                    %span{:class=>"pull-right"}
+                      %a{:class=>"btn btn-success btn-xs"}
+                        %span{:class=>"glyphicon glyphicon glyphicon-save"}
+
+                      %a{:class=>"btn btn-danger btn-xs"}
+                        %span{:class=>"glyphicon glyphicon glyphicon-remove"}
+
               %ol{:class=>"angular-ui-tree-nodes",
                   "ng-if"=>"!scan1.packed",
                   "ng-repeat"=>"pattern1 in scan1.patterns"}
@@ -67,7 +74,7 @@
                         %span{:class=>"glyphicon glyphicon-chevron-right"}
 
 
-                      {{ pattern1.body }}
+                      {{ pattern1.body | patternFilter }}
 
                       %a{:class=>"pull-right btn btn-primary btn-xs"}
 
@@ -92,6 +99,13 @@
 
                         scan id: {{ scan2.id }}, sensitivity: {{ scan2.sensitivity }}
 
+                        %span{:class=>"pull-right"}
+                          %a{:class=>"btn btn-success btn-xs"}
+                            %span{:class=>"glyphicon glyphicon glyphicon-save"}
+
+                          %a{:class=>"btn btn-danger btn-xs"}
+                            %span{:class=>"glyphicon glyphicon glyphicon-remove"}
+
                   %ol{:class=>"angular-ui-tree-nodes",
                       "ng-if"=>"!scan2.packed",
                       "ng-repeat"=>"pattern2 in scan2.patterns"}
@@ -112,7 +126,7 @@
                             %span{:class=>"glyphicon glyphicon-chevron-right"}
 
 
-                          {{ pattern2.body }}
+                          {{ pattern2.body | patternFilter }}
 
                           %a{:class=>"pull-right btn btn-primary btn-xs"}
 
@@ -136,6 +150,13 @@
 
                             scan id: {{ scan3.id }}, sensitivity: {{ scan3.sensitivity }}
 
+                            %span{:class=>"pull-right"}
+                              %a{:class=>"btn btn-success btn-xs"}
+                                %span{:class=>"glyphicon glyphicon glyphicon-save"}
+
+                              %a{:class=>"btn btn-danger btn-xs"}
+                                %span{:class=>"glyphicon glyphicon glyphicon-remove"}
+
                       %ol{:class=>"angular-ui-tree-nodes",
                           "ng-if"=>"!scan3.packed",
                           "ng-repeat"=>"pattern3 in scan3.patterns"}
@@ -156,7 +177,7 @@
                                 %span{:class=>"glyphicon glyphicon-chevron-right"}
 
 
-                              {{ pattern3.body }}
+                              {{ pattern3.body | patternFilter }}
 
                               %a{:class=>"pull-right btn btn-primary btn-xs"}
 
@@ -181,6 +202,12 @@
 
                                 scan id: {{ scan4.id }}, sensitivity: {{ scan4.sensitivity }}
 
+                                %span{:class=>"pull-right"}
+                                  %a{:class=>"btn btn-success btn-xs"}
+                                    %span{:class=>"glyphicon glyphicon glyphicon-save"}
+                                  %a{:class=>"btn btn-danger btn-xs"}
+                                    %span{:class=>"glyphicon glyphicon glyphicon-remove"}
+
                           %ol{:class=>"angular-ui-tree-nodes",
                               "ng-if"=>"!scan4.packed",
                               "ng-repeat"=>"pattern4 in scan4.patterns"}
@@ -201,7 +228,7 @@
                                     %span{:class=>"glyphicon glyphicon-chevron-right"}
 
 
-                                  {{ pattern4.body }}
+                                  {{ pattern4.body | patternFilter }}
 
                                   %a{:class=>"pull-right btn btn-primary btn-xs"}
 
