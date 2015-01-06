@@ -1,0 +1,45 @@
+
+
+.row
+  %div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
+    %div{:class=>"navbar-header"}
+
+
+      %a{:class=>"navbar-brand ", :href=>"/"} RMINER
+
+  -#
+    %ul{:class=>"nav navbar-nav"}
+      %li{:class=>"active"}
+        %a{:href=>"", :class=>"list-group-item active"}Scans
+      %li
+        %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
+      %li
+        %a{:href=>"/messages/", :class=>"list-group-item"} New messages
+      %li
+        %a{:href=>"/settings/", :class=>"list-group-item"}Settings
+
+
+.content
+
+  .row
+  .row
+  .row
+
+    %div{:class=>"col-sm-3 col-md-offset-4"}
+
+      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
+        %div{:class=>"panel-heading"}
+          Login
+
+
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Username:
+          %input{:type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Password:
+          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+        %div{:class=>"panel-heading"}
+          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
+            Sign in

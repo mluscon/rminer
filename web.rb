@@ -14,6 +14,10 @@ get '/' do
   haml :index
 end
 
+get '/login/' do
+  haml :login
+end
+
 get '/scans/?' do
   if params.include? "json"
     json = controller.scans_serial
