@@ -43,10 +43,24 @@ class WebController
     pattern = Pattern.get(id.to_i)
   end
 
-  def final(id)
+  def pattern_finalize(id)
     pattern = Pattern.get(id.to_i)
-    pattern.final = true;
-    pattern.save
+    if not pattern.nil?
+      pattern.final = true;
+      pattern.save
+    else
+      false
+    end
+  end
+
+  def pattern_unfinalize(id)
+    pattern = Pattern.get(id.to_i)
+    if not pattern.nil?
+      pattern.final = false;
+      pattern.save
+    else
+      false
+    end
   end
 
   def analyze(sens ,msg_ids, separator, tag = "", parent_id)
@@ -111,4 +125,8 @@ class WebController
     scan.save
   end
 
+  def scan_remove(id)
+    scan = Scan.get(id)
+    scan.destroy
+  end
 end

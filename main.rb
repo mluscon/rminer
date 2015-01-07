@@ -16,9 +16,11 @@ cache_size = config['cache'].to_i
 children = []
 
 workers.times do
-
-  redis = RedisWorker.new
-  redis.run!
+  pid = fork do
+    redis = RedisWorker.new
+    redis.run!
+  end
+  children.push pid
 end
 
 AMQP.start( :host => amqp_server ) do |connection|
@@ -32,7 +34,7 @@ AMQP.start( :host => amqp_server ) do |connection|
       msgs.each do |msg|
         Message.create(
                        :body => msg,
-                       :body_hash => Digest::MD5.new.dǎdligest(msg).to_s[1,10]
+                       :body_hash => Digest::MD5.new.digest(msg).to_s[1,10]
                       )
       end
       msgs = []

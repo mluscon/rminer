@@ -1,22 +1,53 @@
 
-%div{ 'ng-controller'=>'MessagesCtrl'}
+.row
+  %div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
+    %div{:class=>"navbar-header"}
 
 
+      %a{:class=>"navbar-brand ", :href=>"/"} RMINER
 
-  %form
-  %label Tag
-  %input{"ng-model"=>"scanTag"}
-  %label Sensitivity
-  %input{"ng-model"=>"sensitivity"}
-  %input{:type => "submit", :value => "Analyze", "ng-click"=>"analyze()"}
+  -#
+    %ul{:class=>"nav navbar-nav"}
+      %li{:class=>"active"}
+        %a{:href=>"", :class=>"list-group-item active"}Scans
+      %li
+        %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
+      %li
+        %a{:href=>"/messages/", :class=>"list-group-item"} New messages
+      %li
+        %a{:href=>"/settings/", :class=>"list-group-item"}Settings
 
 
-  %form
-  %label Regexp filter:
-  %input{"ng-model"=>"regExpString"}
-  %input{:type => "submit", :value => "Remove", "ng-click"=>"remove()"}
+.content
+  .row
+    %div{"ng-controller"=>"MessagesCtrl"}
+      %div{:class=>"col-sm-9 fix-width"}
 
-  %div
-    %ul
-      %li{ 'ng-repeat'=>"msg in messages | filter:myFilter "}
-        {{msg.body}}
+        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto"}
+          %div{}
+            %ul{:class=>"list-group"}
+              %a{"ng-repeat"=>"message in messages | filter:myFilter", :class=>"list-group-item"}
+                {{ message.body }}
+
+
+    %div{:class=>"col-sm-3 right-affix"}
+
+      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
+        %div{:class=>"panel-heading"}
+          New scan
+
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Sensitivity:
+          %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Split by:
+          %input{:type=>"text", :class=>"form-control"}
+        %div{:class=>"input-group"}
+          %span{:class=>"input-group-addon"}
+            Filter:
+          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+        %div{:class=>"panel-heading"}
+          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
+            Start

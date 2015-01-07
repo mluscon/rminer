@@ -15,7 +15,7 @@ class RedisWorker
       :password => 'gproject'
     }
     @redis = Redis.new
-    #find a proper place
+
     DataMapper.finalize
     DataMapper.auto_upgrade!
   end

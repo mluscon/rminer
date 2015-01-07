@@ -29,7 +29,6 @@ get '/scans/?' do
   end
 end
 
-
 get '/scans/:id' do
   scan = controller.scan params[:id]
   halt 404 if scan.nil? or not params.include? "json"
@@ -44,6 +43,13 @@ get '/scans/:id' do
   JSON.generate res
 end
 
+delete '/scans/?' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
+
+  scan = Pattern.get(params["id"])
+  controller.scan_remove(scan)
+end
 
 get '/patterns/:id' do
   pattern = controller.pattern params[:id]
@@ -62,16 +68,20 @@ get '/patterns/:id' do
          :pattern => pattern
     }
   end
-
 end
 
 post '/patterns/finalize/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
 
-  pattern = Pattern.get(params["id"])
-  pattern.final = true
-  pattern.save
+  controller.pattern_finalize(params["id"])
+end
+
+delete '/patterns/finalize/?' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
+
+  controller.pattern_unfinalize(params["id"])
 end
 
 

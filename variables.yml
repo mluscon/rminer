@@ -32,12 +32,12 @@
 - type: Alphanumerical
   short: <<ALPHANUM>>
   priority: 70
-  regexp: "^[_a-zA-Z0-9]+$"
+  regexp: "^[a-zA-Z0-9]+$"
 
 - type: Alphanumericaltext
   short: <<ALPHANUMTEXT>>
   priority: 80
-  regexp: "^[-._a-zA-Z0-9]+$"
+  regexp: "^[-.a-zA-Z0-9]+$"
 
 - type: Arbitrary
   short: <<ARBITRARY>>
