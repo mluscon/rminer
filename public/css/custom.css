@@ -85,9 +85,47 @@
   margin: 1px;
 }
 
-.btn {
-  padding: 5px, 5px;
+.btn-xs {
+  padding: 5px 5px;
 }
+
+.input-group-addon {
+  padding: 5px 5px;
+}
+
+.input-group-addon.input-sm {
+  padding: 5px 10px;
+  border-radius: 0px;
+}
+
+.input-group-addon {
+  border-radius: 0px;
+}
+
+.list-group-item {
+  padding: 5px 5px;
+}
+
+.panel {
+  margin-bottom: 0px;
+  border-radius: 0px;
+}
+
+.panel-heading {
+  padding: 5px 5px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  font-weight: bold;
+}
+
+.right-affix {
+  right: 0px;
+  position: fixed;
+  -webkit-transform: translate3d(0, 0, 0);
+       -o-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
 
 .green {
   color: green;
