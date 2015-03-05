@@ -130,3 +130,13 @@
 .green {
   color: green;
 }
+
+.dropdown.menu {
+  display: none;
+  margin: 0px, 0px, 0px;
+}
+
+.navbar-header:hover > .dropdown-menu {
+  margin: 0px 0px 0px 0px;
+  display: block;
+}

@@ -1,23 +1,17 @@
 
 
 .row
-  %div{:class=>"navbar navbar-inverse navbar-fixed-top", :role=>"navigation"}
-    %div{:class=>"navbar-header"}
-
-
+  .navbar-fixed-top.navbar.navbar-inverse
+    .navbar-header
       %a{:class=>"navbar-brand ", :href=>"/"} RMINER
 
-  -#
-    %ul{:class=>"nav navbar-nav"}
-      %li{:class=>"active"}
-        %a{:href=>"", :class=>"list-group-item active"}Scans
-      %li
-        %a{:href=>"/scans/active", :class=>"list-group-item"}Active scans
-      %li
-        %a{:href=>"/messages/", :class=>"list-group-item"} New messages
-      %li
-        %a{:href=>"/settings/", :class=>"list-group-item"}Settings
-
+      %ul.dropdown.dropdown-menu{:role=>"menu"}
+        %li
+          %a{:href=>"#"} Home
+        %li
+          %a{:href=>"#"} Messages
+        %li
+          %a{:href=>"#"} Settings
 
 .content
   .row
