@@ -1,7 +1,7 @@
-var RminerApp = angular.module('RminerApp', ['patternFilters']);
+var RminerApp = angular.module('RminerApp', ['ngSanitize', 'patternFilters']);
 
 
-RminerApp.controller('ScansCtrl', function ($scope, $http) {
+RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
 
   $http.get("/scans/?json")
   .success(function(response) {$scope.scans = angular.fromJson(response);});
@@ -86,6 +86,10 @@ RminerApp.controller('ScansCtrl', function ($scope, $http) {
     var postObject = { "msgs" : filtered }
     $http.post("/remove/", postObject)
     $scope.regExpString = ""
+  }
+
+  $scope.toTrustedHTML = function( html ){
+    return $sce.trustAsHtml( html );
   }
 
 });

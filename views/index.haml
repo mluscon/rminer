@@ -68,11 +68,13 @@
                         %span{:class=>"glyphicon glyphicon-chevron-right"}
 
 
-                      {{ pattern1.body | patternFilter }}
+                      %span{"ng-bind-html"=>"pattern1.body | patternFilter"}
 
                       %a{:class=>"pull-right btn btn-primary btn-xs"}
-
                         %span{:class=>"glyphicon glyphicon-plus"}
+
+                      %a{:class=>"pull-right btn btn-primary btn-xs"}
+                        %span{:class=>"glyphicon glyphicon-pencil"}
 
 
                 %ol{:class=>"angular-ui-tree-nodes",
@@ -123,8 +125,10 @@
                           {{ pattern2.body | patternFilter }}
 
                           %a{:class=>"pull-right btn btn-primary btn-xs"}
-
                             %span{:class=>"glyphicon glyphicon-plus"}
+
+                          %a{:class=>"pull-right btn btn-primary btn-xs"}
+                            %span{:class=>"glyphicon glyphicon-pencil"}
 
                     %ol{:class=>"angular-ui-tree-nodes",
                         "ng-repeat"=>"scan3 in scans",
@@ -174,9 +178,10 @@
                               {{ pattern3.body | patternFilter }}
 
                               %a{:class=>"pull-right btn btn-primary btn-xs"}
-
                                 %span{:class=>"glyphicon glyphicon-plus"}
 
+                              %a{:class=>"pull-right btn btn-primary btn-xs"}
+                                %span{:class=>"glyphicon glyphicon-pencil"}
 
                         %ol{:class=>"angular-ui-tree-nodes",
                             "ng-repeat"=>"scan4 in scans",
@@ -225,8 +230,10 @@
                                   {{ pattern4.body | patternFilter }}
 
                                   %a{:class=>"pull-right btn btn-primary btn-xs"}
-
                                     %span{:class=>"glyphicon glyphicon-plus"}
+
+                                  %a{:class=>"pull-right btn btn-primary btn-xs"}
+                                    %span{:class=>"glyphicon glyphicon-pencil"}
 
 
       %div{:class=>"col-sm-3 right-affix"}
