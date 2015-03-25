@@ -30,24 +30,24 @@
                 {{ message.body }}
 
 
-    %div{:class=>"col-sm-3 right-affix"}
+      %div{:class=>"col-sm-3 right-affix"}
 
-      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
-        %div{:class=>"panel-heading"}
-          New scan
+        %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
+          %div{:class=>"panel-heading"}
+            New scan
 
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Sensitivity:
-          %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Split by:
-          %input{:type=>"text", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Filter:
-          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
-        %div{:class=>"panel-heading"}
-          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
-            Start
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Sensitivity:
+            %input{"ng-model"=>"sensitivity", :type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Split by:
+            %input{:type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Filter:
+            %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+          %div{:class=>"panel-heading"}
+            %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
+              Start

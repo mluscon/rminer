@@ -108,13 +108,12 @@ post '/scan/new/?' do
   params = JSON.parse(request.env["rack.input"].read)
   sensitivity = params["sensitivity"].to_f
   msg_ids = params["msgs"]
-  tag = params["tag"]
   parent = params["parent"]
 
   halt 404 if sensitivity == 0 || sensitivity > 1
-  halt 404 if msg_ids.nil? || tag.nil?
+  halt 404 if msg_ids.nil?
 
-  controller.analyze(sensitivity, msg_ids, params["separator"], tag, parent)
+  controller.analyze(sensitivity, msg_ids, params["separator"], parent)
 end
 
 post '/scan/packed/?' do
