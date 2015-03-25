@@ -1,6 +1,8 @@
 require 'digest'
 require 'bcrypt'
 
+require './helpers/helper.rb'
+
 class Message
   include DataMapper::Resource
 
@@ -19,7 +21,7 @@ class Scan
   property :id,           Serial
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
-  property :sensitivity,  Float, :default => 1
+  property :sensitivity,  Float, :default => 1.0
   property :separator,    String
   property :packed,       Boolean, :default => true
   property :selected,     Boolean, :default => false
@@ -35,9 +37,11 @@ class Pattern
 
   property :id,           Serial
   property :body,         Text
+  property :words,        Text, :default => lambda { |r, p| extract_words(r.body) }
+  property :variables,    Text, :default => lambda { |r, p| extract_variables(r.body) }
   property :final,        Boolean, :default => false
   property :selected,     Boolean, :default => false
-  property :final,        Boolean, :default => false
+  property :edit,         Boolean, :default => false
   property :packed,       Boolean, :default => true
 
   belongs_to :scan
