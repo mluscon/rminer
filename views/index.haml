@@ -56,7 +56,7 @@
                   %div{"ng-class"=>"pattern1.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
                       "ng-click"=>"getMsgs(pattern1.id)"}
 
-                    %div{:class=>"tree-node-content"}
+                    %div{:class=>"tree-node-content", "ng-show"=>"!pattern1.edit"}
 
                       %a{:class=>"btn btn-success btn-xs",
                         "ng-if"=>"hasChildren(pattern1.id)",
@@ -73,9 +73,29 @@
                       %a{:class=>"pull-right btn btn-primary btn-xs"}
                         %span{:class=>"glyphicon glyphicon-plus"}
 
-                      %a{:class=>"pull-right btn btn-primary btn-xs"}
+                      %a{:class=>"pull-right btn btn-primary btn-xs", "ng-click"=>"pattern1.body_split=fixJson(pattern1.body_split); pattern1.edit=true"}
                         %span{:class=>"glyphicon glyphicon-pencil"}
 
+                    %div{:class=>"tree-node-content", "ng-show"=>"pattern1.edit"}
+
+                      %a{:class=>"btn btn-success btn-xs",
+                        "ng-if"=>"hasChildren(pattern1.id)",
+                        "ng-click"=>"pattern1.packed ? pattern1.packed = false : pattern1.packed = true"}
+                        %span{"ng-class"=>"pattern1.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
+
+                      %a{:class=>"btn btn-default btn-xs",
+                        "ng-if"=>"!hasChildren(pattern1.id)"}
+                        %span{:class=>"glyphicon glyphicon-chevron-right"}
+
+                      %span{"ng-repeat"=>"word in pattern1.body_split track by $index"}
+                        %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
+                        %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
+
+                      %a{:class=>"pull-right btn btn-primary btn-xs"}
+                        %span{:class=>"glyphicon glyphicon-plus"}
+
+                      %a{:class=>"pull-right btn btn-primary btn-xs", "ng-click"=>"pattern1.edit=false"}
+                        %span{:class=>"glyphicon glyphicon-pencil"}
 
                 %ol{:class=>"angular-ui-tree-nodes",
                     "ng-repeat"=>"scan2 in scans",

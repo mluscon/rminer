@@ -18,3 +18,23 @@ angular.module('patternFilters', []).filter('patternFilter', function() {
   };
 });
 
+angular.module('editPatternFilters', []).filter('editPatternFilter', function() {
+  return function(input) {
+    name_reg = new RegExp(">>.*>>>")
+    words = input.body.split(" ")
+
+    for(var i=0; i<words.length; i++) {
+      if (words[i].substr(0,3) == "<<<") {
+        name = words[i].match(name_reg)
+
+        esc_name = name.replace(/>>>/g, '').
+                        replace(/>>/g, '')
+        input.words[i] = esc_name
+        words[i] = "<input ng-model='input.words[i]'>" + esc_name + "</input>"
+      } else {
+        input.words[i] = words[i]
+      }
+    }
+    return words.join(" ")
+  };
+});

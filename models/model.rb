@@ -37,8 +37,7 @@ class Pattern
 
   property :id,           Serial
   property :body,         Text
-  property :words,        Text, :default => lambda { |r, p| extract_words(r.body) }
-  property :variables,    Text, :default => lambda { |r, p| extract_variables(r.body) }
+  property :body_split,   Text, :default => lambda { |r, p| body_split(r.body) }
   property :final,        Boolean, :default => false
   property :selected,     Boolean, :default => false
   property :edit,         Boolean, :default => false

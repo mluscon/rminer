@@ -1,4 +1,4 @@
-var RminerApp = angular.module('RminerApp', ['ngSanitize', 'patternFilters']);
+var RminerApp = angular.module('RminerApp', ['ngSanitize', 'patternFilters', 'editPatternFilters']);
 
 
 RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
@@ -25,6 +25,19 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
       $http.get("/scans/".concat(scan_id,"?json"))
       .success(function(response) {$scope.messages = angular.fromJson(response);});
     }
+  }
+
+  $scope.fixJson = function(json) {
+    return angular.fromJson(json)
+  }
+
+  $scope.contains = function(words, word) {
+    for (var i = 0; i<words.length; i++) {
+      if (words[i][0].indexOf(word)>=0) {
+        return true
+      }
+    }
+    return false
   }
 
   $scope.hasChildren = function(pattern_id) {
