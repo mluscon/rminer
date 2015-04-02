@@ -70,6 +70,18 @@ get '/patterns/:id' do
   end
 end
 
+post '/patterns/:id' do
+  pattern = controller.pattern params[:id]
+  halt 404 if pattern.nil? or not params.include? "json"
+  puts params
+  new_pattern = JSON.parse(request.env["rack.input"].read)
+
+  pattern.body = new_pattern["body"]
+  pattern.body_split = body_split(pattern.body)
+  pattern.save
+end
+
+
 post '/patterns/finalize/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)

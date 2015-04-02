@@ -63,6 +63,19 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     $http.post("/patterns/finalize/", {"id" : pattern.id})
   }
 
+  $scope.savePattern = function(pattern) {
+    new_body = ""
+    for (var i = 0; i<pattern.body_split.length; i++) {
+      new_body = new_body.concat(" ", pattern.body_split[i].word)
+    }
+    pattern.body = new_body
+
+    $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
+  }
+
+
+
+
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
     var regExp = new RegExp($scope.regExpString)

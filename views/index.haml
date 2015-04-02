@@ -42,11 +42,12 @@
                     scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
 
                     %span{:class=>"pull-right"}
-                      %a{:class=>"btn btn-success btn-xs"}
-                        %span{:class=>"glyphicon glyphicon glyphicon-save"}
-
                       %a{:class=>"btn btn-danger btn-xs"}
                         %span{:class=>"glyphicon glyphicon glyphicon-remove"}
+
+
+                      %a{:class=>"btn btn-success btn-xs"}
+                        %span{:class=>"glyphicon glyphicon glyphicon-save"}
 
               %ol{:class=>"angular-ui-tree-nodes",
                   "ng-if"=>"!scan1.packed",
@@ -91,11 +92,11 @@
                         %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
                         %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
 
-                      %a{:class=>"pull-right btn btn-primary btn-xs"}
-                        %span{:class=>"glyphicon glyphicon-plus"}
+                      %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern1); pattern1.edit=false"}
+                        %span{:class=>"glyphicon glyphicon-ok"}
 
-                      %a{:class=>"pull-right btn btn-primary btn-xs", "ng-click"=>"pattern1.edit=false"}
-                        %span{:class=>"glyphicon glyphicon-pencil"}
+                      %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"pattern1.edit=false"}
+                        %span{:class=>"glyphicon glyphicon-remove"}
 
                 %ol{:class=>"angular-ui-tree-nodes",
                     "ng-repeat"=>"scan2 in scans",
