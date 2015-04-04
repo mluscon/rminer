@@ -42,7 +42,7 @@
                     scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
 
                     %span{:class=>"pull-right"}
-                      %a{:class=>"btn btn-danger btn-xs"}
+                      %a{:class=>"btn btn-danger btn-xs", "ng-click"=>"removeScan(scan1)"}
                         %span{:class=>"glyphicon glyphicon glyphicon-remove"}
 
 

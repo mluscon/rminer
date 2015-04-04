@@ -73,6 +73,16 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 
+  $scope.removeScan = function(scan) {
+    $http.delete("/scans/".concat(scan.id))
+    new_scans = []
+    for (var i = 0; i<$scope.scans.length; i++) {
+      if ($scope.scans[i].id != scan.id) {
+        new_scans.push($scope.scans[i].id)
+      }
+    }
+    $scope.scans = new_scans
+  }
 
 
 

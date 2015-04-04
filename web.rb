@@ -43,14 +43,6 @@ get '/scans/:id' do
   JSON.generate res
 end
 
-delete '/scans/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-
-  scan = Pattern.get(params["id"])
-  controller.scan_remove(scan)
-end
-
 get '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
@@ -133,11 +125,12 @@ post '/scan/packed/?' do
   controller.scan_pack(params["id"], params["value"])
 end
 
-post '/remove/?' do
+delete '/scans/:id' do
   halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-  controller.remove(params["msgs"])
+
+  controller.scan_remove(params["id"].to_i)
 end
+
 
 post '/final/?' do
   halt 404 if params.nil?

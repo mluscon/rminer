@@ -125,7 +125,24 @@ class WebController
   end
 
   def scan_remove(id)
-    scan = Scan.get(id)
-    scan.destroy
+    scan = Scan.get(id.to_i)
+    children = Scan.get(:parent=>scan)
+    unless children.nil?
+      children.each do |scan|
+        scan_remove(scan.id)
+      end
+    end
+    scan.patterns.each do |pattern|
+      assocs = MessagePattern.all(:pattern=>pattern)
+      assocs.each do |asc|
+        asc.destroy!
+      end
+      pattern.destroy!
+    end
+    assocs = MessageScan.all(:scan=>scan)
+    assocs.each do |asc|
+      asc.destroy!
+    end
+    scan.destroy!
   end
 end
