@@ -22,4 +22,20 @@
     %script{ :src => "/js/bootstrap.min.js" }
 
   %body{:role=>"document"}
+
+    .row
+    .navbar-fixed-top.navbar.navbar-inverse
+      .navbar-header
+        %a{:class=>"navbar-brand ", :href=>"/"} RMINER
+
+        %ul.dropdown.dropdown-menu{:role=>"menu"}
+          %li
+            %a{:href=>"/"} Scans
+          %li
+            %a{:href=>"/messages/"} Messages
+          %li
+            %a{:href=>"/patterns/"} Patterns
+          %li
+            %a{:href=>"/settings"} Settings
+
     = yield
