@@ -27,13 +27,13 @@
 
                     scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
 
+                    %a{:class=>"pull-right btn btn-success btn-xs"}
+                      %span{:class=>"glyphicon glyphicon glyphicon-save"}
 
                     %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"removeScan(scan1)"}
                       %span{:class=>"glyphicon glyphicon glyphicon-remove"}
 
 
-                    %a{:class=>"pull-right btn btn-success btn-xs"}
-                      %span{:class=>"glyphicon glyphicon glyphicon-save"}
 
               %ol{:class=>"angular-ui-tree-nodes",
                   "ng-if"=>"!scan1.packed",
