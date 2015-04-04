@@ -70,6 +70,7 @@ post '/patterns/:id' do
 
   pattern.body = new_pattern["body"]
   pattern.body_split = body_split(pattern.body)
+  pattern.final = new_pattern["final"]
   pattern.save
 end
 

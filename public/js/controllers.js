@@ -58,9 +58,10 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     $http.post("/scan/packed/", postObject)
   }
 
-  $scope.finalizePattern = function(pattern) {
-    pattern.final = true
-    $http.post("/patterns/finalize/", {"id" : pattern.id})
+  $scope.finalizePattern = function(pattern, final) {
+    pattern.final = final
+    $scope.savePattern
+    $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 
   $scope.savePattern = function(pattern) {
@@ -69,7 +70,6 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
       new_body = new_body.concat(" ", pattern.body_split[i].word)
     }
     pattern.body = new_body
-
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 

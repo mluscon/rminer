@@ -57,7 +57,12 @@
 
                       %span{"ng-bind-html"=>"pattern1.body | patternFilter"}
 
-                      %a{:class=>"pull-right btn btn-primary btn-xs"}
+                      %a{"ng-if"=>"!pattern1.final", :class=>"pull-right btn btn-primary btn-xs",
+                         "ng-click"=>"finalizePattern(pattern1, true)"}
+                        %span{:class=>"glyphicon glyphicon-plus"}
+
+                      %a{"ng-if"=>"pattern1.final", :class=>"pull-right btn btn-success btn-xs",
+                         "ng-click"=>"finalizePattern(pattern1, false)"}
                         %span{:class=>"glyphicon glyphicon-plus"}
 
                       %a{:class=>"pull-right btn btn-primary btn-xs", "ng-click"=>"pattern1.body_split=fixJson(pattern1.body_split); pattern1.edit=true"}
