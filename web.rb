@@ -62,6 +62,13 @@ get '/patterns/:id' do
   end
 end
 
+get '/patterns/:pattern_id/messages/?' do
+  pattern = controller.pattern params[:pattern_id]
+  halt 404 if pattern.nil?
+  puts pattern.messages
+  JSON.generate pattern.messages
+end
+
 post '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil? or not params.include? "json"

@@ -15,7 +15,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
 
   $scope.getMsgs = function(pattern_id) {
     $scope.activePattern = pattern_id
-    $http.get("/patterns/".concat(pattern_id,"?json"))
+    $http.get("/patterns/".concat(pattern_id,"/messages?json"))
     .success(function(response) {$scope.messages = angular.fromJson(response);});
   }
 
