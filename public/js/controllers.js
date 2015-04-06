@@ -53,6 +53,10 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     $scope.activeScan = id
   }
 
+  $scope.finalizeScan = function(scan) {
+    $http.post("/scan/finalize/", scan)
+  }
+
   $scope.packScan = function(scan_id, value) {
     var postObject = {"id" : scan_id, "value": value}
     $http.post("/scan/packed/", postObject)

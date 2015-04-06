@@ -27,7 +27,7 @@
 
                     scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
 
-                    %a{:class=>"pull-right btn btn-success btn-xs"}
+                    %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan1)"}
                       %span{:class=>"glyphicon glyphicon glyphicon-save"}
 
                     %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"removeScan(scan1)"}

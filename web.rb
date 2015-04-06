@@ -130,7 +130,15 @@ end
 
 post '/scan/packed/?' do
   params = JSON.parse(request.env["rack.input"].read)
+  halt 404 if params["id"].nil?
   controller.scan_pack(params["id"], params["value"])
+end
+
+post '/scan/finalize/?' do
+  params = JSON.parse(request.env["rack.input"].read)
+  halt 404 if params["id"].nil?
+
+  controller.scan_finalize(params["id"])
 end
 
 delete '/scans/:id' do

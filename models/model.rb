@@ -1,5 +1,6 @@
 require 'digest'
 require 'bcrypt'
+require 'dm-constraints'
 
 require './helpers/helper.rb'
 
@@ -27,7 +28,7 @@ class Scan
   property :selected,     Boolean, :default => false
 
   has n,  :messages, :through => Resource
-  has n,  :patterns
+  has n,  :patterns, :constraint => :set_nil
 
   belongs_to  :parent, :model => 'Pattern', :required => false
 end
@@ -39,13 +40,14 @@ class Pattern
   property :body,         Text
   property :body_split,   Text, :default => lambda { |r, p| body_split(r.body) }
   property :final,        Boolean, :default => false
+  property :finalized,    Boolean, :default => false
   property :selected,     Boolean, :default => false
   property :edit,         Boolean, :default => false
   property :packed,       Boolean, :default => true
 
-  belongs_to :scan
-  has n,     :messages, :through => Resource
-  has n,     :childs, :model => 'Scan', :required => false, :through => Resource
+  belongs_to :scan,       :required => false
+  has n,     :messages,   :through => Resource
+  has n,     :children,   :model => 'Scan', :through => Resource
 end
 
 class User

@@ -1,6 +1,7 @@
 require 'data_mapper'
 require 'redis'
 
+
 require './models/model.rb'
 
 class WebController
@@ -88,11 +89,10 @@ class WebController
     new_scan.separator = separator
     new_scan.sensitivity = sens
     new_scan.parent = Pattern.get(parent_id)
-    new_scan.save
+    new_scan.save!
 
     msgs.each do |msg|
       msg.scans << new_scan
-      msg.analyzed = true
       msg.save
     end
 
@@ -145,4 +145,27 @@ class WebController
     end
     scan.destroy!
   end
+
+  def scan_finalize(id)
+    scan = Scan.get(id.to_i)
+    scan.patterns.each do |pattern|
+      pattern.children.each do |scan|
+        scan_finalize(scan)
+      end
+      pattern.finalized = pattern.final
+      if not pattern.finalized
+        assocs = MessagePattern.all(:pattern=>pattern)
+        assocs.each do |asc|
+          asc.destroy!
+        end
+        pattern.destroy!
+      end
+    end
+    assocs = MessageScan.all(:scan=>scan)
+    assocs.each do |asc|
+      asc.destroy!
+    end
+    scan.destroy!
+  end
+
 end
