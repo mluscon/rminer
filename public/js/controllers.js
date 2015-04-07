@@ -191,38 +191,17 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
 
 RminerApp.controller('PatternsCtrl', function ($scope, $http) {
 
-  var url = "/patterns/".concat( window.location.pathname.split( '/' ).reverse()[0].concat("?json"))
-  $http.get(url)
-  .success(function(response) {$scope.messages = angular.fromJson(response);});
+  $http.get("/patterns/finalized?json")
+  .success(function(response) {$scope.patterns = angular.fromJson(response);});
 
-  $scope.regExpString = ""
-  $scope.sensitivity = 1
-  $scope.scanTag = ""
-
-  $scope.myFilter = function(msg) {
-    var regExp = new RegExp($scope.regExpString)
-    var res = regExp.test(msg.body)
-    var filtered = new Array()
-    return res
-  }
-
-  $scope.analyze = function() {
-    var filtered = []
-    var regExp = new RegExp($scope.regExpString)
-    for(var i = 0; i<$scope.messages.length; i++ ){
-      if (regExp.test($scope.messages[i].body)) {
-        filtered.push($scope.messages[i].id);
-      }
+  $scope.savePattern = function(pattern) {
+    new_body = ""
+    for (var i = 0; i<pattern.body_split.length; i++) {
+      new_body = new_body.concat(" ", pattern.body_split[i].word)
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag}
-    $http.post("/scan/new", postObject)
-    $scope.scan.Tag = ""
+    pattern.body = new_body
+    $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 
-  $scope.final = function() {
-    var number = window.location.pathname.split( '/' ).reverse()[0]
-    var postObject = { "id" : number }
-    $http.post("/final/", postObject)
-  }
 
 });

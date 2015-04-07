@@ -43,6 +43,14 @@ get '/scans/:id' do
   JSON.generate res
 end
 
+get '/patterns/finalized/?' do
+  if params.include? "json"
+    JSON.generate Pattern.all(:finalized=>true)
+  else
+    haml :patterns
+  end
+end
+
 get '/patterns/:id' do
   pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
@@ -61,6 +69,7 @@ get '/patterns/:id' do
     }
   end
 end
+
 
 get '/patterns/:pattern_id/messages/?' do
   pattern = controller.pattern params[:pattern_id]

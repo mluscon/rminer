@@ -43,6 +43,7 @@ class Pattern
   property :finalized,    Boolean, :default => false
   property :selected,     Boolean, :default => false
   property :edit,         Boolean, :default => false
+  property :enabled,      Boolean, :default => false
   property :packed,       Boolean, :default => true
 
   belongs_to :scan,       :required => false

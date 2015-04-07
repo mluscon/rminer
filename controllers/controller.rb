@@ -159,6 +159,9 @@ class WebController
           asc.destroy!
         end
         pattern.destroy!
+      else
+        pattern.enabled = true
+        pattern.save
       end
     end
     assocs = MessageScan.all(:scan=>scan)
