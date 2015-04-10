@@ -3,9 +3,9 @@
 require 'rubygems'
 require 'amqp'
 require 'parseconfig'
+require 'digest/murmurhash'
 
 require './redis_worker'
-
 
 #config
 config = ParseConfig.new('./rminer.conf')
@@ -14,6 +14,7 @@ workers = config['workers'].to_i
 channel = config['channel']
 cache_size = config['cache'].to_i
 children = []
+redis = Redis.new
 
 workers.times do
   pid = fork do
@@ -34,7 +35,7 @@ AMQP.start( :host => amqp_server ) do |connection|
       msgs.each do |msg|
         Message.create(
                        :body => msg,
-                       :body_hash => Digest::MD5.new.digest(msg).to_s[1,10]
+                       :body_hash => Digest::Digest::MurmurHash3_x64_128.hexdigest(msg).to_s
                       )
       end
       msgs = []
