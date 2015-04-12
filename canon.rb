@@ -10,7 +10,22 @@ class Variable
   end
 end
 
-variables = []
+def variables
+  variables = []
+  parsed = begin
+    YAML.load(File.open("./variables.yml"))
+  rescue ArgumentError => e
+    STDERR.puts "Could not parse variables.yml: #{e.message}"
+  end
+
+  variables = []
+  parsed.each do |var|
+    new_var = Variable.new(var["priority"], var["short"], Regexp.new(var["regexp"]))
+    variables.push new_var
+  end
+  variables
+end
+
 
 def build_filter( pattern )
   reg = Regexp.escape pattern
@@ -26,7 +41,11 @@ def find_best_pattern(pattern, msgs, separator)
     msgs.each do |msg|
       vars.push(find_best_var(msg.split(separator)[index]))
     end
-    best_var = vars.max_by{|x| x.priority}
+    if vars.empty?
+      best_var = variables[-1]
+    else
+      best_var = vars.max_by{|x| x.priority}
+    end
     pattern[index] = "<<<" + best_var.name + best_var.regexp.source + ">>>"
   end
   pattern.join(" ")
@@ -34,7 +53,7 @@ end
 
 
 def find_best_var( string )
-
+  variables = []
   parsed = begin
     YAML.load(File.open("./variables.yml"))
   rescue ArgumentError => e
@@ -46,6 +65,7 @@ def find_best_var( string )
     new_var = Variable.new(var["priority"], var["short"], Regexp.new(var["regexp"]))
     variables.push new_var
   end
+  variables
 
   match=[]
   variables.each do |var|
