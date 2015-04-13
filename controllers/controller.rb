@@ -169,6 +169,7 @@ class WebController
       asc.destroy!
     end
     scan.destroy!
+    @redis.rpush("filter", "update")
   end
 
 end

@@ -17,7 +17,6 @@ class RedisWorker
     @redis = Redis.new
 
     DataMapper.finalize
-    DataMapper.auto_upgrade!
   end
 
   def run!

@@ -2,47 +2,47 @@
 - type: Integer
   short: <<INT>>
   priority: 10
-  regexp: "^[0-9]+$"
+  regexp: "[0-9]+"
 
 - type: Float
   short: <<FLOAT>>
   priority: 20
-  regexp: "^[-+]?[0-9]*\\.?[0-9]+$"
+  regexp: "[-+]?[0-9]*\\.?[0-9]+"
 
 - type: Boolean
   short: <<BOOLEAN>>
   priority: 30
-  regexp: "^\\btrue\\b|\\bfalse\\b$"
+  regexp: "\\btrue\\b|\\bfalse\\b"
 
 - type: Word
   short: <<WORD>>
   priority: 40
-  regexp: "^\\btrue\\b|\\bfalse\\b$"
+  regexp: "\\btrue\\b|\\bfalse\\b"
 
 - type: String
   short: <<STRING>>
   priority: 50
-  regexp: "^[a-zA-Z]+$"
+  regexp: "[a-zA-Z]+"
 
 - type: Empty
   short: <<EMPTY>>
   priority: 60
-  regexp: "^$"
+  regexp: ""
 
 - type: Alphanumerical
   short: <<ALPHANUM>>
   priority: 70
-  regexp: "^[a-zA-Z0-9]+$"
+  regexp: "[a-zA-Z0-9]+"
 
 - type: Alphanumericaltext
   short: <<ALPHANUMTEXT>>
   priority: 80
-  regexp: "^[-.a-zA-Z0-9]+$"
+  regexp: "[-.a-zA-Z0-9]+"
 
 - type: Arbitrary
   short: <<ARBITRARY>>
   priority: 80
-  regexp: "^[^\n\r]+$"
+  regexp: "[^\n\r]+"
 
 - type: Variable
   short: <<VAR>>
