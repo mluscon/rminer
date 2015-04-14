@@ -26,7 +26,7 @@ def find_best_pattern(pattern, msgs, separator)
       vars.push(find_best_var(msg.split(separator)[index]))
     end
     if vars.empty?
-      best_var = Variable("90", "Var", "")
+      best_var = Variable.new("90", "Var", "")
     else
       best_var = vars.max_by{|x| x.priority}
     end
