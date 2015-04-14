@@ -1,4 +1,4 @@
-var RminerApp = angular.module('RminerApp', ['ngSanitize', 'patternFilters', 'editPatternFilters']);
+var RminerApp = angular.module('RminerApp', ['ngSanitize', 'ui.bootstrap', 'patternFilters', 'editPatternFilters']);
 
 
 RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
@@ -138,15 +138,13 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
 
 RminerApp.controller('MessagesCtrl', function ($scope, $http) {
 
-  $http.get("/messages/?json")
-  .success(function(response) {$scope.messages = angular.fromJson(response);});
-
+  $scope.messages = []
   $scope.regExpString = ""
   $scope.sensitivity = 1
-  $scope.scanTag = ""
   $scope.messages = ""
-  $scope.activeScan = -1
-  $scope.activePattern = -1
+
+  $http.get("/messages/?json")
+  .success(function(response) {$scope.messages = angular.fromJson(response);});
 
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
@@ -169,22 +167,19 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     $scope.scan.Tag = ""
   }
 
-  $scope.remove = function() {
-    var filtered = []
-    var remaining = []
-    var regExp = new RegExp($scope.regExpString)
-    for(var i = 0; i<$scope.messages.length; i++ ){
-      if (regExp.test($scope.messages[i].body)) {
-        filtered.push($scope.messages[i].id);
-      } else {
-        remaining.push($scope.messages[i]);
-      }
-    }
-    $scope.messages = remaining;
-    var postObject = { "msgs" : filtered }
-    $http.post("/remove/", postObject)
-    $scope.regExpString = ""
-  }
+  $scope.currentPage = 1
+  $scope.msgsPerPage = 100
+  $scope.pages = ($scope.messages.length/10)
+  $scope.msgsPage = $scope.messages.slice(0, $scope.msgsPerPage)
+
+  $scope.$watch('currentPage + messages', function() {
+    $scope.pages = ($scope.messages.length/10)
+    var begin = (($scope.currentPage - 1)* $scope.msgsPerPage)
+    var end = begin + $scope.msgsPerPage
+    $scope.msgsPage = $scope.messages.slice(begin, end)
+  });
+
+
 });
 
 

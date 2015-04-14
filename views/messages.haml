@@ -4,11 +4,17 @@
     %div{"ng-controller"=>"MessagesCtrl"}
       %div{:class=>"col-sm-9 fix-width"}
 
+        %pagination{"ng-model"=>"currentPage", "total-items"=>"pages",
+                    "boundary-links"=>"true", "max-size"=>"20"}
+
         %div{:class=>"panel panel-primary", :style=>"overflow-y:auto"}
           %div{}
             %ul{:class=>"list-group"}
-              %a{"ng-repeat"=>"message in messages | filter:myFilter", :class=>"list-group-item"}
+              %a{"ng-repeat"=>"message in msgsPage | filter:myFilter", :class=>"list-group-item"}
                 {{ message.body }}
+
+        %pagination{"ng-model"=>"currentPage", "total-items"=>"pages",
+                    "boundary-links"=>"true", "max-size"=>"20"}
 
 
       %div{:class=>"col-sm-3 right-affix"}
