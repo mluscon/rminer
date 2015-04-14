@@ -139,15 +139,30 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
 RminerApp.controller('MessagesCtrl', function ($scope, $http) {
 
   $scope.messages = []
+  $scope.allMessages = []
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.messages = ""
 
   $http.get("/messages/?json")
-  .success(function(response) {$scope.messages = angular.fromJson(response);});
+  .success(function(response) {
+    $scope.messages = angular.fromJson(response);
+    $scope.allMessages = $scope.messages
+  });
+
+  $scope.$watch('regExpString', function() {
+    var regExp = new RegExp($scope.regExpString)
+    var filtered = []
+    for (var i=0; i<$scope.allMessages.length; i++){
+      if (regExp.test($scope.allMessages[i].body)) {
+        filtered.push($scope.allMessages[i])
+      }
+    }
+    $scope.messages = filtered
+  });
+
 
   $scope.myFilter = function(msg) {
-    var scans = $scope.scans
     var regExp = new RegExp($scope.regExpString)
     var res = regExp.test(msg.body)
     var filtered = new Array()

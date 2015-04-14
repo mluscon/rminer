@@ -10,7 +10,7 @@
         %div{:class=>"panel panel-primary", :style=>"overflow-y:auto"}
           %div{}
             %ul{:class=>"list-group"}
-              %a{"ng-repeat"=>"message in msgsPage | filter:myFilter", :class=>"list-group-item"}
+              %a{"ng-repeat"=>"message in msgsPage", :class=>"list-group-item"}
                 {{ message.body }}
 
         %pagination{"ng-model"=>"currentPage", "total-items"=>"pages",
