@@ -107,7 +107,7 @@ class WebController
 
   def scans_serial(active=false)
     scans = []
-    Scan.all(:active => active).each do |scan|
+    Scan.all(:active => active, :removing=>false).each do |scan|
       #dirty dirty hack
       scans.push JSON.parse( scan.to_json(:methods=>[:patterns]) )
     end
@@ -126,6 +126,8 @@ class WebController
 
   def scan_remove(id)
     scan = Scan.get(id.to_i)
+    scan.removing = true
+    scan.save
     children = Scan.get(:parent=>scan)
     unless children.nil?
       children.each do |scan|

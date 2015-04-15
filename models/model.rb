@@ -26,6 +26,7 @@ class Scan
   property :separator,    String
   property :packed,       Boolean, :default => true
   property :selected,     Boolean, :default => false
+  property :removing,     Boolean, :default => false
 
   has n,  :messages, :through => Resource
   has n,  :patterns, :constraint => :set_nil
