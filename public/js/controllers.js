@@ -71,13 +71,18 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   $scope.savePattern = function(pattern) {
     new_body = ""
     for (var i = 0; i<pattern.body_split.length; i++) {
-      new_body = new_body.concat(" ", pattern.body_split[i].word)
+      if (pattern.body_split[i].variable) {
+        new_body = new_body.concat(" ", "<<<<<", pattern.body_split[i].type, ">>", pattern.body_split[i].word, ">>>")
+      } else {
+        new_body = new_body.concat(" ", pattern.body_split[i].word)
+      }
     }
     pattern.body = new_body
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 
   $scope.removeScan = function(scan) {
+    scan.removing = true
     $http.delete("/scans/".concat(scan.id))
     new_scans = []
     for (var i = 0; i<$scope.scans.length; i++) {

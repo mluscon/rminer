@@ -161,3 +161,6 @@ post '/final/?' do
   controller.final(params["id"])
 end
 
+get '/treenode/?' do
+  haml :treenode
+end

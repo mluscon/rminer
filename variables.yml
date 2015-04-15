@@ -42,7 +42,7 @@
 - type: Arbitrary
   short: <<ARBITRARY>>
   priority: 80
-  regexp: "[^\n\r]+"
+  regexp: ".+"
 
 - type: Variable
   short: <<VAR>>
