@@ -1,5 +1,7 @@
 require 'json'
 
+require './variable.rb'
+
 def body_split(body)
   words = []
   var_type = /(?<=<<).+?(?=>>)/
@@ -12,4 +14,13 @@ def body_split(body)
     end
   end
   JSON.generate(words)
+end
+
+def parse_variables(variables)
+  list = []
+  variables.each do |var|
+    new_var = Variable.new(var["priority"], var["short"], var["regexp"])
+    list.push new_var
+  end
+  list
 end

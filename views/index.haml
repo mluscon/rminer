@@ -25,7 +25,7 @@
                       %span{"ng-class"=>"scan1.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                    scan id: {{ scan1.id }}, sensitivity: {{ scan1.sensitivity }}
+                    sensitivity: {{ scan1.sensitivity }}
 
                     %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan1)"}
                       %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -105,7 +105,7 @@
                           %span{"ng-class"=>"scan2.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                        scan id: {{ scan2.id }}, sensitivity: {{ scan2.sensitivity }}
+                        sensitivity: {{ scan2.sensitivity }}
 
                         %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan2)"}
                           %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -163,7 +163,7 @@
                             %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
                             %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
 
-                          %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern2); pattern.edit=false"}
+                          %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern2); pattern2.edit=false"}
                             %span{:class=>"glyphicon glyphicon-ok"}
 
                           %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"pattern2.edit=false"}
@@ -185,7 +185,7 @@
                               %span{"ng-class"=>"scan3.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                            scan id: {{ scan3.id }}, sensitivity: {{ scan3.sensitivity }}
+                            sensitivity: {{ scan3.sensitivity }}
 
                             %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan3)"}
                               %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -243,7 +243,7 @@
                                 %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
                                 %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
 
-                              %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern3); pattern.edit=false"}
+                              %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern3); pattern3.edit=false"}
                                 %span{:class=>"glyphicon glyphicon-ok"}
 
                               %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"pattern3.edit=false"}
@@ -323,7 +323,7 @@
                                     %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
                                     %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
 
-                                  %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern4); pattern.edit=false"}
+                                  %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern4); pattern4.edit=false"}
                                     %span{:class=>"glyphicon glyphicon-ok"}
 
                                   %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"pattern4.edit=false"}
@@ -403,7 +403,7 @@
                                         %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
                                         %input{"ng-if"=>"word.variable", "ng-model"=>"word.word"}
 
-                                      %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern5); pattern.edit=false"}
+                                      %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"savePattern(pattern5); pattern5.edit=false"}
                                         %span{:class=>"glyphicon glyphicon-ok"}
 
                                       %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"pattern5.edit=false"}

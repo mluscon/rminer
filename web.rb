@@ -164,3 +164,20 @@ end
 get '/treenode/?' do
   haml :treenode
 end
+
+get '/variables/?' do
+  yaml = begin
+    YAML.load(File.open("./variables.yml"))
+  rescue ArgumentError => e
+    STDERR.puts "Could not parse variables.yml: #{e.message}"
+  end
+
+  serial = []
+  yaml.each do |entry|
+    serial.push JSON.parse(JSON.generate(entry))
+  end
+
+  puts JSON.generate(serial)
+  JSON.generate(serial)
+end
+

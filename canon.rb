@@ -1,14 +1,9 @@
 require 'yaml'
 
-class Variable
-  attr_accessor :name, :priority, :regexp
+require './variable.rb'
+require './helpers/helper.rb'
 
-  def initialize(priority, name, regexp)
-    @priority=priority
-    @name=name
-    @regexp=regexp
-  end
-end
+
 
 def build_filter( pattern )
   reg = Regexp.escape pattern

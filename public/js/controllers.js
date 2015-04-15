@@ -6,6 +6,9 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   $http.get("/scans/?json")
   .success(function(response) {$scope.scans = angular.fromJson(response);});
 
+  $http.get("/variables/?json")
+  .success(function(response) {$scope.variables = angular.fromJson(response);});
+
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.scanTag = ""
@@ -72,7 +75,17 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     new_body = ""
     for (var i = 0; i<pattern.body_split.length; i++) {
       if (pattern.body_split[i].variable) {
-        new_body = new_body.concat(" ", "<<<<<", pattern.body_split[i].type, ">>", pattern.body_split[i].word, ">>>")
+        var found = false
+        for (var j = 0; j<$scope.variables.length; j++) {
+          if ($scope.variables[j].regexp === pattern.body_split[i].word) {
+            found = true
+          }
+        }
+        if (found) {
+          new_body = new_body.concat(" ", "<<<<<", pattern.body_split[i].type, ">>", pattern.body_split[i].word, ">>>")
+        } else {
+          new_body = new_body.concat(" ", "<<<<<USERDEF>>", pattern.body_split[i].word, ">>>")
+        }
       } else {
         new_body = new_body.concat(" ", pattern.body_split[i].word)
       }
@@ -113,7 +126,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
-    $scope.scan.Tag = ""
+    $scope.scanTag = ""
   }
 
   $scope.remove = function() {
@@ -184,7 +197,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
-    $scope.scan.Tag = ""
+    $scope.scanTag = ""
   }
 
   $scope.currentPage = 1
