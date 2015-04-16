@@ -18,6 +18,19 @@ children = []
 filter_fact = FilterMaker.new
 filters = filter_fact.update_filters
 
+plugins = []
+Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
+  file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"
+  if name = file_reg.match(file)
+    require file
+    plugins.push name.to_s.split('_').collect(&:capitalize).join
+  end
+end
+
+puts plugins
+
+#Object::const_get('Array').new
+
 workers.times do
   pid = fork do
     redis = RedisWorker.new
