@@ -57,6 +57,14 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   }
 
   $scope.finalizeScan = function(scan) {
+    for (var i = 0; i<scan.patterns.length; i++) {
+      for (var j = 0; j<$scope.scans.length; j++) {
+        if ($scope.scans[j].parent_id == scan.patterns[i].id) {
+          $scope.finalizeScan($scope.scans[j])
+        }
+      }
+    }
+    scan.removing = true
     $http.post("/scan/finalize/", scan)
   }
 
