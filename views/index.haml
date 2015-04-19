@@ -92,7 +92,7 @@
                 -# Level 2
                 %ol{:class=>"angular-ui-tree-nodes",
                     "ng-repeat"=>"scan2 in scans",
-                    "ng-if"=>"scan2.parent_id == pattern1.id && !pattern1.packed" }
+                    "ng-if"=>"scan2.parent_id == pattern1.id && !pattern1.packed && !scan2.removing"}
 
                   %li{:class=>"angular-ui-tree-node"}
 
@@ -172,7 +172,7 @@
                     -# Level 3
                     %ol{:class=>"angular-ui-tree-nodes",
                         "ng-repeat"=>"scan3 in scans",
-                        "ng-if"=>"scan3.parent_id == pattern2.id && !pattern2.packed" }
+                        "ng-if"=>"scan3.parent_id == pattern2.id && !pattern2.packed && !scan3.removing" }
 
                       %li{:class=>"angular-ui-tree-node"}
 
@@ -252,7 +252,7 @@
                         -# Level 4
                         %ol{:class=>"angular-ui-tree-nodes",
                             "ng-repeat"=>"scan4 in scans",
-                            "ng-if"=>"scan4.parent_id == pattern3.id && !pattern3.packed" }
+                            "ng-if"=>"scan4.parent_id == pattern3.id && !pattern3.packed && !scan4.removing" }
 
                           %li{:class=>"angular-ui-tree-node"}
 
@@ -332,7 +332,7 @@
                             -# Level 5
                             %ol{:class=>"angular-ui-tree-nodes",
                                 "ng-repeat"=>"scan5 in scans",
-                                "ng-if"=>"scan5.parent_id == pattern4.id && !pattern4.packed" }
+                                "ng-if"=>"scan5.parent_id == pattern4.id && !pattern4.packed && !scan5.removing" }
 
                               %li{:class=>"angular-ui-tree-node"}
 

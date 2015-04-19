@@ -95,18 +95,16 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   }
 
   $scope.removeScan = function(scan) {
-    scan.removing = true
-    $http.delete("/scans/".concat(scan.id))
-    new_scans = []
-    for (var i = 0; i<$scope.scans.length; i++) {
-      if ($scope.scans[i].id != scan.id) {
-        new_scans.push($scope.scans[i].id)
+    for (var i = 0; i<scan.patterns.length; i++) {
+      for (var j = 0; j<$scope.scans.length; j++) {
+        if ($scope.scans[j].parent_id == scan.patterns[i].id) {
+          $scope.removeScan($scope.scans[j])
+        }
       }
     }
-    $scope.scans = new_scans
+    scan.removing = true
+    $http.delete("/scans/".concat(scan.id))
   }
-
-
 
   $scope.myFilter = function(msg) {
     var scans = $scope.scans
