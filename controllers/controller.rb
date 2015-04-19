@@ -174,4 +174,14 @@ class WebController
     @redis.rpush("filter", "update")
   end
 
+  def info
+    info = {}
+    info[:messages] = Message.all.count
+    info[:scans_done] = Scan.all(:active=>false).count
+    info[:scans_prog] = Scan.all(:active=>true).count
+    info[:patterns] = Pattern.all(:final=>true).count
+    info
+  end
+
+
 end

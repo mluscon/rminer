@@ -121,6 +121,11 @@ get '/messages/?' do
   end
 end
 
+get '/info/?' do
+  info = controller.info
+  JSON.generate(info)
+end
+
 post '/scan/new/?' do
   halt 404 if params.nil?
 
@@ -177,7 +182,6 @@ get '/variables/?' do
     serial.push JSON.parse(JSON.generate(entry))
   end
 
-  puts JSON.generate(serial)
   JSON.generate(serial)
 end
 

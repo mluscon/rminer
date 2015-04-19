@@ -4,7 +4,7 @@
     %div{"ng-controller"=>"MessagesCtrl"}
       %div{:class=>"col-sm-9 fix-width"}
 
-        %pagination{"ng-model"=>"currentPage", "total-items"=>"pages",
+        %pagination{:class=>"pagination", "ng-model"=>"currentPage", "total-items"=>"pages",
                     "boundary-links"=>"true", "max-size"=>"20"}
 
         %div{:class=>"panel panel-primary", :style=>"overflow-y:auto"}
@@ -13,7 +13,7 @@
               %a{"ng-repeat"=>"message in msgsPage", :class=>"list-group-item"}
                 {{ message.body }}
 
-        %pagination{"ng-model"=>"currentPage", "total-items"=>"pages",
+        %pagination{:class=>"pagination", "ng-model"=>"currentPage", "total-items"=>"pages",
                     "boundary-links"=>"true", "max-size"=>"20"}
 
 
@@ -38,3 +38,30 @@
           %div{:class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
               Start
+        .row
+
+        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto" }
+          %div{:class=>"panel-heading"}
+            System info
+
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Messages:
+            %input{"ng-model"=>"info.messages", :type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans saved:
+            %input{"ng-model"=>"info.scans_done",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans in proggress:
+            %input{"ng-model"=>"info.scans_prog",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Active patterns:
+            %input{"ng-model"=>"info.patterns",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+

@@ -168,6 +168,11 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.sensitivity = 1
   $scope.messages = ""
 
+  $http.get("/info/?json")
+  .success(function(response) {
+    $scope.info = angular.fromJson(response);
+  });
+
   $http.get("/messages/?json")
   .success(function(response) {
     $scope.messages = angular.fromJson(response);
@@ -204,6 +209,11 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
     $scope.scanTag = ""
+
+    $http.get("/info/?json")
+    .success(function(response) {
+    $scope.info = angular.fromJson(response);
+    });
   }
 
   $scope.currentPage = 1
@@ -236,6 +246,11 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     pattern.body = new_body
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
+
+  $http.get("/info/?json")
+  .success(function(response) {
+    $scope.info = angular.fromJson(response);
+  });
 
 
 });

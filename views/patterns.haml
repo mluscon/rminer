@@ -19,3 +19,29 @@
 
                   %span{"ng-bind-html"=>"pattern.body | patternFilter"}
 
+      %div{:class=>"col-sm-3 right-affix"}
+
+        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto" }
+          %div{:class=>"panel-heading"}
+            System info
+
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Messages:
+            %input{"ng-model"=>"info.messages", :type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans saved:
+            %input{"ng-model"=>"info.scans_done",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans in proggress:
+            %input{"ng-model"=>"info.scans_prog",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Active patterns:
+            %input{"ng-model"=>"info.patterns",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
