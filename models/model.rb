@@ -37,15 +37,15 @@ end
 class Pattern
   include DataMapper::Resource
 
-  property :id,           Serial
-  property :body,         Text
-  property :body_split,   Text, :default => lambda { |r, p| body_split(r.body) }
-  property :final,        Boolean, :default => false
-  property :finalized,    Boolean, :default => false
-  property :selected,     Boolean, :default => false
-  property :edit,         Boolean, :default => false
-  property :enabled,      Boolean, :default => false
-  property :packed,       Boolean, :default => true
+  property :id,             Serial
+  property :body,           Text
+  property :body_split,     Text, :default => lambda { |r, p| body_split(r.body) }
+  property :active_filter,  Boolean, :default => false
+  property :final,          Boolean, :default => false
+  property :finalized,      Boolean, :default => false
+  property :selected,       Boolean, :default => false
+  property :edit,           Boolean, :default => false
+  property :packed,         Boolean, :default => true
 
   belongs_to :scan,       :required => false
   has n,     :messages,   :through => Resource

@@ -13,11 +13,22 @@
 
                 %div{:class=>"tree-node-content"}
 
-                  %a{"ng-if"=>"pattern.finalized", :class=>" btn btn-success btn-xs",
-                      "ng-click"=>"finalizePattern(pattern, false)"}
+                  %a{:class=>"btn btn-success btn-xs",
+                     "ng-click"=>"finalizePattern(pattern, false)"}
                     %span{:class=>"glyphicon glyphicon-plus"}
 
                   %span{"ng-bind-html"=>"pattern.body | patternFilter"}
+
+                  %a{"ng-if"=>"pattern.active_filter", :class=>"pull-right btn btn-success btn-xs",
+                     "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-plus"}
+                  %a{"ng-if"=>"!pattern.active_filter", :class=>"pull-right btn btn-primary btn-xs",
+                     "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-plus"}
+
+                  %a{:class=>"pull-right btn btn-danger btn-xs",
+                     "ng-click"=>"removePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-minus"}
 
       %div{:class=>"col-sm-3 right-affix"}
 

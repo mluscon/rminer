@@ -30,6 +30,13 @@ class RedisWorker
     end
   end
 
+  def rerun
+    Scan.all(:active=>true).each do |scan|
+      puts "Restarted analysis of scan id #{scan.id}"
+      do_analyze(scan.id)
+    end
+  end
+
   def do_analyze(scan_id)
 
     scan = Scan.get(scan_id)

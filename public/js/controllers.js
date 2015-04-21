@@ -239,12 +239,12 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
   .success(function(response) {$scope.patterns = angular.fromJson(response);});
 
   $scope.savePattern = function(pattern) {
-    new_body = ""
-    for (var i = 0; i<pattern.body_split.length; i++) {
-      new_body = new_body.concat(" ", pattern.body_split[i].word)
-    }
-    pattern.body = new_body
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
+  }
+
+  $scope.removePattern = function(pattern) {
+    pattern.finalized = false
+    $http.delete("/patterns/".concat(pattern.id), pattern)
   }
 
   $http.get("/info/?json")

@@ -19,7 +19,7 @@ class FilterMaker
   end
 
   def update_filters
-    finalized_patterns = Pattern.all(:finalized => true)
+    finalized_patterns = Pattern.all(:active_filter => true)
     @filters = finalized_patterns.map do |pattern|
       body_split = JSON.parse(pattern.body_split)
       msg = body_split.map { |entry| entry["word"] }.join(" ")

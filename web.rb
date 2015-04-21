@@ -71,21 +71,18 @@ get '/patterns/:id' do
 end
 
 
-get '/patterns/:pattern_id/messages/?' do
-  pattern = controller.pattern params[:pattern_id]
+get '/patterns/:id/messages/?' do
+  pattern = controller.pattern params[:id]
   halt 404 if pattern.nil?
   JSON.generate pattern.messages
 end
 
 post '/patterns/:id' do
-  pattern = controller.pattern params[:id]
-  halt 404 if pattern.nil? or not params.include? "json"
+
+  halt 404 if params[:id].nil? or not params.include? "json"
   new_pattern = JSON.parse(request.env["rack.input"].read)
 
-  pattern.body = new_pattern["body"]
-  pattern.body_split = body_split(pattern.body)
-  pattern.final = new_pattern["final"]
-  pattern.save
+  controller.pattern_save new_pattern
 end
 
 
@@ -159,6 +156,11 @@ delete '/scans/:id' do
   controller.scan_remove(params["id"].to_i)
 end
 
+delete '/patterns/:id' do
+  halt 404 if params.nil?
+
+  controller.pattern_remove(params["id"].to_i)
+end
 
 post '/final/?' do
   halt 404 if params.nil?

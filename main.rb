@@ -27,13 +27,12 @@ Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
   end
 end
 
-puts plugins
-
 #Object::const_get('Array').new
 
-workers.times do
+workers.times do |index|
   pid = fork do
     redis = RedisWorker.new
+    redis.rerun if index == 0
     redis.run!
   end
   puts 'Started analyzator process with pid ' + pid.to_s + '.'

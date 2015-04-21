@@ -3,6 +3,7 @@ require 'redis'
 
 
 require './models/model.rb'
+require './helpers/helper.rb'
 
 class WebController
 
@@ -162,7 +163,7 @@ class WebController
         end
         pattern.destroy!
       else
-        pattern.enabled = true
+        pattern.active_filter = true
         pattern.save
       end
     end
@@ -179,9 +180,28 @@ class WebController
     info[:messages] = Message.all.count
     info[:scans_done] = Scan.all(:active=>false).count
     info[:scans_prog] = Scan.all(:active=>true).count
-    info[:patterns] = Pattern.all(:final=>true).count
+    info[:patterns_finalized] = Pattern.all(:finalized=>true).count
+    info[:patterns_active] = Pattern.all(:active_filter=>true).count
     info
   end
 
+  def pattern_remove(id)
+    pattern = Pattern.get(id)
+    pattern.destroy! if pattern
+  end
+
+  def pattern_save(pattern)
+      pat = Pattern.get(pattern["id"])
+      pat.body = pattern["body"]
+      pat.body_split = body_split(pat.body)
+      pat.final = pattern["final"]
+      signal = false
+      if pattern["finalized"] and pat.active_filter != pattern["active_filter"]
+        pat.active_filter = pattern["active_filter"]
+        signal = true
+      end
+      pat.save
+      @redis.rpush("filter", "update") if signal
+  end
 
 end
