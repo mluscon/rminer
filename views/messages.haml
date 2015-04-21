@@ -61,7 +61,11 @@
                    :class=>"form-control", :readonly=>"true"}
           %div{:class=>"input-group"}
             %span{:class=>"input-group-addon"}
-              Active patterns:
-            %input{"ng-model"=>"info.patterns",:type=>"text",
+              Finalized patterns:
+            %input{"ng-model"=>"info.patterns_finalized",:type=>"text",
                    :class=>"form-control", :readonly=>"true"}
-
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Active patterns:
+            %input{"ng-model"=>"info.patterns_active",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
