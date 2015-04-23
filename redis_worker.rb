@@ -6,13 +6,13 @@ require './analysis.rb'
 
 class RedisWorker
 
-  def initialize
+  def initialize(host, database, user, passwd, adapter)
     @database = DataMapper.setup :default, {
-      :adapter  => 'postgres',
-      :host     => 'localhost',
-      :database => 'thesis',
-      :user     => 'gproject',
-      :password => 'gproject'
+      :adapter  => adapter,
+      :host     => host,
+      :database => database,
+      :user     => user,
+      :password => passwd,
     }
     @redis = Redis.new
 

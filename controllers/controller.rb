@@ -1,6 +1,6 @@
 require 'data_mapper'
+require 'parseconfig'
 require 'redis'
-
 
 require './models/model.rb'
 require './helpers/helper.rb'
@@ -8,12 +8,18 @@ require './helpers/helper.rb'
 class WebController
 
   def initialize
+    config = ParseConfig.new('./rminer.conf')
+    host = config['db_host']
+    database = config['db_database']
+    user = config['db_user']
+    passwd = config['db_password']
+    adapter = config['db_adapter']
     @database = DataMapper.setup :default, {
-      :adapter  => 'postgres',
-      :host     => 'localhost',
-      :database => 'thesis',
-      :user     => 'gproject',
-      :password => 'gproject'
+      :adapter  => adapter,
+      :host     => host,
+      :database => database,
+      :user     => user,
+      :password => passwd,
     }
     @redis = Redis.new
     #find a proper place

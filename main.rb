@@ -8,14 +8,21 @@ require 'digest/murmurhash'
 require './redis_worker'
 require './filters.rb'
 
-#config
+#parse config
 config = ParseConfig.new('./rminer.conf')
 amqp_server = config['amqp_server']
 workers = config['workers'].to_i
 channel = config['channel']
 cache_size = config['cache'].to_i
+
+host = config['db_host']
+database = config['db_database']
+user = config['db_user']
+password = config['db_password']
+adapter = config['db_adapter']
+
 children = []
-filter_fact = FilterMaker.new
+filter_fact = FilterMaker.new(host, database, user, password, adapter)
 filters = filter_fact.update_filters
 
 plugins = []
@@ -31,7 +38,7 @@ end
 
 workers.times do |index|
   pid = fork do
-    redis = RedisWorker.new
+    redis = RedisWorker.new(host, database, user, password, adapter)
     redis.rerun if index == 0
     redis.run!
   end
