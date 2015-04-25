@@ -24,3 +24,15 @@ def parse_variables(variables)
   end
   list
 end
+
+def pattern_name(pattern)
+  pattern = JSON.parse pattern
+  name = ""
+  pattern.each do |word|
+    if word["variable"] == false
+      name = name + word["word"]
+    end
+    break if name.split.length == 2
+  end
+  name
+end

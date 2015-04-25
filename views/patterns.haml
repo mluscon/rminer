@@ -7,28 +7,50 @@
         .row
 
           %ol{:class=>"angular-ui-tree-nodes", "ng-repeat"=>"pattern in patterns"}
-            %li{:class=>"angular-ui-tree-node"}
+            %li{:class=>"angular-ui-tree-node", "ng-if"=>"pattern.finalized"}
 
               %div{"ng-class"=>"pattern1.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'"}
 
-                %div{:class=>"tree-node-content"}
+                %div{:class=>"tree-node-content", "ng-if"=>"pattern.edit == false"}
 
-                  %a{:class=>"btn btn-success btn-xs",
-                     "ng-click"=>"finalizePattern(pattern, false)"}
+                  %a{"ng-if"=>"pattern.active_filter", :class=>"btn btn-success btn-xs",
+                     "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-plus"}
+                  %a{"ng-if"=>"!pattern.active_filter", :class=>"btn btn-primary btn-xs",
+                     "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-plus"}
+
+                  Name: {{ pattern.name }}
+
+                  Pattern:
+                  %span{"ng-bind-html"=>"pattern.body | patternFilter"}
+
+                  %a{:class=>"pull-right btn btn-danger btn-xs",
+                    "ng-click"=>"removePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-minus"}
+
+                  %a{:class=>"pull-right btn btn-primary btn-xs",
+                    "ng-click"=>"pattern.edit = true"}
+                    %span{:class=>"glyphicon glyphicon-pencil"}
+
+                %div{:class=>"tree-node-content", "ng-if"=>"pattern.edit == true"}
+
+                  %a{"ng-if"=>"pattern.active_filter", :class=>"btn btn-success btn-xs",
+                     "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-plus"}
+                  %a{"ng-if"=>"!pattern.active_filter", :class=>"btn btn-primary btn-xs",
+                     "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
                     %span{:class=>"glyphicon glyphicon-plus"}
 
                   %span{"ng-bind-html"=>"pattern.body | patternFilter"}
 
-                  %a{"ng-if"=>"pattern.active_filter", :class=>"pull-right btn btn-success btn-xs",
-                     "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}
-                    %span{:class=>"glyphicon glyphicon-plus"}
-                  %a{"ng-if"=>"!pattern.active_filter", :class=>"pull-right btn btn-primary btn-xs",
-                     "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
-                    %span{:class=>"glyphicon glyphicon-plus"}
+                  %a{:class=>"pull-right btn btn-success btn-xs",
+                    "ng-click"=>"savePattern(pattern)"}
+                    %span{:class=>"glyphicon glyphicon-ok"}
 
                   %a{:class=>"pull-right btn btn-danger btn-xs",
-                     "ng-click"=>"removePattern(pattern)"}
-                    %span{:class=>"glyphicon glyphicon-minus"}
+                    "ng-click"=>"pattern.edit = false"}
+                    %span{:class=>"glyphicon glyphicon-remove"}
 
       %div{:class=>"col-sm-3 right-affix"}
 
