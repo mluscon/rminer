@@ -20,9 +20,10 @@
                      "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
                     %span{:class=>"glyphicon glyphicon-plus"}
 
-                  Name: {{ pattern.name }}
+                  %span{:class=>"green"} Name:
+                  {{ pattern.name }}
 
-                  Pattern:
+                  %span{:class=>"green"} Pattern:
                   %span{"ng-bind-html"=>"pattern.body | patternFilter"}
 
                   %a{:class=>"pull-right btn btn-danger btn-xs",
@@ -33,7 +34,7 @@
                     "ng-click"=>"pattern.edit = true"}
                     %span{:class=>"glyphicon glyphicon-pencil"}
 
-                %div{:class=>"tree-node-content", "ng-if"=>"pattern.edit == true"}
+                %div{:class=>"tree-node-content", "ng-if"=>"pattern.body_split=fixJson(pattern.body_split); pattern.edit == true"}
 
                   %a{"ng-if"=>"pattern.active_filter", :class=>"btn btn-success btn-xs",
                      "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}
@@ -42,10 +43,17 @@
                      "ng-click"=>"pattern.active_filter=true; savePattern(pattern)"}
                     %span{:class=>"glyphicon glyphicon-plus"}
 
-                  %span{"ng-bind-html"=>"pattern.body | patternFilter"}
+                  %span{:class=>"green"} Name:
+                  %input{"ng-model"=>"pattern.name"}
+
+                  %span{:class=>"green"} Pattern:
+                  %span{"ng-repeat"=>"word in pattern.body_split track by $index"}
+                    %span{"ng-if"=>"!word.variable", "ng-bind"=>"word.word"}
+                    %input{"ng-if"=>"word.variable", "ng-model"=>"word.name"}
+
 
                   %a{:class=>"pull-right btn btn-success btn-xs",
-                    "ng-click"=>"savePattern(pattern)"}
+                    "ng-click"=>"pattern.edit = false; savePattern(pattern)"}
                     %span{:class=>"glyphicon glyphicon-ok"}
 
                   %a{:class=>"pull-right btn btn-danger btn-xs",

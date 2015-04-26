@@ -239,6 +239,15 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
   .success(function(response) {$scope.patterns = angular.fromJson(response);});
 
   $scope.savePattern = function(pattern) {
+    new_body = ""
+    for (var i = 0; i<pattern.body_split.length; i++) {
+      if (pattern.body_split[i].variable) {
+        new_body = new_body.concat(" %{", pattern.body_split[i].type, ":", pattern.body_split[i].name, "}", "<<", pattern.body_split[i].word, ">>")
+      } else {
+        new_body = new_body.concat(" ", pattern.body_split[i].word)
+      }
+    }
+    pattern.body = new_body
     $http.post("/patterns/".concat(pattern.id,"?json"), pattern)
   }
 
@@ -252,5 +261,8 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     $scope.info = angular.fromJson(response);
   });
 
+  $scope.fixJson = function(json) {
+    return angular.fromJson(json)
+  }
 
 });
