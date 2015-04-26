@@ -40,6 +40,7 @@ class Pattern
   property :id,             Serial
   property :body,           Text
   property :body_split,     Text, :default => lambda { |r, p| body_split(r.body) }
+  property :name,           Text, :default => lambda { |r, p| pattern_name(r.body_split) }
   property :active_filter,  Boolean, :default => false
   property :final,          Boolean, :default => false
   property :finalized,      Boolean, :default => false

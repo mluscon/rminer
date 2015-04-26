@@ -193,7 +193,13 @@ class WebController
 
   def pattern_remove(id)
     pattern = Pattern.get(id)
-    pattern.destroy! if pattern
+    if pattern
+      assocs = MessagePattern.all(:pattern=>pattern)
+      assocs.each do |asc|
+        asc.destroy!
+      end
+      pattern.destroy!
+    end
   end
 
   def pattern_save(pattern)

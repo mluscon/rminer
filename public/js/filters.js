@@ -1,11 +1,11 @@
 
 angular.module('patternFilters', []).filter('patternFilter', function() {
   return function(input) {
-    name_reg = new RegExp("<<[a-zA-Z]+>>")
+    name_reg = new RegExp("%{[a-zA-Z:0-9]+}")
     words = input.split(" ")
 
     for(var i=0; i<words.length; i++) {
-      if (words[i].substr(0,3) == "<<<") {
+      if (words[i].substr(0,2) == "%{") {
         name = words[i].match(name_reg)
 
         esc_name = name.replace(/</g, '&lt;').

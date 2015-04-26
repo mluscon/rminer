@@ -5,7 +5,7 @@ require './helpers/helper.rb'
 
 
 
-def build_filter( pattern )
+def build_filter(pattern, separator)
   reg = Regexp.escape pattern
   reg = "^" << reg << "$"
   Regexp.new(reg.gsub("VAR","[^\s]+"))
@@ -15,7 +15,7 @@ def find_best_pattern(pattern, msgs, separator)
   pattern = pattern.split(separator)
   msgs = msgs.select{|msg| msg.split(separator).length == pattern.length}
   var_is = pattern.map.with_index {|x, i| x == 'VAR' ? i : nil}.compact
-  var_is.each do |index|
+  var_is.each_with_index do |index, var_index|
     vars = []
     msgs.each do |msg|
       vars.push(find_best_var(msg.split(separator)[index]))
@@ -25,7 +25,7 @@ def find_best_pattern(pattern, msgs, separator)
     else
       best_var = vars.max_by{|x| x.priority}
     end
-    pattern[index] = "<<<" + best_var.name + best_var.regexp + ">>>"
+    pattern[index] = "%{#{best_var.name}:var#{var_index+1}}<<#{best_var.regexp}>>"
   end
   pattern.join(" ")
 end
@@ -55,10 +55,9 @@ def find_best_var( string )
 end
 
 def canonize(patterns, msgs, separator)
-
   best = {}
   patterns.keys.each do |pattern|
-    regexp = build_filter(pattern)
+    regexp = build_filter(pattern, separator)
     filtered = []
     patterns[pattern].each do |msg_id|
       msg = msgs.get(msg_id).body
@@ -67,7 +66,5 @@ def canonize(patterns, msgs, separator)
     best_pattern = find_best_pattern(pattern, filtered, separator)
     best[best_pattern] = patterns[pattern]
   end
-
   best
-
 end

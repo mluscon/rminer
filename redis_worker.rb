@@ -42,7 +42,7 @@ class RedisWorker
     scan = Scan.get(scan_id)
     separator = Regexp.new scan.separator
 
-    patterns = analyze(scan.sensitivity, scan.messages, separator )
+    patterns = analyze(scan.sensitivity, scan.messages, separator)
 
     patterns.keys.each do | pattern |
       db_pattern = Pattern.new( :body => pattern )

@@ -90,9 +90,9 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
           }
         }
         if (found) {
-          new_body = new_body.concat(" ", "<<<<<", pattern.body_split[i].type, ">>", pattern.body_split[i].word, ">>>")
+          new_body = new_body.concat(" %{", pattern.body_split[i].type, ":", pattern.body_split[i].name, "}", "<<", pattern.body_split[i].word, ">>")
         } else {
-          new_body = new_body.concat(" ", "<<<<<USERDEF>>", pattern.body_split[i].word, ">>>")
+          new_body = new_body.concat(" %{", "USERDEF", ":", pattern.body_split[i].name, "}", "<<", pattern.body_split[i].word, ">>")
         }
       } else {
         new_body = new_body.concat(" ", pattern.body_split[i].word)
