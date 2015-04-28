@@ -2,7 +2,6 @@ require 'redis'
 require 'data_mapper'
 
 require './models/model.rb'
-require './analysis.rb'
 
 class RedisWorker
 

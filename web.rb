@@ -5,7 +5,6 @@ require 'fileutils'
 require 'digest'
 
 require './controllers/controller.rb'
-require './analysis.rb'
 require './helpers/helper.rb'
 
 controller = WebController.new
