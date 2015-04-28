@@ -37,3 +37,15 @@ def pattern_name(pattern)
   end
   name
 end
+
+def get_algorithms(path)
+  algorithms = []
+  Dir['./plugins/*.rb'].each do |file|
+    file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"
+    if name = file_reg.match(file)
+      require file
+      algorithms.push name.to_s.split('_').collect(&:capitalize).join
+    end
+  end
+  algorithms
+end

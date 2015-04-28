@@ -71,7 +71,7 @@ class WebController
     end
   end
 
-  def analyze(sens ,msg_ids, separator, parent_id)
+  def analyze(msg_ids, parent_id, algorithm, sensitivity, separator)
 
     if msg_ids.length == 0
       STDERR.puts "Error: empty analyze call."
@@ -93,8 +93,9 @@ class WebController
     end
 
     new_scan = Scan.new
+    new_scan.algorithm = algorithm
     new_scan.separator = separator
-    new_scan.sensitivity = sens
+    new_scan.sensitivity = sensitivity
     new_scan.parent = Pattern.get(parent_id)
     new_scan.save!
 

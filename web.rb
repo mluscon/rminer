@@ -14,6 +14,12 @@ get '/' do
   haml :index
 end
 
+get '/algorithms/?' do
+  algs = get_algorithms('/plugins/')
+  puts JSON.generate algs
+  JSON.generate algs
+end
+
 get '/login/' do
   haml :login
 end
@@ -130,11 +136,13 @@ post '/scan/new/?' do
   sensitivity = params["sensitivity"].to_f
   msg_ids = params["msgs"]
   parent = params["parent"]
+  algorithm = params["algorithm"]
 
   halt 404 if sensitivity == 0 || sensitivity > 1
   halt 404 if msg_ids.nil?
+  halt 404 if algorithm.nil? or algorithm == ""
 
-  controller.analyze(sensitivity, msg_ids, params["separator"], parent)
+  controller.analyze(msg_ids, parent, algorithm, sensitivity, params["separator"])
 end
 
 post '/scan/packed/?' do

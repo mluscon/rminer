@@ -9,6 +9,10 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   $http.get("/variables/?json")
   .success(function(response) {$scope.variables = angular.fromJson(response);});
 
+  $http.get("/algorithms/?json")
+  .success(function(response) {$scope.algorithms = angular.fromJson(response);});
+
+  $scope.selectedAlg = "Default"
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.scanTag = ""
@@ -130,7 +134,8 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                      "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
     $scope.scanTag = ""
   }
@@ -167,6 +172,10 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.messages = ""
+  $scope.selectedAlg = "Default"
+
+  $http.get("/algorithms/?json")
+  .success(function(response) {$scope.algorithms = angular.fromJson(response);});
 
   $http.get("/info/?json")
   .success(function(response) {
@@ -190,7 +199,6 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     $scope.messages = filtered
   });
 
-
   $scope.myFilter = function(msg) {
     var regExp = new RegExp($scope.regExpString)
     var res = regExp.test(msg.body)
@@ -206,7 +214,8 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered, "tag" : $scope.scanTag, "parent" : $scope.activePattern}
+    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                      "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
     $http.post("/scan/new", postObject)
     $scope.scanTag = ""
 
@@ -227,10 +236,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     var end = begin + $scope.msgsPerPage
     $scope.msgsPage = $scope.messages.slice(begin, end)
   });
-
-
 });
-
 
 
 RminerApp.controller('PatternsCtrl', function ($scope, $http) {

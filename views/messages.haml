@@ -35,6 +35,11 @@
             %span{:class=>"input-group-addon"}
               Filter:
             %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Algorithm:
+            %select{"ng-options"=>"algorithm for algorithm in algorithms",
+                    "ng-model"=>"selectedAlg"}
           %div{:class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
               Start
