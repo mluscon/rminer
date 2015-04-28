@@ -6,7 +6,7 @@ require './analysis.rb'
 
 class RedisWorker
 
-  def initialize(host, database, user, passwd, adapter)
+  def initialize(host, database, user, passwd, adapter, algorithms)
     @database = DataMapper.setup :default, {
       :adapter  => adapter,
       :host     => host,
@@ -15,8 +15,8 @@ class RedisWorker
       :password => passwd,
     }
     @redis = Redis.new
-
     DataMapper.finalize
+    @algorithms = algorithms
   end
 
   def run!
@@ -40,16 +40,30 @@ class RedisWorker
   def do_analyze(scan_id)
 
     scan = Scan.get(scan_id)
-    separator = Regexp.new scan.separator
+    sep = Regexp.new scan.separator
+    alg = scan.algorithm
 
-    patterns = analyze(scan.sensitivity, scan.messages, separator)
+    raw_patterns = nil
+    @algorithms.each do |algorithm|
+      if algorithm.class.to_s == alg
+        raw_patterns = algorithm.run(scan.messages, scan.sensitivity, sep)
+        break;
+      end
+    end
 
-    patterns.keys.each do | pattern |
+    if not raw_patterns
+      STDERR.puts "ERROR"
+      return
+    end
+
+    canon_patterns = canonize(raw_patterns, scan.messages, sep)
+
+    canon_patterns.keys.each do | pattern |
       db_pattern = Pattern.new( :body => pattern )
       db_pattern.save
       scan.patterns << db_pattern
 
-      patterns[pattern].each do |msg|
+      canon_patterns[pattern].each do |msg|
         db_msg = Message.get(msg)
         db_msg.patterns << db_pattern
         db_msg.save

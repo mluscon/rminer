@@ -25,20 +25,21 @@ children = []
 filter_fact = FilterMaker.new(host, database, user, password, adapter)
 filters = filter_fact.update_filters
 
-plugins = []
+algorithms = []
 Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
   file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"
   if name = file_reg.match(file)
     require file
-    plugins.push name.to_s.split('_').collect(&:capitalize).join
+    algorithms.push name.to_s.split('_').collect(&:capitalize).join
   end
 end
 
-#Object::const_get('Array').new
+algorithms.map!{|name| Object::const_get(name).new}
+
 
 workers.times do |index|
   pid = fork do
-    redis = RedisWorker.new(host, database, user, password, adapter)
+    redis = RedisWorker.new(host, database, user, password, adapter, algorithms)
     redis.rerun if index == 0
     redis.run!
   end

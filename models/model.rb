@@ -22,6 +22,7 @@ class Scan
   property :id,           Serial
   property :active,       Boolean, :default => true
   property :created_at,   DateTime
+  property :algorithm,    String
   property :sensitivity,  Float, :default => 1.0
   property :separator,    String
   property :packed,       Boolean, :default => true
