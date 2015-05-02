@@ -1,6 +1,7 @@
 require 'redis'
 require 'data_mapper'
 
+require './canon.rb'
 require './models/model.rb'
 
 class RedisWorker
