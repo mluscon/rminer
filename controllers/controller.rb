@@ -217,4 +217,12 @@ class WebController
       @redis.rpush("filter", "update") if signal
   end
 
+  def variables
+    parsed = begin
+      YAML.load(File.open("./variables.yml"))
+    rescue ArgumentError => e
+      return nil
+    end
+  end
+
 end

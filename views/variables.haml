@@ -1,0 +1,62 @@
+
+.content
+  .row
+    %div{ 'ng-controller'=>'VariablesCtrl'}
+      %div{:class=>"col-sm-9 fix-width"}
+        %div{:class=>"col-sm-3 variable",
+              "ng-repeat"=>"variable in variables"}
+
+          %div{:class=>"panel panel-primary"}
+            %div{:class=>"panel-heading"}
+              {{ variable.type }}
+
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Short:
+              %input{"ng-model"=>"variable.short",:type=>"text",
+                    :class=>"form-control", :readonly=>"true"}
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Priority:
+              %input{"ng-model"=>"variable.priority",:type=>"text",
+                    :class=>"form-control", :readonly=>"true"}
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Regexp:
+              %input{"ng-model"=>"variable.regexp",:type=>"text",
+                    :class=>"form-control", :readonly=>"true"}
+
+
+
+      %div{:class=>"col-sm-3 right-affix"}
+
+        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto",
+             "ng-controller"=>"InfoCtrl"}
+          %div{:class=>"panel-heading"}
+            System info
+
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Messages:
+            %input{"ng-model"=>"info.messages", :type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans saved:
+            %input{"ng-model"=>"info.scans_done",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Scans in proggress:
+            %input{"ng-model"=>"info.scans_prog",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Finalized patterns:
+            %input{"ng-model"=>"info.patterns_finalized",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}
+          %div{:class=>"input-group"}
+            %span{:class=>"input-group-addon"}
+              Active patterns:
+            %input{"ng-model"=>"info.patterns_active",:type=>"text",
+                   :class=>"form-control", :readonly=>"true"}

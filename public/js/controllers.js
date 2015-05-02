@@ -270,3 +270,12 @@ RminerApp.controller('InfoCtrl', function ($scope, $http) {
     $scope.info = angular.fromJson(response);
   });
 });
+
+RminerApp.controller('VariablesCtrl', function ($scope, $http) {
+
+  $http.get("/variables/?json")
+  .success(function(response) {
+    $scope.variables = angular.fromJson(response);
+  });
+});
+

@@ -23,6 +23,14 @@ get '/login/' do
   haml :login
 end
 
+get '/variables/?' do
+  if params.include? "json"
+    JSON.generate controller.variables
+  else
+    haml :variables
+  end
+end
+
 get '/scans/?' do
   if params.include? "json"
     json = controller.scans_serial
