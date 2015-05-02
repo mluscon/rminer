@@ -177,11 +177,6 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
 
-  $http.get("/info/?json")
-  .success(function(response) {
-    $scope.info = angular.fromJson(response);
-  });
-
   $http.get("/messages/?json")
   .success(function(response) {
     $scope.messages = angular.fromJson(response);
@@ -262,13 +257,16 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
     $http.delete("/patterns/".concat(pattern.id), pattern)
   }
 
-  $http.get("/info/?json")
-  .success(function(response) {
-    $scope.info = angular.fromJson(response);
-  });
-
   $scope.fixJson = function(json) {
     return angular.fromJson(json)
   }
 
+});
+
+RminerApp.controller('InfoCtrl', function ($scope, $http) {
+
+  $http.get("/info/?json")
+  .success(function(response) {
+    $scope.info = angular.fromJson(response);
+  });
 });

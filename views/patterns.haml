@@ -1,7 +1,7 @@
 
 .content
   .row
-    %div{ 'ng-controller'=>'PatternsCtrl'}
+    %div{'ng-controller'=>'PatternsCtrl'}
       %div{:class=>"col-sm-9 fix-width"}
 
         .row
@@ -62,7 +62,8 @@
 
       %div{:class=>"col-sm-3 right-affix"}
 
-        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto" }
+        %div{:class=>"panel panel-primary", :style=>"overflow-y:auto",
+             "ng-controller"=>"InfoCtrl"}
           %div{:class=>"panel-heading"}
             System info
 
