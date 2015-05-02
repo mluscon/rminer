@@ -33,6 +33,13 @@ class RedisWorker
   def rerun
     Scan.all(:active=>true).each do |scan|
       puts "Restarted analysis of scan id #{scan.id}"
+      @scan.patterns.each do |pattern|
+        assocs = MessagePattern.all(:pattern=>pattern)
+        assocs.each do |asc|
+          assocs.destroy!
+        end
+        pattern.destroy!
+      end
       do_analyze(scan.id)
     end
   end
