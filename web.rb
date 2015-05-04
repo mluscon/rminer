@@ -188,17 +188,17 @@ get '/treenode/?' do
 end
 
 get '/variables/?' do
-  yaml = begin
-    YAML.load(File.open("./variables.yml"))
-  rescue ArgumentError => e
-    STDERR.puts "Could not parse variables.yml: #{e.message}"
+  if params.include? "json"
+    JSON.generate controller.variables
+  else
+    haml :variables
   end
+end
 
-  serial = []
-  yaml.each do |entry|
-    serial.push JSON.parse(JSON.generate(entry))
-  end
+post '/variables/?' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
 
-  JSON.generate(serial)
+  File.open("./variables.yml", "w") { |file| file.write(params.to_yaml) }
 end
 

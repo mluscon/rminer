@@ -3,28 +3,74 @@
   .row
     %div{ 'ng-controller'=>'VariablesCtrl'}
       %div{:class=>"col-sm-9 fix-width"}
+
+        %div{:class=>"col-sm-3 variable"}
+
+          %div{:class=>"panel panel-primary"}
+
+            %div{:class=>"panel-heading"}
+              %a{:class=>"btn btn-primary btn-xs"}
+                %span{:class=>"glyphicon glyphicon-menu-right"}
+              %input{"ng-model"=>"newVariable.type",:type=>"text", :class=>"black"}
+              %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"addVariable()", "ng-required"=>"true"}
+                %span{:class=>"glyphicon glyphicon-ok"}
+
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Short:
+              %input{"ng-model"=>"newVariable.short",:type=>"text",
+                    :class=>"form-control", "ng-required"=>"true"}
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Priority:
+              %input{"ng-model"=>"newVariable.priority",:type=>"text",
+                    :class=>"form-control", "ng-required"=>"true"}
+            %div{:class=>"input-group"}
+              %span{:class=>"input-group-addon"}
+                Regexp:
+              %input{"ng-model"=>"newVariable.regexp",:type=>"text",
+                    :class=>"form-control", "ng-required"=>"true"}
+
+
         %div{:class=>"col-sm-3 variable",
               "ng-repeat"=>"variable in variables"}
 
-          %div{:class=>"panel panel-primary"}
-            %div{:class=>"panel-heading"}
+          %div{:class=>"panel panel-primary", "ng-if"=>"!variable.removed"}
+
+            %div{:class=>"panel-heading", "ng-if"=>"!variable.edit"}
+              %a{:class=>"btn btn-primary btn-xs"}
+                %span{:class=>"glyphicon glyphicon-menu-right"}
+
               {{ variable.type }}
+              %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"removeVariable(variable)"}
+                %span{:class=>"glyphicon glyphicon-minus"}
+              %a{:class=>"pull-right btn btn-primary btn-xs", "ng-click"=>"variable.edit=true"}
+                %span{:class=>"glyphicon glyphicon-pencil"}
+
+            %div{:class=>"panel-heading", "ng-if"=>"variable.edit"}
+              %a{:class=>"btn btn-primary btn-xs"}
+                %span{:class=>"glyphicon glyphicon-menu-right"}
+              %input{"ng-model"=>"variable.type",:type=>"text", :class=>"black"}
+              %a{:class=>"pull-right btn btn-danger btn-xs", "ng-click"=>"variable.edit=false"}
+                %span{:class=>"glyphicon glyphicon-remove"}
+              %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"variable.edit=false; saveVariables(variable)"}
+                %span{:class=>"glyphicon glyphicon-ok"}
 
             %div{:class=>"input-group"}
               %span{:class=>"input-group-addon"}
                 Short:
               %input{"ng-model"=>"variable.short",:type=>"text",
-                    :class=>"form-control", :readonly=>"true"}
+                    :class=>"form-control", "ng-readonly"=>"!variable.edit"}
             %div{:class=>"input-group"}
               %span{:class=>"input-group-addon"}
                 Priority:
               %input{"ng-model"=>"variable.priority",:type=>"text",
-                    :class=>"form-control", :readonly=>"true"}
+                    :class=>"form-control", "ng-readonly"=>"!variable.edit"}
             %div{:class=>"input-group"}
               %span{:class=>"input-group-addon"}
                 Regexp:
               %input{"ng-model"=>"variable.regexp",:type=>"text",
-                    :class=>"form-control", :readonly=>"true"}
+                    :class=>"form-control", "ng-readonly"=>"!variable.edit"}
 
 
 

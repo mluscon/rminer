@@ -145,3 +145,8 @@
 .variable {
   padding: 0px 10px 20px 10px;
 }
+
+.black {
+  color: black;
+  font-weight: normal;
+}

@@ -273,9 +273,27 @@ RminerApp.controller('InfoCtrl', function ($scope, $http) {
 
 RminerApp.controller('VariablesCtrl', function ($scope, $http) {
 
+  $scope.newVariable = {type:"", short:"", priority:"", regexp:""}
+
   $http.get("/variables/?json")
   .success(function(response) {
     $scope.variables = angular.fromJson(response);
   });
+
+  $scope.addVariable = function() {
+    $scope.newVariable.priority = parseInt($scope.newVariable.priority)
+    $scope.variables.push($scope.newVariable)
+    $scope.newVariable = {type:"", short:"", priority:"", regexp:""}
+    $scope.saveVariables()
+  }
+
+  $scope.saveVariables = function() {
+    $http.post("variables/?json", $scope.variables)
+  }
+
+  $scope.removeVariable = function(variable) {
+    $scope.variables.splice($scope.variables.indexOf(variable), 1)
+    $scope.saveVariables()
+  }
 });
 
