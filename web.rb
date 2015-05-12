@@ -3,6 +3,7 @@ require 'haml'
 require 'json'
 require 'fileutils'
 require 'digest'
+require 'tempfile'
 
 require './controllers/controller.rb'
 require './helpers/helper.rb'
@@ -58,6 +59,23 @@ get '/patterns/finalized/?' do
   else
     haml :patterns
   end
+end
+
+get '/download/?' do
+    patterns = Pattern.all(:finalized=>true)
+
+    output = []
+    patterns.each do |pattern|
+      output.push(pattern.name=>pattern.body)
+    end
+
+    file = Tempfile.new('patterns')
+    file.write JSON.generate(output)
+    file.close
+
+    send_file file.path , :filename => "patterns.json", :type => 'Text/json'
+
+    file.unlink
 end
 
 get '/patterns/:id' do
