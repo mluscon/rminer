@@ -25,7 +25,7 @@
                       %span{"ng-class"=>"scan1.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                    sensitivity: {{ scan1.sensitivity }}
+                    algorithm: {{ scan1.algorithm }}, sensitivity: {{ scan1.sensitivity }}
 
                     %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan1)"}
                       %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -105,7 +105,7 @@
                           %span{"ng-class"=>"scan2.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                        sensitivity: {{ scan2.sensitivity }}
+                        algorithm: {{ scan2.algorithm }}, sensitivity: {{ scan2.sensitivity }}
 
                         %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan2)"}
                           %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -185,7 +185,7 @@
                               %span{"ng-class"=>"scan3.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                            sensitivity: {{ scan3.sensitivity }}
+                            algorithm: {{ scan3.algorithm }}, sensitivity: {{ scan3.sensitivity }}
 
                             %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan3)"}
                               %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -265,7 +265,7 @@
                                   %span{"ng-class"=>"scan4.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                                sensitivity: {{ scan4.sensitivity }}
+                                algorithm: {{ scan4.algorithm }}, sensitivity: {{ scan4.sensitivity }}
 
                                 %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan4)"}
                                   %span{:class=>"glyphicon glyphicon glyphicon-save"}
@@ -345,7 +345,7 @@
                                       %span{"ng-class"=>"scan5.packed ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-down'"}
 
 
-                                    sensitivity: {{ scan5.sensitivity }}
+                                    algorithm: {{ scan5.algorithm }}, sensitivity: {{ scan5.sensitivity }}
 
                                     %a{:class=>"pull-right btn btn-success btn-xs", "ng-click"=>"finalizeScan(scan5)"}
                                       %span{:class=>"glyphicon glyphicon glyphicon-save"}
