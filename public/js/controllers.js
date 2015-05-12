@@ -1,7 +1,7 @@
 var RminerApp = angular.module('RminerApp', ['ngSanitize', 'ui.bootstrap', 'patternFilters', 'editPatternFilters']);
 
 
-RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
+RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
 
   $http.get("/scans/?json")
   .success(function(response) {$scope.scans = angular.fromJson(response);});
@@ -19,6 +19,30 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce) {
   $scope.messages = ""
   $scope.activeScan = -1
   $scope.activePattern = -1
+  $scope.updates = []
+
+  $interval(checkUpdates, 5000);
+
+  function checkUpdates() {
+    $http.get("/scans/?json")
+    .success(function(response) {
+
+      $scope.updates = angular.fromJson(response);
+
+      for (var i = 0; i<$scope.updates.length; i++) {
+        found = false
+        for (var j = 0; j<$scope.scans.length; j++) {
+          if ($scope.updates[i].id == $scope.scans[j].id) {
+            found = true
+            break
+          }
+        }
+        if (!found) {
+          $scope.scans.push($scope.updates[i])
+        }
+      }
+    });
+  }
 
   $scope.getMsgs = function(pattern_id) {
     $scope.activePattern = pattern_id
@@ -234,10 +258,32 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
 });
 
 
-RminerApp.controller('PatternsCtrl', function ($scope, $http) {
+RminerApp.controller('PatternsCtrl', function ($scope, $http, $interval) {
 
   $http.get("/patterns/finalized?json")
   .success(function(response) {$scope.patterns = angular.fromJson(response);});
+
+  function checkUpdates() {
+    $http.get("/patterns/finalized?json")
+    .success(function(response) {
+
+      $scope.updates = angular.fromJson(response);
+
+      for (var i = 0; i<$scope.updates.length; i++) {
+        found = false
+        for (var j = 0; j<$scope.patterns.length; j++) {
+          if ($scope.updates[i].id == $scope.patterns[j].id) {
+            found = true
+            break
+          }
+        }
+        if (!found) {
+          $scope.patterns.push($scope.updates[i])
+        }
+      }
+    });
+  }
+
 
   $scope.savePattern = function(pattern) {
     new_body = ""
@@ -263,12 +309,24 @@ RminerApp.controller('PatternsCtrl', function ($scope, $http) {
 
 });
 
-RminerApp.controller('InfoCtrl', function ($scope, $http) {
+RminerApp.controller('InfoCtrl', function ($scope, $http, $interval) {
 
   $http.get("/info/?json")
   .success(function(response) {
     $scope.info = angular.fromJson(response);
   });
+
+  $interval(checkUpdates, 5000);
+
+  function checkUpdates() {
+    $http.get("/info/?json")
+    .success(function(response) {
+
+      $scope.info = angular.fromJson(response);
+
+    });
+  }
+
 });
 
 RminerApp.controller('VariablesCtrl', function ($scope, $http) {
