@@ -7,7 +7,11 @@ require 'digest'
 require './controllers/controller.rb'
 require './helpers/helper.rb'
 
+config = ParseConfig.new('./rminer.conf')
+
 controller = WebController.new
+
+set :port, config['web_port']
 
 get '/' do
   haml :index
@@ -19,16 +23,8 @@ get '/algorithms/?' do
   JSON.generate algs
 end
 
-get '/login/' do
+get '/login/?' do
   haml :login
-end
-
-get '/variables/?' do
-  if params.include? "json"
-    JSON.generate controller.variables
-  else
-    haml :variables
-  end
 end
 
 get '/scans/?' do
@@ -181,10 +177,6 @@ post '/final/?' do
   halt 404 if params.nil?
   params = JSON.parse(request.env["rack.input"].read)
   controller.final(params["id"])
-end
-
-get '/treenode/?' do
-  haml :treenode
 end
 
 get '/variables/?' do

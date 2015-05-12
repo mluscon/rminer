@@ -9,4 +9,6 @@ db_host = localhost
 db_database =
 db_user =
 db_password =
-db_adapter = 
+db_adapter =
+
+web_port = 80
