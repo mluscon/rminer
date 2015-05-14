@@ -431,7 +431,8 @@
           %div{:class=>"input-group"}
             %span{:class=>"input-group-addon"}
               Algorithm:
-            %select{"ng-options"=>"algorithm for algorithm in algorithms",
+            %select{:class=>"selectpicker",
+                    "ng-options"=>"algorithm for algorithm in algorithms",
                     "ng-model"=>"selectedAlg"}
           %div{:class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
@@ -443,3 +444,5 @@
               %a{"ng-repeat"=>"message in messages | filter:myFilter", :class=>"list-group-item"}
                 {{ message.body }}
 
+:javascript
+  $('.selectpicker').selectpicker();

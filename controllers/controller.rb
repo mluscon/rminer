@@ -22,30 +22,29 @@ class WebController
       :password => passwd,
     }
     @redis = Redis.new
-    #find a proper place
+    #find a right place
     DataMapper.finalize
     DataMapper.auto_upgrade!
   end
 
-
-  def messages
-    Message.all
+  def info
+    info = {}
+    info[:messages] = Message.all.count
+    info[:scans_done] = Scan.all(:active=>false).count
+    info[:scans_prog] = Scan.all(:active=>true).count
+    info[:patterns_finalized] = Pattern.all(:finalized=>true).count
+    info[:patterns_active] = Pattern.all(:active_filter=>true).count
+    info
   end
 
-  def remove(msg_ids)
-    if msg_ids.length == 0
-      STDERR.puts "Error: empty remove call."
-      return
-    end
-
-    msgs = []
-    msg_ids.each do |id|
-      msg = Message.get(id)
-      if (msg)
-        msg.destroy
-      end
+  def messages(pattern_id=nil)
+    if pattern_id
+      Pattern.get(pattern_id).messages
+    else
+      Message.all
     end
   end
+
 
   def pattern(id)
     pattern = Pattern.get(id.to_i)
@@ -182,16 +181,6 @@ class WebController
     @redis.rpush("filter", "update")
   end
 
-  def info
-    info = {}
-    info[:messages] = Message.all.count
-    info[:scans_done] = Scan.all(:active=>false).count
-    info[:scans_prog] = Scan.all(:active=>true).count
-    info[:patterns_finalized] = Pattern.all(:finalized=>true).count
-    info[:patterns_active] = Pattern.all(:active_filter=>true).count
-    info
-  end
-
   def pattern_remove(id)
     pattern = Pattern.get(id)
     if pattern
@@ -215,6 +204,18 @@ class WebController
       end
       pat.save
       @redis.rpush("filter", "update") if signal
+  end
+
+  def results
+    patterns = Pattern.all(:finalized=>true)
+
+    output = patterns.map {|pattern| {pattern.name=>pattern.body}}
+
+    file = Tempfile.new('patterns')
+    file.write JSON.generate(output)
+    file.close
+    yield file.path
+    file.unlink
   end
 
   def variables

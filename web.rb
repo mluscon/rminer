@@ -14,44 +14,66 @@ controller = WebController.new
 
 set :port, config['web_port']
 
+
 get '/' do
   haml :index
 end
 
+
 get '/algorithms/?' do
   algs = get_algorithms('/plugins/')
-  puts JSON.generate algs
   JSON.generate algs
 end
+
+
+get '/download/?' do
+    controller.results {|path|  send_file path , :filename => "patterns.json", :type => 'Text/json'}
+end
+
+
+get '/info/?' do
+  info = controller.info
+  JSON.generate(info)
+end
+
 
 get '/login/?' do
   haml :login
 end
 
-get '/scans/?' do
+
+get '/messages/?' do
+  msgs = controller.messages
   if params.include? "json"
-    json = controller.scans_serial
-    JSON.generate(json.reverse)
+    res = controller.messages
+    if response
+      JSON.generate res
+    else
+      halt 404
+    end
   else
-    haml :scans, :locals => {
-      :scans => controller.scans
+    haml :messages, :locals => {
+      :messages => msgs
     }
   end
 end
 
-get '/scans/:id' do
-  scan = controller.scan params[:id]
-  halt 404 if scan.nil? or not params.include? "json"
 
-  res = []
-  scan.messages.each do |msg|
-    res << {
-            :id => msg.id,
-            :body => msg.body
-           }
-  end
-  JSON.generate res
+delete '/patterns/:id' do
+  halt 404 if params.nil?
+
+  controller.pattern_remove(params["id"].to_i)
 end
+
+
+post '/patterns/:id' do
+
+  halt 404 if params[:id].nil? or not params.include? "json"
+  new_pattern = JSON.parse(request.env["rack.input"].read)
+
+  controller.pattern_save new_pattern
+end
+
 
 get '/patterns/finalized/?' do
   if params.include? "json"
@@ -61,21 +83,32 @@ get '/patterns/finalized/?' do
   end
 end
 
-get '/download/?' do
-    patterns = Pattern.all(:finalized=>true)
 
-    output = []
-    patterns.each do |pattern|
-      output.push(pattern.name=>pattern.body)
-    end
+post '/patterns/finalize/?' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
 
-    file = Tempfile.new('patterns')
-    file.write JSON.generate(output)
-    file.close
+  controller.pattern_finalize(params["id"])
+end
 
-    send_file file.path , :filename => "patterns.json", :type => 'Text/json'
 
-    file.unlink
+delete '/patterns/finalize/?' do
+  halt 404 if params.nil?
+  params = JSON.parse(request.env["rack.input"].read)
+
+  controller.pattern_unfinalize(params["id"])
+end
+
+
+get '/patterns/:id/messages/?' do
+  halt 400 if not params[:id] or not params.include? "json"
+
+  result = controller.messages(params[:id].to_i)
+  if result
+    JSON.generate result
+  else
+    halt 404
+  end
 end
 
 get '/patterns/:id' do
@@ -98,57 +131,39 @@ get '/patterns/:id' do
 end
 
 
-get '/patterns/:id/messages/?' do
-  pattern = controller.pattern params[:id]
-  halt 404 if pattern.nil?
-  JSON.generate pattern.messages
-end
-
-post '/patterns/:id' do
-
-  halt 404 if params[:id].nil? or not params.include? "json"
-  new_pattern = JSON.parse(request.env["rack.input"].read)
-
-  controller.pattern_save new_pattern
-end
-
-
-post '/patterns/finalize/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-
-  controller.pattern_finalize(params["id"])
-end
-
-delete '/patterns/finalize/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-
-  controller.pattern_unfinalize(params["id"])
-end
-
-
-get '/messages/?' do
-  msgs = controller.messages
+get '/scans/?' do
   if params.include? "json"
-    res = []
-    msgs.each do |msg|
-      res << { :id => msg.id,
-               :body => msg.body
-             }
-    end
-    JSON.generate( res )
+    json = controller.scans_serial
+    JSON.generate(json.reverse)
   else
-    haml :messages, :locals => {
-      :messages => msgs
+    haml :scans, :locals => {
+      :scans => controller.scans
     }
   end
 end
 
-get '/info/?' do
-  info = controller.info
-  JSON.generate(info)
+
+get '/scans/:id' do
+  scan = controller.scan params[:id]
+  halt 404 if scan.nil? or not params.include? "json"
+
+  res = []
+  scan.messages.each do |msg|
+    res << {
+            :id => msg.id,
+            :body => msg.body
+           }
+  end
+  JSON.generate res
 end
+
+
+delete '/scans/:id' do
+  halt 404 if params.nil?
+
+  controller.scan_remove(params["id"].to_i)
+end
+
 
 post '/scan/new/?' do
   halt 404 if params.nil?
@@ -174,17 +189,6 @@ post '/scan/finalize/?' do
   controller.scan_finalize(params["id"])
 end
 
-delete '/scans/:id' do
-  halt 404 if params.nil?
-
-  controller.scan_remove(params["id"].to_i)
-end
-
-delete '/patterns/:id' do
-  halt 404 if params.nil?
-
-  controller.pattern_remove(params["id"].to_i)
-end
 
 get '/variables/?' do
   if params.include? "json"
@@ -193,6 +197,7 @@ get '/variables/?' do
     haml :variables
   end
 end
+
 
 post '/variables/?' do
   halt 404 if params.nil?
