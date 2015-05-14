@@ -27,6 +27,7 @@
   short: ALPHANUM
   priority: 70
   regexp: "[a-zA-Z0-9]+"
+  edit: false
 - type: Alphanumericaltext
   short: ALPHANUMTEXT
   priority: 80
@@ -39,4 +40,3 @@
   short: VAR
   priority: 90
   regexp: ''
-

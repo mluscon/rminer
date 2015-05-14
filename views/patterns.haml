@@ -11,7 +11,7 @@
 
               %div{"ng-class"=>"pattern1.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'"}
 
-                %div{:class=>"tree-node-content", "ng-if"=>"pattern.edit == false"}
+                %div{:class=>"tree-node-content", "ng-if"=>"!pattern.edit"}
 
                   %a{"ng-if"=>"pattern.active_filter", :class=>"btn btn-success btn-xs",
                      "ng-click"=>"pattern.active_filter=false; savePattern(pattern)"}

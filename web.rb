@@ -166,11 +166,6 @@ post '/scan/new/?' do
   controller.analyze(msg_ids, parent, algorithm, sensitivity, params["separator"])
 end
 
-post '/scan/packed/?' do
-  params = JSON.parse(request.env["rack.input"].read)
-  halt 404 if params["id"].nil?
-  controller.scan_pack(params["id"], params["value"])
-end
 
 post '/scan/finalize/?' do
   params = JSON.parse(request.env["rack.input"].read)
@@ -189,12 +184,6 @@ delete '/patterns/:id' do
   halt 404 if params.nil?
 
   controller.pattern_remove(params["id"].to_i)
-end
-
-post '/final/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-  controller.final(params["id"])
 end
 
 get '/variables/?' do

@@ -96,11 +96,6 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
     $http.post("/scan/finalize/", scan)
   }
 
-  $scope.packScan = function(scan_id, value) {
-    var postObject = {"id" : scan_id, "value": value}
-    $http.post("/scan/packed/", postObject)
-  }
-
   $scope.finalizePattern = function(pattern, final) {
     pattern.final = final
     $scope.savePattern

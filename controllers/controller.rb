@@ -29,7 +29,7 @@ class WebController
 
 
   def messages
-    Message.all(:analyzed => false)
+    Message.all
   end
 
   def remove(msg_ids)
