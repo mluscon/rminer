@@ -157,6 +157,8 @@ class WebController
 
   def scan_finalize(id)
     scan = Scan.get(id.to_i)
+    scan.removing = true
+    scan.save
     scan.patterns.each do |pattern|
       pattern.children.each do |scan|
         scan_finalize(scan)
