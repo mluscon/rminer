@@ -31,15 +31,14 @@
         %div{:class=>"panel-heading"}
           Login
 
-
+      %form{:action=>"/auth/login", :method=>"post"}
         %div{:class=>"input-group"}
           %span{:class=>"input-group-addon"}
             Username:
-          %input{:type=>"text", :class=>"form-control"}
+          %input{:type=>"text", :name=>"username", :class=>"form-control"}
         %div{:class=>"input-group"}
           %span{:class=>"input-group-addon"}
             Password:
-          %input{"ng-model"=>"regExpString", :type=>"text", :class=>"form-control"}
+          %input{:name=>"password", :type=>"text", :class=>"form-control"}
         %div{:class=>"panel-heading"}
-          %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
-            Sign in
+          %input{:type=>"submit", :value=>"Sign in", :class=>"btn btn-default btn-xs"}

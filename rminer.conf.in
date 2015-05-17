@@ -12,3 +12,4 @@ db_password =
 db_adapter =
 
 web_port = 80
+secret =

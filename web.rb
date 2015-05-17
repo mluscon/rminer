@@ -1,208 +1,309 @@
 require 'sinatra'
+require 'sinatra/flash'
 require 'haml'
 require 'json'
 require 'fileutils'
 require 'digest'
 require 'tempfile'
+require 'warden'
 
 require './controllers/controller.rb'
 require './helpers/helper.rb'
 
-config = ParseConfig.new('./rminer.conf')
 
-controller = WebController.new
+class MyApp < Sinatra::Application
 
-set :port, config['web_port']
+  config = ParseConfig.new('./rminer.conf')
+  controller = WebController.new
 
-
-get '/' do
-  haml :index
-end
-
-
-get '/algorithms/?' do
-  algs = get_algorithms('/plugins/')
-  JSON.generate algs
-end
+  set :port, config['web_port']
+  set :sessions => true
+  set :session_secret, config['secret']
+  set :environment, :production
+  register Sinatra::Flash
 
 
-get '/download/?' do
-    controller.results {|path|  send_file path , :filename => "patterns.json", :type => 'Text/json'}
-end
+  # setup authentication
+  use Warden::Manager do |config|
+    config.serialize_into_session{|user| user.id }
+    config.serialize_from_session{|id| User.get(id) }
+
+    config.scope_defaults :default,
+                          strategies: [:password],
+                          action: 'auth/unauthenticated'
+
+    config.failure_app = self
+  end
+
+  Warden::Manager.before_failure do |env,opts|
+    env['REQUEST_METHOD'] = 'POST'
+  end
 
 
-get '/info/?' do
-  info = controller.info
-  JSON.generate(info)
-end
+  Warden::Strategies.add(:password) do
+    def valid?
+      params['username'] && params['password']
+    end
+
+    def authenticate!
+      user = User.first(:username => params['username'])
+
+      if user.nil?
+        throw(:warden, message: "The username you entered does not exist.")
+      elsif user.authenticate(params['password'])
+        success!(user)
+      else
+        throw(:warden, message: "The username and password combination ")
+      end
+    end
+  end
 
 
-get '/login/?' do
-  haml :login
-end
+  get '/' do
+    env['warden'].authenticate!
+
+    haml :index
+  end
 
 
-get '/messages/?' do
-  msgs = controller.messages
-  if params.include? "json"
-    res = controller.messages
-    if response
-      JSON.generate res
+  get '/algorithms/?' do
+    env['warden'].authenticate!
+
+    algs = get_algorithms('/plugins/')
+    JSON.generate algs
+  end
+
+
+  get '/auth/login/?' do
+    haml :login
+  end
+
+
+  post '/auth/login/?' do
+    env['warden'].authenticate!
+    flash[:success] = env['warden'].message
+
+    if session[:return_to].nil?
+      redirect '/'
+    else
+      redirect session[:return_to]
+    end
+  end
+
+
+  get '/auth/logout' do
+    env['warden'].raw_session.inspect
+    env['warden'].logout
+    flash[:success] = 'Successfully logged out'
+    redirect '/'
+  end
+
+
+  post '/auth/unauthenticated' do
+    session[:return_to] = env['warden.options'][:attempted_path]
+    puts env['warden.options'][:attempted_path]
+    flash[:error] = env['warden'].message || "You must log in"
+    redirect '/auth/login'
+  end
+
+
+  get '/download/?' do
+    env['warden'].authenticate!
+    controller.results {|path| send_file path,
+                               :filename => "patterns.json",
+                               :type => 'Text/json'
+                       }
+  end
+
+
+  get '/info/?' do
+    env['warden'].authenticate!
+
+    info = controller.info
+    JSON.generate info
+  end
+
+
+  get '/messages/?' do
+    env['warden'].authenticate!
+
+    msgs = controller.messages
+    if params.include? "json"
+      res = controller.messages
+      if response
+        JSON.generate res
+      else
+        halt 404
+      end
+    else
+      haml :messages, :locals => {
+        :messages => msgs
+      }
+    end
+  end
+
+
+  delete '/patterns/:id' do
+    env['warden'].authenticate!
+    halt 404 if params.nil?
+
+    controller.pattern_remove params["id"].to_i
+  end
+
+
+  post '/patterns/:id' do
+    env['warden'].authenticate!
+    halt 404 if params[:id].nil? or not params.include? "json"
+
+    new_pattern = JSON.parse(request.env["rack.input"].read)
+    controller.pattern_save new_pattern
+  end
+
+
+  get '/patterns/finalized/?' do
+    env['warden'].authenticate!
+
+    if params.include? "json"
+      JSON.generate Pattern.all(:finalized=>true)
+    else
+      haml :patterns
+    end
+  end
+
+
+  post '/patterns/finalize/?' do
+    env['warden'].authenticate!
+    halt 404 if params.nil?
+
+    params = JSON.parse(request.env["rack.input"].read)
+    controller.pattern_finalize(params["id"])
+  end
+
+
+  delete '/patterns/finalize/?' do
+    env['warden'].authenticate!
+    halt 404 if params.nil?
+
+    params = JSON.parse(request.env["rack.input"].read)
+    controller.pattern_unfinalize(params["id"])
+  end
+
+
+  get '/patterns/:id/messages/?' do
+    env['warden'].authenticate!
+    halt 400 if not params[:id] or not params.include? "json"
+
+    result = controller.messages(params[:id].to_i)
+    if result
+      JSON.generate result
     else
       halt 404
     end
-  else
-    haml :messages, :locals => {
-      :messages => msgs
-    }
   end
-end
 
+  get '/patterns/:id' do
+    env['warden'].authenticate!
+    pattern = controller.pattern params[:id]
+    halt 404 if pattern.nil?
 
-delete '/patterns/:id' do
-  halt 404 if params.nil?
-
-  controller.pattern_remove(params["id"].to_i)
-end
-
-
-post '/patterns/:id' do
-
-  halt 404 if params[:id].nil? or not params.include? "json"
-  new_pattern = JSON.parse(request.env["rack.input"].read)
-
-  controller.pattern_save new_pattern
-end
-
-
-get '/patterns/finalized/?' do
-  if params.include? "json"
-    JSON.generate Pattern.all(:finalized=>true)
-  else
-    haml :patterns
+    if params.include? "json"
+      res = []
+      pattern.messages.each do |msg|
+        res << { :id => msg.id,
+                :body => msg.body
+              }
+      end
+      JSON.generate res
+    else
+      haml :patterns, :locals => {
+          :pattern => pattern
+      }
+    end
   end
-end
 
 
-post '/patterns/finalize/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
+  get '/scans/?' do
+    env['warden'].authenticate!
 
-  controller.pattern_finalize(params["id"])
-end
-
-
-delete '/patterns/finalize/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-
-  controller.pattern_unfinalize(params["id"])
-end
-
-
-get '/patterns/:id/messages/?' do
-  halt 400 if not params[:id] or not params.include? "json"
-
-  result = controller.messages(params[:id].to_i)
-  if result
-    JSON.generate result
-  else
-    halt 404
+    if params.include? "json"
+      json = controller.scans_serial
+      JSON.generate(json.reverse)
+    else
+      haml :scans, :locals => {
+        :scans => controller.scans
+      }
+    end
   end
-end
 
-get '/patterns/:id' do
-  pattern = controller.pattern params[:id]
-  halt 404 if pattern.nil?
 
-  if params.include? "json"
+  get '/scans/:id' do
+    env['warden'].authenticate!
+    scan = controller.scan params[:id]
+    halt 404 if scan.nil? or not params.include? "json"
+
     res = []
-    pattern.messages.each do |msg|
-      res << { :id => msg.id,
+    scan.messages.each do |msg|
+      res << {
+              :id => msg.id,
               :body => msg.body
-             }
+            }
     end
     JSON.generate res
-  else
-    haml :patterns, :locals => {
-         :pattern => pattern
-    }
   end
-end
 
 
-get '/scans/?' do
-  if params.include? "json"
-    json = controller.scans_serial
-    JSON.generate(json.reverse)
-  else
-    haml :scans, :locals => {
-      :scans => controller.scans
-    }
+  delete '/scans/:id' do
+    env['warden'].authenticate!
+    halt 404 if params.nil?
+
+    controller.scan_remove(params["id"].to_i)
   end
-end
 
 
-get '/scans/:id' do
-  scan = controller.scan params[:id]
-  halt 404 if scan.nil? or not params.include? "json"
+  post '/scan/new/?' do
+    env['warden'].authenticate!
+    params = JSON.parse(request.env["rack.input"].read)
+    halt 400 if params.nil?
 
-  res = []
-  scan.messages.each do |msg|
-    res << {
-            :id => msg.id,
-            :body => msg.body
-           }
+    sensitivity = params["sensitivity"].to_f
+    msg_ids = params["msgs"]
+    parent = params["parent"]
+    algorithm = params["algorithm"]
+
+    halt 400 if sensitivity == 0 || sensitivity > 1
+    halt 400 if msg_ids.nil?
+    halt 400 if algorithm.nil? or algorithm == ""
+
+    controller.analyze(msg_ids, parent, algorithm, sensitivity, params["separator"])
   end
-  JSON.generate res
-end
 
 
-delete '/scans/:id' do
-  halt 404 if params.nil?
+  post '/scan/finalize/?' do
+    env['warden'].authenticate!
+    params = JSON.parse(request.env["rack.input"].read)
+    halt 404 if params["id"].nil?
 
-  controller.scan_remove(params["id"].to_i)
-end
-
-
-post '/scan/new/?' do
-  halt 404 if params.nil?
-
-  params = JSON.parse(request.env["rack.input"].read)
-  sensitivity = params["sensitivity"].to_f
-  msg_ids = params["msgs"]
-  parent = params["parent"]
-  algorithm = params["algorithm"]
-
-  halt 404 if sensitivity == 0 || sensitivity > 1
-  halt 404 if msg_ids.nil?
-  halt 404 if algorithm.nil? or algorithm == ""
-
-  controller.analyze(msg_ids, parent, algorithm, sensitivity, params["separator"])
-end
-
-
-post '/scan/finalize/?' do
-  params = JSON.parse(request.env["rack.input"].read)
-  halt 404 if params["id"].nil?
-
-  controller.scan_finalize(params["id"])
-end
-
-
-get '/variables/?' do
-  if params.include? "json"
-    JSON.generate controller.variables
-  else
-    haml :variables
+    controller.scan_finalize(params["id"])
   end
+
+
+  get '/variables/?' do
+    env['warden'].authenticate!
+    if params.include? "json"
+      JSON.generate controller.variables
+    else
+      haml :variables
+    end
+  end
+
+
+  post '/variables/?' do
+    env['warden'].authenticate!
+    halt 400 if params.nil?
+    params = JSON.parse(request.env["rack.input"].read)
+
+    File.open("./variables.yml", "w") {|file| file.write(params.to_yaml)}
+  end
+
+  run!
 end
-
-
-post '/variables/?' do
-  halt 404 if params.nil?
-  params = JSON.parse(request.env["rack.input"].read)
-
-  File.open("./variables.yml", "w") { |file| file.write(params.to_yaml) }
-end
-

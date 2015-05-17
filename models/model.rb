@@ -1,6 +1,7 @@
 require 'digest'
 require 'bcrypt'
 require 'dm-constraints'
+require 'dm-types'
 
 require './helpers/helper.rb'
 
@@ -51,6 +52,11 @@ end
 class User
   include DataMapper::Resource
   include BCrypt
+
+  def authenticate(attempted_password)
+    self.password == attempted_password
+  end
+
 
   property :id, Serial, :key => true
   property :username, String, :length => 3..50

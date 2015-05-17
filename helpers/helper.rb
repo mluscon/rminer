@@ -49,3 +49,7 @@ def get_algorithms(path)
   end
   algorithms
 end
+
+def write_variables(variables)
+  File.open("./variables.yml", "w") {|file| file.write(params.to_yaml)}
+end
