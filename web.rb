@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/flash'
+require 'sinatra/redirect_with_flash'
 require 'haml'
 require 'json'
 require 'fileutils'
@@ -18,8 +19,8 @@ class MyApp < Sinatra::Application
 
   set :port, config['web_port']
   set :sessions => true
-  set :session_secret, config['secret']
-  set :environment, :production
+  set :session_secret => config['web_secret']
+  set :environment => :production
   register Sinatra::Flash
 
 
@@ -94,8 +95,7 @@ class MyApp < Sinatra::Application
   get '/auth/logout' do
     env['warden'].raw_session.inspect
     env['warden'].logout
-    flash[:success] = 'Successfully logged out'
-    redirect '/'
+    redirect '/auth/login/', :success => 'Successfully logged out'
   end
 
 
@@ -305,5 +305,4 @@ class MyApp < Sinatra::Application
     File.open("./variables.yml", "w") {|file| file.write(params.to_yaml)}
   end
 
-  run!
 end

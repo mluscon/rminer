@@ -21,24 +21,32 @@
 
 .content
 
-  .row
-  .row
-  .row
+  %div{:class=>"col-sm-3 col-md-offset-4"}
+    - if flash[:error]
+      %div{:class=>"alert alert-danger", :role=>"alert"}
+        %span{:class=>"glyphicon glyphicon-exclamation-sign", "aria-hidden"=>"true"}
+        %span{:class=>"sr-only"}
+        Error: #{flash[:error]}
+    - elsif flash[:success]
+      %div{:class=>"alert alert-success", :role=>"alert"}
+        %span
+        Success: #{flash[:success]}
+    - else
 
-    %div{:class=>"col-sm-3 col-md-offset-4"}
 
-      %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
-        %div{:class=>"panel-heading"}
-          Login
 
-      %form{:action=>"/auth/login", :method=>"post"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Username:
-          %input{:type=>"text", :name=>"username", :class=>"form-control"}
-        %div{:class=>"input-group"}
-          %span{:class=>"input-group-addon"}
-            Password:
-          %input{:name=>"password", :type=>"text", :class=>"form-control"}
-        %div{:class=>"panel-heading"}
-          %input{:type=>"submit", :value=>"Sign in", :class=>"btn btn-default btn-xs"}
+    %div{:class=>"panel panel-primary fill-height-sm", :style=>"overflow-y:auto" }
+      %div{:class=>"panel-heading"}
+        Login
+
+    %form{:action=>"/auth/login", :method=>"post"}
+      %div{:class=>"input-group"}
+        %span{:class=>"input-group-addon"}
+          Username:
+        %input{:type=>"text", :name=>"username", :class=>"form-control"}
+      %div{:class=>"input-group"}
+        %span{:class=>"input-group-addon"}
+          Password:
+        %input{:name=>"password", :type=>"text", :class=>"form-control"}
+      %div{:class=>"panel-heading"}
+        %input{:type=>"submit", :value=>"Sign in", :class=>"btn btn-default btn-xs"}

@@ -11,5 +11,6 @@ db_user =
 db_password =
 db_adapter =
 
+web_address = localhost
 web_port = 80
-secret =
+web_secret =
