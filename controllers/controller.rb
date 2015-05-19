@@ -1,6 +1,7 @@
 require 'data_mapper'
 require 'parseconfig'
 require 'redis'
+require 'tempfile'
 
 require './models/model.rb'
 require './helpers/helper.rb'
@@ -42,31 +43,6 @@ class WebController
       Pattern.get(pattern_id).messages
     else
       Message.all
-    end
-  end
-
-
-  def pattern(id)
-    pattern = Pattern.get(id.to_i)
-  end
-
-  def pattern_finalize(id)
-    pattern = Pattern.get(id.to_i)
-    if not pattern.nil?
-      pattern.final = true;
-      pattern.save
-    else
-      false
-    end
-  end
-
-  def pattern_unfinalize(id)
-    pattern = Pattern.get(id.to_i)
-    if not pattern.nil?
-      pattern.final = false;
-      pattern.save
-    else
-      false
     end
   end
 
@@ -194,11 +170,31 @@ class WebController
     end
   end
 
+  def pattern_finalize(id)
+    pattern = Pattern.get(id.to_i)
+    if not pattern.nil?
+      pattern.final = true;
+      pattern.save
+    else
+      false
+    end
+  end
+
+  def pattern_unfinalize(id)
+    pattern = Pattern.get(id.to_i)
+    if not pattern.nil?
+      pattern.final = false;
+      pattern.save
+    else
+      false
+    end
+  end
+
   def pattern_save(pattern)
       pat = Pattern.get(pattern["id"])
-      pat.body = pattern["body"]
+      pat.body = pattern["body"] if pattern["body"]
       pat.body_split = body_split(pat.body)
-      pat.final = pattern["final"]
+      pat.final = pattern["final"] if pattern["final"]
       signal = false
       if pattern["finalized"] and pat.active_filter != pattern["active_filter"]
         pat.active_filter = pattern["active_filter"]
