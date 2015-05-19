@@ -302,7 +302,7 @@ class MyApp < Sinatra::Application
     halt 400 if params.nil?
     params = JSON.parse(request.env["rack.input"].read)
 
-    File.open("./variables.yml", "w") {|file| file.write(params.to_yaml)}
+    File.open("./variables.yml.new", "w") {|file| file.write(params.to_yaml)}
   end
 
 end

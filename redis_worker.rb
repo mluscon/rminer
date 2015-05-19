@@ -4,16 +4,19 @@ require 'data_mapper'
 require './canon.rb'
 require './models/model.rb'
 
+
 class RedisWorker
 
-  def initialize(host, database, user, passwd, adapter, algorithms)
+  def initialize(config, algorithms)
     @database = DataMapper.setup :default, {
-      :adapter  => adapter,
-      :host     => host,
-      :database => database,
-      :user     => user,
-      :password => passwd,
+      :adapter  => config.adapter,
+      :host     => config.host,
+      :database => config.database,
+      :user     => config.user,
+      :password => config.password,
     }
+    @logger = Logger.new(config.logfile)
+    @logger.level = Logger::DEBUG
     @redis = Redis.new
     DataMapper.finalize
     @algorithms = algorithms
@@ -22,7 +25,7 @@ class RedisWorker
   def run!
     while true
       if scan = @redis.rpop('scans')
-       puts "Processing scan id #{scan}"
+        @logger.info("Processing scan id #{scan}")
         do_analyze scan
       else
         sleep 3
@@ -32,7 +35,7 @@ class RedisWorker
 
   def rerun
     Scan.all(:active=>true).each do |scan|
-      puts "Restarted analysis of scan id #{scan.id}"
+      @logger.info("Restarted analysis of scan id #{scan.id}")
       scan.patterns.each do |pattern|
         assocs = MessagePattern.all(:pattern=>pattern)
         assocs.each do |asc|
@@ -59,7 +62,7 @@ class RedisWorker
     end
 
     if not raw_patterns
-      STDERR.puts "ERROR"
+      @logger.error("No patterns found.")
       return
     end
 
@@ -79,7 +82,7 @@ class RedisWorker
 
     scan.active = false
     scan.save
-    puts "Scan #{scan_id} finished."
+    @logger.infp("Scan #{scan_id} finished.")
   end
 
 end

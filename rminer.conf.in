@@ -2,6 +2,7 @@ amqp_server = localhost
 channel = test
 workers = 1
 cache = 5000
+logfile = ./logs/rminer.log
 
 plugins_path = ./plugins
 
