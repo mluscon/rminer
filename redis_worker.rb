@@ -56,7 +56,8 @@ class RedisWorker
     raw_patterns = nil
     @algorithms.each do |algorithm|
       if algorithm.class.to_s == alg
-        raw_patterns = algorithm.run(scan.messages, scan.sensitivity, sep)
+        msgs = scan.messages.map{|msg| msg.body}
+        raw_patterns = algorithm.run(msgs, scan.sensitivity, sep)
         break;
       end
     end
@@ -68,21 +69,21 @@ class RedisWorker
 
     canon_patterns = canonize(raw_patterns, scan.messages, sep)
 
-    canon_patterns.keys.each do | pattern |
-      db_pattern = Pattern.new( :body => pattern )
+    canon_patterns.keys.each do |pattern|
+      db_pattern = Pattern.new(:body => pattern)
       db_pattern.save
       scan.patterns << db_pattern
 
       canon_patterns[pattern].each do |msg|
-        db_msg = Message.get(msg)
-        db_msg.patterns << db_pattern
-        db_msg.save
+        msg = Message.get(msg.id)
+        msg.patterns << db_pattern
+        msg.save
       end
     end
 
     scan.active = false
     scan.save
-    @logger.infp("Scan #{scan_id} finished.")
+    @logger.info("Scan #{scan_id} finished.")
   end
 
 end

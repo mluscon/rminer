@@ -3,22 +3,28 @@ require 'yaml'
 require './variable.rb'
 require './helpers/helper.rb'
 
-
-
-def build_filter(pattern, separator)
-  reg = Regexp.escape pattern
-  reg = "^" << reg << "$"
-  Regexp.new(reg.gsub("VAR","[^\s]+"))
+def canonize(patterns, msgs, separator)
+  best = {}
+  patterns.each do |pattern|
+    regexp = build_filter(pattern, separator)
+    filtered = []
+    msgs.each do |msg|
+      filtered << msg if regexp.match(msg.body)
+    end
+    best_pattern = find_best_pattern(pattern, filtered, separator)
+    best[best_pattern] = filtered
+  end
+  best
 end
 
 def find_best_pattern(pattern, msgs, separator)
   pattern = pattern.split(separator)
-  msgs = msgs.select{|msg| msg.split(separator).length == pattern.length}
+  msgs = msgs.select{|msg| msg.body.split(separator).length == pattern.length}
   var_is = pattern.map.with_index {|x, i| x == 'VAR' ? i : nil}.compact
   var_is.each_with_index do |index, var_index|
     vars = []
     msgs.each do |msg|
-      vars.push(find_best_var(msg.split(separator)[index]))
+      vars.push(find_best_var(msg.body.split(separator)[index]))
     end
     if vars.empty?
       best_var = Variable.new("90", "Var", "")
@@ -54,17 +60,8 @@ def find_best_var( string )
   match.min_by{|x| x.priority}
 end
 
-def canonize(patterns, msgs, separator)
-  best = {}
-  patterns.keys.each do |pattern|
-    regexp = build_filter(pattern, separator)
-    filtered = []
-    patterns[pattern].each do |msg_id|
-      msg = msgs.get(msg_id).body
-      filtered.push(msg) if regexp.match(msg)
-    end
-    best_pattern = find_best_pattern(pattern, filtered, separator)
-    best[best_pattern] = patterns[pattern]
-  end
-  best
+def build_filter(pattern, separator)
+  reg = Regexp.escape pattern
+  reg = "^" << reg << "$"
+  Regexp.new(reg.gsub("VAR","[^\s]+"))
 end

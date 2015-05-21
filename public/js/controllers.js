@@ -12,7 +12,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
 
-  $scope.selectedAlg = "Default"
+  $scope.selectedAlg = "NaggapanVouk"
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.scanTag = ""
@@ -191,7 +191,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.regExpString = ""
   $scope.sensitivity = 1
   $scope.messages = ""
-  $scope.selectedAlg = "Default"
+  $scope.selectedAlg = "NaggapanVouk"
 
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
