@@ -10,16 +10,17 @@ require 'warden'
 
 require './controllers/controller.rb'
 require './helpers/helper.rb'
+require './config.rb'
 
 
 class MyApp < Sinatra::Application
 
-  config = ParseConfig.new('./rminer.conf')
+  conf = RminerConf.new
   controller = WebController.new
 
-  set :port, config['web_port']
+  set :port, conf.web_port
   set :sessions => true
-  set :session_secret => config['web_secret']
+  set :session_secret => conf.web_secret
   set :environment => :production
   register Sinatra::Flash
 

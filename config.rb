@@ -11,7 +11,9 @@ class RminerConf
     :database,
     :user,
     :password,
-    :adapter
+    :adapter,
+    :web_port,
+    :web_secret
   )
 
 
@@ -28,5 +30,7 @@ class RminerConf
     @user = config['db_user'] or 'rminer'
     @password = config['db_password'] or 'rminer'
     @adapter = config['db_adapter'] or 'postgres'
+    @web_secret = config['web_secret'] or None
+    @web_port = config['web_port'] or 9292
   end
 end
