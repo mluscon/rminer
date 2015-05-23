@@ -39,4 +39,4 @@
 - type: Variable
   short: VAR
   priority: 90
-  regexp: ''
+  regexp: '[^\s]+'
