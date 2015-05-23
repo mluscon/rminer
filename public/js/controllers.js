@@ -19,6 +19,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
   $scope.messages = ""
   $scope.activeScan = -1
   $scope.activePattern = -1
+  $scope.last = false
   $scope.updates = []
 
   $interval(checkUpdates, 5000);
@@ -44,7 +45,8 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
     });
   }
 
-  $scope.getMsgs = function(pattern_id) {
+  $scope.getMsgs = function(pattern_id, last) {
+    $scope.last = last
     $scope.activePattern = pattern_id
     $http.get("/patterns/".concat(pattern_id,"/messages?json"))
     .success(function(response) {$scope.messages = angular.fromJson(response);});
@@ -153,8 +155,13 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
         filtered.push($scope.messages[i].id);
       }
     }
-    var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
-                      "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
+    if ($scope.last) {
+      var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                        "algorithm" : $scope.selectedAlg, "parent" : ""}
+    } else {
+      var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                        "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
+    }
     $http.post("/scan/new", postObject)
     $scope.scanTag = ""
   }

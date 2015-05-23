@@ -41,7 +41,7 @@
                 %li{:class=>"angular-ui-tree-node"}
 
                   %div{"ng-class"=>"pattern1.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
-                      "ng-click"=>"getMsgs(pattern1.id)"}
+                      "ng-click"=>"getMsgs(pattern1.id, false)"}
 
                     %div{:class=>"tree-node-content", "ng-show"=>"!pattern1.edit"}
 
@@ -121,7 +121,7 @@
                     %li{:class=>"angular-ui-tree-node"}
 
                       %div{"ng-class"=>"pattern2.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
-                          "ng-click"=>"getMsgs(pattern2.id)"}
+                          "ng-click"=>"getMsgs(pattern2.id, false)"}
 
                         %div{:class=>"tree-node-content", "ng-show"=>"!pattern2.edit"}
 
@@ -201,7 +201,7 @@
                         %li{:class=>"angular-ui-tree-node"}
 
                           %div{"ng-class"=>"pattern3.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
-                              "ng-click"=>"getMsgs(pattern3.id)"}
+                              "ng-click"=>"getMsgs(pattern3.id, false)"}
 
                             %div{:class=>"tree-node-content", "ng-show"=>"!pattern3.edit"}
 
@@ -281,7 +281,7 @@
                             %li{:class=>"angular-ui-tree-node"}
 
                               %div{"ng-class"=>"pattern4.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
-                                  "ng-click"=>"getMsgs(pattern4.id)"}
+                                  "ng-click"=>"getMsgs(pattern4.id, false)"}
 
                                 %div{:class=>"tree-node-content", "ng-show"=>"!pattern4.edit"}
 
@@ -361,7 +361,7 @@
                                 %li{:class=>"angular-ui-tree-node"}
 
                                   %div{"ng-class"=>"pattern5.id == activePattern ? 'tree-node-active angular-ui-tree-handle':'tree-node angular-ui-tree-handle'",
-                                      "ng-click"=>"getMsgs(pattern5.id)"}
+                                      "ng-click"=>"getMsgs(pattern5.id, true)"}
 
                                     %div{:class=>"tree-node-content", "ng-show"=>"!pattern5.edit"}
 
