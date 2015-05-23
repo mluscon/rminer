@@ -7,7 +7,7 @@ require './models/model.rb'
 
 class RedisWorker
 
-  def initialize(config, algorithms)
+  def initialize(algorithms, config)
     @database = DataMapper.setup :default, {
       :adapter  => config.adapter,
       :host     => config.host,
@@ -15,8 +15,6 @@ class RedisWorker
       :user     => config.user,
       :password => config.password,
     }
-    @logger = Logger.new(config.logfile)
-    @logger.level = Logger::DEBUG
     @redis = Redis.new
     DataMapper.finalize
     @algorithms = algorithms
@@ -25,7 +23,7 @@ class RedisWorker
   def run!
     while true
       if scan = @redis.rpop('scans')
-        @logger.info("Processing scan id #{scan}")
+        $logger.info("Processing scan id #{scan}")
         do_analyze scan
       else
         sleep 3
@@ -35,7 +33,7 @@ class RedisWorker
 
   def rerun
     Scan.all(:active=>true).each do |scan|
-      @logger.info("Restarted analysis of scan id #{scan.id}")
+      $logger.info("Restarted analysis of scan id #{scan.id}")
       scan.patterns.each do |pattern|
         assocs = MessagePattern.all(:pattern=>pattern)
         assocs.each do |asc|
@@ -63,7 +61,7 @@ class RedisWorker
     end
 
     if not raw_patterns
-      @logger.error("No patterns found.")
+      $logger.error("No patterns found.")
       return
     end
 
@@ -83,7 +81,7 @@ class RedisWorker
 
     scan.active = false
     scan.save
-    @logger.info("Scan #{scan_id} finished.")
+    $logger.info("Scan #{scan_id} finished.")
   end
 
 end

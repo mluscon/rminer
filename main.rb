@@ -14,9 +14,9 @@ require './filters.rb'
 conf = RminerConf.new
 
 # setup logging
-logger = Logger.new(conf.logfile)
-logger.level = Logger::DEBUG
-logger.info("===Starting Rminer system...===")
+$logger = Logger.new(conf.logfile)
+$logger.level = Logger::DEBUG
+$logger.info("===Starting Rminer system...===")
 
 filter_fact = FilterMaker.new(conf.host, conf.database, conf.user, conf.password, conf.adapter)
 filters = filter_fact.update_filters
@@ -25,7 +25,7 @@ algorithms = []
 Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
   file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"
   if name = file_reg.match(file)
-    logger.info("Found plugin file: #{file}.")
+    $logger.info("Found plugin file: #{file}.")
     require file
     algorithms.push name.to_s.split('_').collect(&:capitalize).join
   end
@@ -37,20 +37,20 @@ algorithms.map!{|name| Object::const_get(name).new}
 children = []
 conf.workers.times do |index|
   pid = fork do
-    redis = RedisWorker.new(conf, algorithms)
+    redis = RedisWorker.new(algorithms, conf)
     redis.rerun if index == 0
     redis.run!
   end
-  logger.info('Started analyzator process with pid ' + pid.to_s + '.')
+  $logger.info('Started analyzator process with pid ' + pid.to_s + '.')
   children.push pid
 end
 
 Thread.new do
-  logger.info("Started filtering thread.")
+  $logger.info("Started filtering thread.")
   redis = Redis.new
   while true
     if update = redis.rpop('filter')
-      logger.info("Updating filters")
+      $logger.info("Updating filters")
       filters = filter_fact.update_filters
       filter_fact.remove_msgs
     end

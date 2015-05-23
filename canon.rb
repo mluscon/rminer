@@ -42,7 +42,7 @@ def find_best_var( string )
   parsed = begin
     YAML.load(File.open("./variables.yml"))
   rescue ArgumentError => e
-    STDERR.puts "Could not parse variables.yml: #{e.message}"
+    $logger.error("Could not parse variables.yml: #{e.message}")
   end
 
   variables = []
