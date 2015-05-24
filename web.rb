@@ -129,13 +129,9 @@ class MyApp < Sinatra::Application
     env['warden'].authenticate!
 
     msgs = controller.messages
+    halt 404 if not msgs
     if params.include? "json"
-      res = controller.messages
-      if response
-        JSON.generate res
-      else
-        halt 404
-      end
+      JSON.generate res
     else
       haml :messages, :locals => {
         :messages => msgs
@@ -157,7 +153,7 @@ class MyApp < Sinatra::Application
     halt 404 if params[:id].nil? or not params.include? "json"
 
     new_pattern = JSON.parse(request.env["rack.input"].read)
-    controller.pattern_save new_pattern
+    halt 404 if not controller.pattern_save new_pattern
   end
 
 
@@ -177,7 +173,7 @@ class MyApp < Sinatra::Application
     halt 404 if params.nil?
 
     params = JSON.parse(request.env["rack.input"].read)
-    controller.pattern_finalize(params["id"])
+    halt 404 if not controller.pattern_finalize(params["id"])
   end
 
 
@@ -186,7 +182,7 @@ class MyApp < Sinatra::Application
     halt 404 if params.nil?
 
     params = JSON.parse(request.env["rack.input"].read)
-    controller.pattern_unfinalize(params["id"])
+    halt 404 if not controller.pattern_unfinalize(params["id"])
   end
 
 
@@ -270,12 +266,13 @@ class MyApp < Sinatra::Application
     msg_ids = params["msgs"]
     parent = params["parent"]
     algorithm = params["algorithm"]
+    seperator = params["separator"] or ' '
 
     halt 400 if sensitivity == 0 || sensitivity > 1
     halt 400 if msg_ids.nil?
     halt 400 if algorithm.nil? or algorithm == ""
 
-    controller.analyze(msg_ids, parent, algorithm, sensitivity, params["separator"])
+    controller.analyze(msg_ids, parent, algorithm, sensitivity, separator)
   end
 
 
@@ -284,14 +281,16 @@ class MyApp < Sinatra::Application
     params = JSON.parse(request.env["rack.input"].read)
     halt 404 if params["id"].nil?
 
-    controller.scan_finalize(params["id"])
+    halt 404 if not controller.scan_finalize(params["id"])
   end
 
 
   get '/variables/?' do
     env['warden'].authenticate!
     if params.include? "json"
-      JSON.generate controller.variables
+      vars = controller.variables
+      halt 404 if not vars
+      JSON.generate vars
     else
       haml :variables
     end

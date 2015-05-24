@@ -80,12 +80,6 @@ class WebController
     end
 
     @redis.rpush('scans', new_scan.id )
-
-  end
-
-  def scan(id)
-    scan = Scan.get(id)
-    scan
   end
 
   def scans_serial(active=false)
@@ -95,16 +89,6 @@ class WebController
       scans.push JSON.parse( scan.to_json(:methods=>[:patterns]) )
     end
      scans
-  end
-
-  def scans(active=false)
-    Scan.all(:active => active)
-  end
-
-  def scan_pack(id, value)
-    scan = Scan.get(id)
-    scan.packed = value
-    scan.save
   end
 
   def scan_remove(id)
@@ -133,11 +117,12 @@ class WebController
 
   def scan_finalize(id)
     scan = Scan.get(id.to_i)
+    return false if not scan
     scan.removing = true
     scan.save
     scan.patterns.each do |pattern|
       pattern.children.each do |scan|
-        scan_finalize(scan)
+        return false if not scan_finalize(scan)
       end
       pattern.finalized = pattern.final
       if not pattern.finalized
@@ -157,6 +142,7 @@ class WebController
     end
     scan.destroy!
     @redis.rpush("filter", "update")
+    return true
   end
 
   def pattern_remove(id)
@@ -176,8 +162,9 @@ class WebController
       pattern.final = true;
       pattern.save
     else
-      false
+      return false
     end
+    true
   end
 
   def pattern_unfinalize(id)
@@ -186,12 +173,14 @@ class WebController
       pattern.final = false;
       pattern.save
     else
-      false
+      return false
     end
+    true
   end
 
   def pattern_save(pattern)
-      pat = Pattern.get(pattern["id"])
+    pat = Pattern.get(pattern["id"])
+    if pat
       pat.body = pattern["body"] if pattern["body"]
       pat.body_split = body_split(pat.body)
       pat.final = pattern["final"] if pattern["final"]
@@ -202,6 +191,10 @@ class WebController
       end
       pat.save
       @redis.rpush("filter", "update") if signal
+    else
+      return false
+    end
+    true
   end
 
   def results
@@ -220,8 +213,9 @@ class WebController
     parsed = begin
       YAML.load(File.open("./variables.yml"))
     rescue ArgumentError => e
-      return nil
+      return false
     end
+    true
   end
 
 end
