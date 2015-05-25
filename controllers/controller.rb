@@ -213,9 +213,7 @@ class WebController
     parsed = begin
       YAML.load(File.open("./variables.yml"))
     rescue ArgumentError => e
-      return false
+      return []
     end
-    true
   end
-
 end

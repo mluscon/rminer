@@ -21,6 +21,7 @@ $logger.info("===Starting Rminer system...===")
 filter_fact = FilterMaker.new(conf.host, conf.database, conf.user, conf.password, conf.adapter)
 filters = filter_fact.update_filters
 
+# import plugins
 algorithms = []
 Dir[File.dirname(__FILE__) + '/plugins/*.rb'].each do |file|
   file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"

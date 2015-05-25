@@ -131,7 +131,7 @@ class MyApp < Sinatra::Application
     msgs = controller.messages
     halt 404 if not msgs
     if params.include? "json"
-      JSON.generate res
+      JSON.generate msgs
     else
       haml :messages, :locals => {
         :messages => msgs
@@ -266,7 +266,7 @@ class MyApp < Sinatra::Application
     msg_ids = params["msgs"]
     parent = params["parent"]
     algorithm = params["algorithm"]
-    seperator = params["separator"] or ' '
+    separator = params["separator"] or ' '
 
     halt 400 if sensitivity == 0 || sensitivity > 1
     halt 400 if msg_ids.nil?
@@ -289,7 +289,6 @@ class MyApp < Sinatra::Application
     env['warden'].authenticate!
     if params.include? "json"
       vars = controller.variables
-      halt 404 if not vars
       JSON.generate vars
     else
       haml :variables
