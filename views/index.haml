@@ -437,6 +437,8 @@
           %div{:class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
               Start
+            %span{"ng-show"=>"scan_ok", :class=>"glyphicon glyphicon-ok green"}
+            %span{"ng-show"=>"scan_fail", :class=>"glyphicon glyphicon-remove red"}
 
         %div{:class=>"panel panel-primary fill-height", :style=>"overflow-y:auto"}
           %div{}

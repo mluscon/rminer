@@ -50,7 +50,7 @@ class WebController
 
     if msg_ids.length == 0
       STDERR.puts "Error: empty analyze call."
-      return
+      return nil
     end
 
     if separator.nil? or separator.empty?
@@ -80,6 +80,7 @@ class WebController
     end
 
     @redis.rpush('scans', new_scan.id )
+    return new_scan
   end
 
   def scans_serial(active=false)

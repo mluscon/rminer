@@ -272,7 +272,11 @@ class MyApp < Sinatra::Application
     halt 400 if msg_ids.nil?
     halt 400 if algorithm.nil? or algorithm == ""
 
-    controller.analyze(msg_ids, parent, algorithm, sensitivity, separator)
+    halt 404 if not controller.analyze(msg_ids,
+                                       parent,
+                                       algorithm,
+                                       sensitivity,
+                                       separator)
   end
 
 

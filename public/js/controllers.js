@@ -1,7 +1,7 @@
 var RminerApp = angular.module('RminerApp', ['ngSanitize', 'ui.bootstrap', 'patternFilters', 'editPatternFilters']);
 
 
-RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
+RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $timeout) {
 
   $http.get("/scans/?json")
   .success(function(response) {$scope.scans = angular.fromJson(response);});
@@ -21,6 +21,9 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
   $scope.activePattern = -1
   $scope.last = false
   $scope.updates = []
+  $scope.scan_fail = false
+  $scope.scan_ok = false
+  $scope.primise = null
 
   $interval(checkUpdates, 5000);
 
@@ -147,7 +150,13 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
     return res
   }
 
+  function hideIcons() {
+    $scope.scan_ok = false
+    $scope.scan_fail = false
+  }
+
   $scope.analyze = function() {
+    $timeout.cancel($scope.promise)
     var filtered = []
     var regExp = new RegExp($scope.regExpString)
     for(var i = 0; i<$scope.messages.length; i++ ){
@@ -155,14 +164,23 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
         filtered.push($scope.messages[i].id);
       }
     }
+    var postObject = null
     if ($scope.last) {
-      var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
-                        "algorithm" : $scope.selectedAlg, "parent" : ""}
+      postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                    "algorithm" : $scope.selectedAlg, "parent" : ""}
     } else {
-      var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
-                        "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
+      postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
+                    "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
     }
-    $http.post("/scan/new", postObject)
+    $http.post("/scan/new", postObject).
+    success(function(data, status, headers, config) {
+      $scope.scan_ok=true
+      $scope.promise = $timeout(hideIcons, 4000);
+    }).
+    error(function(data, status, headers, config) {
+      $scope.scan_fail=true
+      $scope.promise = $timeout(hideIcons, 4000);
+    });
     $scope.scanTag = ""
   }
 
@@ -191,7 +209,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval) {
 
 
 
-RminerApp.controller('MessagesCtrl', function ($scope, $http) {
+RminerApp.controller('MessagesCtrl', function ($scope, $http, $timeout) {
 
   $scope.messages = []
   $scope.allMessages = []
@@ -199,6 +217,9 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
   $scope.sensitivity = 1
   $scope.messages = ""
   $scope.selectedAlg = "NaggapanVouk"
+  $scope.scan_ok = false
+  $scope.scan_fail = false
+  $scope.promise = null
 
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
@@ -227,7 +248,14 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     return res
   }
 
+  function hideIcons() {
+    $scope.scan_ok = false
+    $scope.scan_fail = false
+  }
+
   $scope.analyze = function() {
+    $timeout.cancel($scope.promise)
+    hideIcons()
     var filtered = []
     var regExp = new RegExp($scope.regExpString)
     for(var i = 0; i<$scope.messages.length; i++ ){
@@ -237,7 +265,15 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http) {
     }
     var postObject = {"sensitivity" : $scope.sensitivity, "msgs" : filtered,
                       "algorithm" : $scope.selectedAlg, "parent" : $scope.activePattern}
-    $http.post("/scan/new", postObject)
+    $http.post("/scan/new", postObject).
+    success(function(data, status, headers, config) {
+      $scope.scan_ok = true
+      $scope.promise = $timeout(hideIcons, 4000);
+    }).
+    error(function(data, status, headers, config) {
+      $scope.scan_fail = true
+      $scope.promise = $timeout(hideIcons, 4000);
+    });
     $scope.scanTag = ""
 
     $http.get("/info/?json")
