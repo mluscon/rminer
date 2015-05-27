@@ -71,12 +71,17 @@ class RedisWorker
       db_pattern = Pattern.new(:body => pattern)
       db_pattern.save
       scan.patterns << db_pattern
+    end
 
-      canon_patterns[pattern].each do |msg|
-        msg = Message.get(msg.id)
-        msg.patterns << db_pattern
-        msg.save
+    scan.messages.each do |msg|
+      scan.patterns.each do |pattern|
+        pattern.body.split.each_with_index do |word, pos|
+          if msg.body.split[pos] == word
+            msg.patterns << pattern
+          end
+        end
       end
+      msg.save
     end
 
     scan.active = false
