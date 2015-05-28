@@ -23,7 +23,8 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $tim
   $scope.updates = []
   $scope.scan_fail = false
   $scope.scan_ok = false
-  $scope.primise = null
+  $scope.promise = null
+  $scope.inProgress = false
 
   $interval(checkUpdates, 5000);
 
@@ -156,6 +157,7 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $tim
   }
 
   $scope.analyze = function() {
+    $scope.inProgress = true
     $timeout.cancel($scope.promise)
     var filtered = []
     var regExp = new RegExp($scope.regExpString)
@@ -175,10 +177,12 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $tim
     $http.post("/scan/new", postObject).
     success(function(data, status, headers, config) {
       $scope.scan_ok=true
+      $scope.inProgress = false
       $scope.promise = $timeout(hideIcons, 4000);
     }).
     error(function(data, status, headers, config) {
       $scope.scan_fail=true
+      $scope.inProgress = false
       $scope.promise = $timeout(hideIcons, 4000);
     });
     $scope.scanTag = ""

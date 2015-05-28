@@ -102,13 +102,12 @@ class WebController
         patterns.children.each do |child_scan|
           scan_remove(child_scan.id)
         end
-      else
-        assocs = MessagePattern.all(:pattern=>pattern)
-        assocs.each do |asc|
-          asc.destroy!
-        end
-        pattern.destroy!
       end
+      assocs = MessagePattern.all(:pattern=>pattern)
+      assocs.each do |asc|
+        asc.destroy!
+      end
+      pattern.destroy!
     end
     assocs = MessageScan.all(:scan=>scan)
     assocs.each do |asc|
