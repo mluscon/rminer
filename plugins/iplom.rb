@@ -27,60 +27,68 @@ class Iplom
     end
 
     patterns = Array.new
-    @clusters.each{|cluster| patterns = patterns + find_patterns(cluster, sensitivity)}
+    @clusters.each{|cluster| patterns = patterns << find_patterns(cluster, sensitivity)}
     @clusters = Array.new
-    patterns
+    patterns.uniq
   end
 
   def split2(msgs, sensitivity)
 
     # find a word possition with the least number of unique words
     unique_words = uniq_words_in_col(msgs)
-    split_pos = unique_words.map{|words| words.length}.min
+    lengths = unique_words.map{|words| words.length}
+    min = lengths.min
+    split_pos = lengths.find_index(min)
     # split by a word on selected possition
-    split = Hash.new
-    msgs.each do |msg|
-      if split[msg[split_pos]]
-        split[msg[split_pos]] << msg
-      else
-        split[msg[split_pos]] = [msg]
-      end
-    end
+    split = split_by_pos(split_pos, msgs)
 
     split.values.each do |msgs|
-      @clusters << msgs
+      split3(msgs)
     end
+  end
+
+  def split3(msgs)
+
+    p1, p2 = get_possitions(msgs)
+
+    words = uniq_words_in_col(msgs)
+
+    if words[p1].length > words[p2].length
+      p = p2
+      p2 = p1
+      p1 = p
+    end
+    puts words[p1].length
+    puts words[p2].length
+
+    if words[p1].length/words[p2].length.to_f < sensitivity
+      @clusters << msgs
+    else
+      split = split_by_pos(p1, msgs)
+      split.values.each do |msgs|
+        @clusters << msgs
+      end
+    end
+  end
+
+  def split_by_pos(pos, msgs)
+    split = Hash.new
+    msgs.each do |msg|
+      if split[msg[pos]]
+        split[msg[pos]] << msg
+      else
+        split[msg[pos]] = [msg]
+      end
+    end
+    split
   end
 
   def find_patterns(msgs, sensitivity)
     # build a frequency possition table
+    uniq = uniq_words_in_col(msgs).map{|msg| msg.length}
 
-    f_table = Hash.new
-    msgs.each do |msg|
-      msg.each_with_index do |word, index|
-        if f_table[word]
-          f_table[word][index] = f_table[word][index].to_i + 1
-        else
-          f_table[word] = Array.new
-          f_table[word][index] = 1
-        end
-      end
-    end
-
-    # look up frequency for each line
-    l_table = Hash.new
-    msgs.each do |msg|
-      l_table[msg] = msg.map.with_index{|word,poss| f_table[word][poss]}
-    end
-
-    # determine variable part of message
-    results = Array.new
-    l_table.each do |msg, freqs|
-      treshold = mode(freqs)*sensitivity
-      results << msg.map.with_index{|word, poss| freqs[poss] >= treshold ? word : 'VAR'}
-    end
-
-    results.map{|line| line.join(" ")}.uniq
+    pattern = msgs[0].map.with_index{|word, index| uniq[index] == 1 ? word : 'VAR'}
+    pattern.join(" ")
   end
 
   def get_possitions(msgs)
