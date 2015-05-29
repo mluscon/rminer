@@ -40,11 +40,15 @@
               Algorithm:
             %select{"ng-options"=>"algorithm for algorithm in algorithms",
                     "ng-model"=>"selectedAlg"}
-          %div{:class=>"panel-heading"}
+          %div{"ng-show"=>"!inProgress", :class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}
-              Start
-            %span{"ng-show"=>"scan_ok", :class=>"glyphicon glyphicon-ok green"}
-            %span{"ng-show"=>"scan_fail", :class=>"glyphicon glyphicon-remove red"}
+              Analyze
+              %span{"ng-show"=>"scan_ok", :class=>"glyphicon glyphicon-ok green"}
+              %span{"ng-show"=>"scan_fail", :class=>"glyphicon glyphicon-remove red"}
+          %div{"ng-show"=>"inProgress", :class=>"panel-heading"}
+            %button{:type=>"button", :class=>"btn btn-default btn-xs"}
+              %span{:class=>"glyphicon glyphicon-refresh glyphicon-refresh-animate"}
+              Loading...
         .row
 
         %div{:class=>"panel panel-primary", :style=>"overflow-y:auto",

@@ -224,6 +224,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http, $timeout) {
   $scope.scan_ok = false
   $scope.scan_fail = false
   $scope.promise = null
+  $scope.inProgress = false
 
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
@@ -258,6 +259,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http, $timeout) {
   }
 
   $scope.analyze = function() {
+    $scope.inProgress = true
     $timeout.cancel($scope.promise)
     hideIcons()
     var filtered = []
@@ -272,10 +274,12 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http, $timeout) {
     $http.post("/scan/new", postObject).
     success(function(data, status, headers, config) {
       $scope.scan_ok = true
+      $scope.inProgress = false
       $scope.promise = $timeout(hideIcons, 4000);
     }).
     error(function(data, status, headers, config) {
       $scope.scan_fail = true
+      $scope.inProgress = false
       $scope.promise = $timeout(hideIcons, 4000);
     });
     $scope.scanTag = ""
