@@ -32,5 +32,6 @@ class RminerConf
     @adapter = config['db_adapter'] or 'postgres'
     @web_secret = config['web_secret'] or None
     @web_port = config['web_port'] or 9292
+    @plugins_path = config['plugins_path'] or './plugins/'
   end
 end
