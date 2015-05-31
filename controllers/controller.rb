@@ -72,13 +72,13 @@ class WebController
     new_scan.separator = separator
     new_scan.sensitivity = sensitivity
     new_scan.parent = Pattern.get(parent_id)
-    new_scan.save!
 
     msgs.each do |msg|
       msg.scans << new_scan
-      msg.save
+      msg.save!
     end
 
+    new_scan.save
     @redis.rpush('scans', new_scan.id )
     return new_scan
   end
@@ -212,7 +212,7 @@ class WebController
 
   def variables
     parsed = begin
-      YAML.load(File.open("./variables.yml"))
+      YAML.load(File.open($pwd + "/variables.yml"))
     rescue ArgumentError => e
       return []
     end

@@ -2,6 +2,7 @@ require 'digest'
 require 'bcrypt'
 require 'dm-constraints'
 require 'dm-types'
+require 'dm-timestamps'
 
 require './helpers/helper.rb'
 

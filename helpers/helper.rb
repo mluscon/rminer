@@ -40,7 +40,7 @@ end
 
 def get_algorithms(path)
   algorithms = []
-  Dir['./plugins/*.rb'].each do |file|
+  Dir[path + '/*.rb'].each do |file|
     file_reg = Regexp.new "(?<=/)[a-zA-Z0-9_]+(?=.rb)"
     if name = file_reg.match(file)
       require file
@@ -50,6 +50,6 @@ def get_algorithms(path)
   algorithms
 end
 
-def write_variables(variables)
-  File.open("./variables.yml", "w") {|file| file.write(params.to_yaml)}
+def write_variables(variables, path)
+  File.open(path + "/variables.yml", "w") {|file| file.write(params.to_yaml)}
 end

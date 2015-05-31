@@ -84,7 +84,7 @@ class RedisWorker
     end
 
     scan.active = false
-    scan.save!
+    scan.save
     $logger.info("Scan #{scan_id} finished.")
   end
 

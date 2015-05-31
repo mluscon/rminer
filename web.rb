@@ -7,22 +7,25 @@ require 'fileutils'
 require 'digest'
 require 'tempfile'
 require 'warden'
+require 'logger'
 
 require './controllers/controller.rb'
 require './helpers/helper.rb'
 require './config.rb'
 
-
 class MyApp < Sinatra::Application
-
   conf = RminerConf.new
   controller = WebController.new
 
+  set :static, true
   set :port, conf.web_port
   set :sessions => true
   set :session_secret => conf.web_secret
   set :environment => :production
   register Sinatra::Flash
+
+  logger = Logger.new('./logs/web.log')
+  use Rack::CommonLogger, logger
 
 
   # setup authentication
@@ -71,7 +74,7 @@ class MyApp < Sinatra::Application
   get '/algorithms/?' do
     env['warden'].authenticate!
 
-    algs = get_algorithms('/plugins/')
+    algs = get_algorithms($pwd + '/plugins/')
     JSON.generate algs
   end
 
@@ -309,3 +312,5 @@ class MyApp < Sinatra::Application
   end
 
 end
+
+

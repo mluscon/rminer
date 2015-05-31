@@ -431,8 +431,7 @@
           %div{:class=>"input-group"}
             %span{:class=>"input-group-addon"}
               Algorithm:
-            %select{:class=>"selectpicker",
-                    "ng-options"=>"algorithm for algorithm in algorithms",
+            %select{"ng-options"=>"algorithm for algorithm in algorithms",
                     "ng-model"=>"selectedAlg"}
           %div{"ng-show"=>"!inProgress", :class=>"panel-heading"}
             %button{"ng-click"=>"analyze()", :type=>"button", :class=>"btn btn-default btn-xs"}

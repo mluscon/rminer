@@ -3,14 +3,7 @@ var RminerApp = angular.module('RminerApp', ['ngSanitize', 'ui.bootstrap', 'patt
 
 RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $timeout) {
 
-  $http.get("/scans/?json")
-  .success(function(response) {$scope.scans = angular.fromJson(response);});
 
-  $http.get("/variables/?json")
-  .success(function(response) {$scope.variables = angular.fromJson(response);});
-
-  $http.get("/algorithms/?json")
-  .success(function(response) {$scope.algorithms = angular.fromJson(response);});
 
   $scope.selectedAlg = "NaggapanVouk"
   $scope.regExpString = ""
@@ -25,6 +18,16 @@ RminerApp.controller('ScansCtrl', function ($scope, $http, $sce, $interval, $tim
   $scope.scan_ok = false
   $scope.promise = null
   $scope.inProgress = false
+  $scope.algorithms = []
+
+  $http.get("/scans/?json")
+  .success(function(response) {$scope.scans = angular.fromJson(response);});
+
+  $http.get("/variables/?json")
+  .success(function(response) {$scope.variables = angular.fromJson(response);});
+
+  $http.get("/algorithms/?json")
+  .success(function(response) {$scope.algorithms = angular.fromJson(response);});
 
   $interval(checkUpdates, 5000);
 
@@ -225,6 +228,7 @@ RminerApp.controller('MessagesCtrl', function ($scope, $http, $timeout) {
   $scope.scan_fail = false
   $scope.promise = null
   $scope.inProgress = false
+  $scope.algorithms = []
 
   $http.get("/algorithms/?json")
   .success(function(response) {$scope.algorithms = angular.fromJson(response);});
