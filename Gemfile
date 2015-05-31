@@ -9,6 +9,7 @@ gem 'dm-core', '>=1.2.1'
 gem 'dm-constraints', '>=1.2.0'
 gem 'dm-postgres-adapter', '>=1.2.0'
 gem 'dm-types', '>=1.2.2'
+gem 'dm-timestamps'
 gem 'json', '>=1.8.2'
 
 gem 'redis', '>=3.2.1'
