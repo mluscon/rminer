@@ -1,5 +1,6 @@
 #!/bin/bash
 
-cat ./web.pid > kill
+kill $(cat ./web.pid)
+
 
 ruby -I ./ ./daemon.rb stop
