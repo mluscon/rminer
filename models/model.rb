@@ -4,7 +4,7 @@ require 'dm-constraints'
 require 'dm-types'
 require 'dm-timestamps'
 
-require './helpers/helper.rb'
+require 'helpers/helper.rb'
 
 class Message
   include DataMapper::Resource

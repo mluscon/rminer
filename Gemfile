@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'amqp', '>=1.5.0'
 gem 'parseconfig', '>=1.0.6'
 gem 'digest-murmurhash', '>=1.1.0'
+gem 'daemons'
 
 gem 'data_mapper', '>=1.2.0'
 gem 'dm-core', '>=1.2.1'

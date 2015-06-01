@@ -1,14 +1,16 @@
 #!/bin/ruby
 
+puts $LOAD_PATH
+
 require 'rubygems'
 require 'amqp'
 require 'logger'
 require 'parseconfig'
 require 'digest/murmurhash'
 
-require './config'
-require './redis_worker'
-require './filters.rb'
+require 'config.rb'
+require 'redis_worker.rb'
+require 'filters.rb'
 
 # initialize config
 conf = RminerConf.new

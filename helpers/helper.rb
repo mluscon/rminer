@@ -1,6 +1,6 @@
 require 'json'
 
-require './variable.rb'
+require 'variable.rb'
 
 def body_split(body)
   words = []

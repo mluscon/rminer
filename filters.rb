@@ -1,7 +1,7 @@
 require 'data_mapper'
 require 'json'
 
-require './models/model.rb'
+require 'models/model.rb'
 
 class FilterMaker
 

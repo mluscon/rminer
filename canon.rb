@@ -1,7 +1,7 @@
 require 'yaml'
 
-require './variable.rb'
-require './helpers/helper.rb'
+require 'variable.rb'
+require 'helpers/helper.rb'
 
 def canonize(patterns, msgs, separator)
   best = {}
